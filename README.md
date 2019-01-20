@@ -1,4 +1,4 @@
-# NDP
-NDP datacenter stack.
-The doc directory contains documentation about the project.
-The sim directory contains the simulator implementation of NDP which allows running experiments in various datacenter topologies. For much more information about NDP, see the [wiki](https://github.com/nets-cs-pub-ro/NDP/wiki).
+# HTSim
+This project is an extension to HTSim to allow the simulation of Mega Sattellite constellations
+
+Original code from:https://github.com/nets-cs-pub-ro/NDP/tree/master/sim
