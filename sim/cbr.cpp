@@ -76,6 +76,7 @@ CbrSink::CbrSink()
   _received = 0;
   _last_id = 0;
   _cumulative_ack = 0;
+  _nodename = "cbrsink";
 }
 
 // Note: _cumulative_ack is the last byte we've ACKed.

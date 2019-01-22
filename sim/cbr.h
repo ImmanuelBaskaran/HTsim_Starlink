@@ -49,8 +49,10 @@ public:
 	uint64_t cumulative_ack(){return _cumulative_ack;}
 	uint32_t get_id(){ return id;}
 	uint32_t drops(){return 1;}
+	virtual const string& nodename() { return _nodename; }
 private:
 	// Connectivity
+	string _nodename;
 };
 
 #endif
