@@ -16,6 +16,8 @@
 #include "mtcp.h"
 #include "exoqueue.h"
 
+#include "ConnectionMatrix.cpp"
+
 string ntoa(double n);
 string itoa(uint64_t n);
 
@@ -124,6 +126,9 @@ int main(int argc, char **argv) {
 
     // GO!
     while (eventlist.doNextEvent()) {}
+
+    ConnectionMatrix mat = ConnectionMatrix();
+
 }
 
 string ntoa(double n) {
