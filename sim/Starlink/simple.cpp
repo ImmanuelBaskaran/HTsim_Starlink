@@ -16,6 +16,8 @@
 #include "mtcp.h"
 #include "exoqueue.h"
 
+#include "OrbitalPlane.h"
+
 string ntoa(double n);
 string itoa(uint64_t n);
 
@@ -118,10 +120,14 @@ int main(int argc, char **argv) {
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
 
-
+    OrbitalPlane testPlane(1, 0.0, 53.0, 550000, 0.0);
+    Vector3 pos = testPlane.getPosForSat(0, 0);
+    printf("%d, %d, %d", pos.x, pos.y, pos.z);
 
     // GO!
-    while (eventlist.doNextEvent()) {}
+    while (eventlist.doNextEvent()) {
+        
+    }
 }
 
 string ntoa(double n) {

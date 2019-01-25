@@ -1,0 +1,13 @@
+: testQueue=2
+: pipe1=3
+# pktsize=1500 bytes
+# bottleneckrate1=166 pkt/sec
+# bottleneckrate2=400 pkt/sec
+# buffer1=301.8 pkt
+# rtt=0.15
+# rtt=0.01
+# numflows=2
+# targetwnd=30
+# numrecords=0
+# transpose=0
+# TRACE
