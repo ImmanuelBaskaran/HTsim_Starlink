@@ -72,13 +72,14 @@ int main(int argc, char **argv) {
 
     // prepare the loggers
     stringstream filename(ios_base::out);
-    filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd"; // rand();
+    filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd.txt"; // rand();
     cout << "Outputting to " << filename.str() << endl;
     Logfile logfile(filename.str(),eventlist);
 
     logfile.setStartTime(timeFromSec(0.5));
 
-    QueueLoggerSimple loggerSimple = QueueLoggerSimple(); logfile.addLogger(loggerSimple);
+    QueueLoggerSimple loggerSimple = QueueLoggerSimple();
+    logfile.addLogger(loggerSimple);
 
     Queue testQueue(SERVICE1, BUFFER1, eventlist,&loggerSimple);
     testQueue.setName("testQueue");
@@ -88,7 +89,9 @@ int main(int argc, char **argv) {
     CbrSink* cbrSink1;
     route_t* route;
 
-    Pipe pipe1(RTT1/2, eventlist); pipe1.setName("pipe1"); logfile.writeName(pipe1);
+    Pipe pipe1(RTT1/2, eventlist);
+    pipe1.setName("pipe1");
+    logfile.writeName(pipe1);
 
     cbrSource = new CbrSrc(eventlist,SERVICE1);
     cbrSink1 = new CbrSink();
@@ -116,7 +119,6 @@ int main(int argc, char **argv) {
     logfile.write("# rtt="+ntoa(rtt));
     logfile.write("# numflows="+ntoa(NUMFLOWS));
     logfile.write("# targetwnd="+ntoa(targetwnd));
-
 
 
 
