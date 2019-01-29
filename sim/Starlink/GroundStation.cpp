@@ -3,28 +3,34 @@
 
 #include "GroundStation.h"
 #include "Satellite.h"
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #define EARTH_RADIUS 6371000
 #define ANGLE_IN_RANGE 0.76
 #include <math.h>
-#include <vector>
 #include <cmath>
 
+float dot(Eigen::Vector3d a,Eigen::Vector3d b){
+    return a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
+}
+
+float mag(Eigen::Vector3d a){
+    return std::sqrt(a.x() * a.x() + a.y() * a.y() + a.z() * a.z());
+}
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
 bool GroundStation::isSatelliteInRange(Satellite satellite)
 {
-    Vector3 gsCartCoords;
+    Eigen::Vector3d gsCartCoords;
     gsCartCoords.x()=EARTH_RADIUS*sin(lat)*cos(lon);
     gsCartCoords.y()=EARTH_RADIUS*sin(lat)*sin(lon);
     gsCartCoords.z()=EARTH_RADIUS*cos(lat);
 
     //the angle we are looking for is the angle between the vector difference (satellite, GS) and GS
-    Eigen::Vector3 diffVect;
-    diffVect.x()=gsCartCoords.x()-satellite.x();
-    diffVect.y()=gsCartCoords.y()-satellite.y();
-    diffVect.z()=gsCartCoords.z()-satellite.z();
+    Eigen::Vector3d diffVect;
+    diffVect.x()=gsCartCoords.x()-satellite.getPosition().x();
+    diffVect.y()=gsCartCoords.y()-satellite.getPosition().y();
+    diffVect.z()=gsCartCoords.z()-satellite.getPosition().z();
 
     //acos = arc cosine of x, expressed in radians
     //mag = magnitude of vector
@@ -35,11 +41,12 @@ bool GroundStation::isSatelliteInRange(Satellite satellite)
 }
 
 
-std::vector<Satellite> GroundStation::getSatellitesInRange(Eigen::Vector3d[][] positionMatrix)
+std::vector<Satellite> GroundStation::getSatellitesInRange(vector<Satellite> positionMatrix)
 {
-    vector<Satellite> satellites=nullptr;
+    std::vector<Satellite> satellites;
     for(Satellite satellite : positionMatrix)
-        if(isSatelliteInRange(satellite.getPosition())
-            vector.push_back(satellite);
+        if(isSatelliteInRange(satellite)) {
+            satellites.push_back(satellite);
+        }
     return satellites;
 }

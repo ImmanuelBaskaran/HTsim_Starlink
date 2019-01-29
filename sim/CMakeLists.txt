@@ -16,9 +16,12 @@ add_custom_target(buildHTSim COMMAND make
 
 add_executable(sim
         Starlink/simple.cpp
+        Starlink/ConnectionMatrix.cpp
         Starlink/LaserLink.cpp
         Starlink/GroundStation.cpp
-        Starlink/ConnectionMatrix.cpp
+        Starlink/Satellite.cpp
+        Starlink/OrbitalPlane.cpp
+
         )
 
 target_link_libraries(sim ${CMAKE_CURRENT_SOURCE_DIR}/libhtsim.a)

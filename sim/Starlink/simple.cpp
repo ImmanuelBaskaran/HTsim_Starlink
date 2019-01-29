@@ -15,6 +15,7 @@
 #include "clock.h"
 #include "mtcp.h"
 #include "exoqueue.h"
+#include "ConnectionMatrix.h"
 
 string ntoa(double n);
 string itoa(uint64_t n);
