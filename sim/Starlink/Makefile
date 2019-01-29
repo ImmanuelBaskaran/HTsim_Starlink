@@ -5,7 +5,7 @@ CC = g++
 CFLAGS = -Wall -g -O
 CRT=`pwd`
 INCLUDE= -I/$(CRT)/.. -I$(CRT)
-EIGEN= -I /home/user/eigen/Eigen
+#EIGEN= -I /home/user/eigen/Eigen
 #-I$(CRT)/ksp -I$(CRT)/ksp/boost
 LIB=-L.. 
 #-Lksp
@@ -13,19 +13,22 @@ LIB=-L..
 all:	simple lib
 #htsim_ndp_incast_shortflows_demo 
 
-CFLAGS = -I  *.h ../pipe.h
+CFLAGS = -I ..
 
-simple:	simple.o
-	$(CC) $(CFLAGS) simple.o $(LIB) -lhtsim -o simple
+simple:	simple.o $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) simple.o $(LIB) -lhtsim -o simple
 
 lib: $(OBJS) $(HDRS)
 
 simple.o: simple.cpp
-	$(CC) $(INCLUDE) $(EIGEN) $(CFLAGS) -c simple.cpp 
+	$(CC) $(INCLUDE) $(CFLAGS) -c simple.cpp 
 
 OrbitalPlane.o: OrbitalPlane.cpp $(HDRS)
+	$(CC) $(INCLUDE) $(CFLAGS) -c OrbitalPlane.cpp 
 
 Satellite.o: Satellite.cpp $(HDRS)
+	$(CC) $(INCLUDE) $(CFLAGS) -c Satellite.cpp 
 
 ISL.o: ISL.cpp $(HDRS)
+	$(CC) $(INCLUDE) $(CFLAGS) -c ISL.cpp 
 
