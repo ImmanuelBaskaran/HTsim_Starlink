@@ -23,10 +23,11 @@ Vector3d const OrbitalPlane::getPosForSat(int satId, simtime_picosec currentTime
     Satellite* sat = _satellites[satIdToIndex(satId)];
     Vector3d startPosition(EARTH_RADIUS + _satAltitude, 0.0, 0.0);
 
-    Transform t(AngleAxis<double>(_raan, Vector3d(0.0, 0.0, 1.0));)
-
-    t.rotate(AngleAxis<double>(sat->getAnomaly(currentTime), Vector3d(0, 0, 1)));
-    t.rotate(AngleAxis<double>(_inclination, Vector3d(1, 0, 0)));
-    t.rotate(AngleAxis<double>(_raan, Vector3d(0, 1, 0)));
-    return t * startPosition;
+    Vector3d result;
+    AngleAxis<double> m1(_raan, Vector3d(0.0, 0.0, 1.0));
+    AngleAxis<double> m2(sat->getAnomaly(currentTime), Vector3d(0, 0, 1));
+    AngleAxis<double> m3(_inclination, Vector3d(1, 0, 0));
+    AngleAxis<double> m4(_raan, Vector3d(0, 1, 0));
+    result = m4*m3*m2*m1*startPosition;
+    return result;
 }
