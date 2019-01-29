@@ -5,14 +5,16 @@
 #ifndef SIM_GROUNDSTATION_H
 #define SIM_GROUNDSTATION_H
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 #include "network.h"
+#include "Satellite.h"
 
 
 class GroundStation: public PacketSink {
 public:
     GroundStation(double lat, double lon,);
-    vector<Satellite> getSatellitesInRange(Eigen::Vector3d positionMatrix[][]);
+    vector<Satellite> getSatellitesInRange(Vector3 positionMatrix[][]);
+    bool isSatelliteInRange(Satellite satellite);
 private:
     double lat,lon;
 };

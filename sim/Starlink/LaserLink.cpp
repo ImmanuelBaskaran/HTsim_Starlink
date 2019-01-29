@@ -14,15 +14,15 @@ void LaserLink::doNextEvent() {
     Pipe::doNextEvent();
 }
 
-Eigen::Vector3d LaserLink::getSatellitePosition(Satellite satellite){
+Eigen::Vector3 LaserLink::getSatellitePosition(Satellite satellite){
 
     return satellite.getPosition(EventSource::eventlist().now());
 }
 
 
 double LaserLink::getDistanceBetweenSatellitePair(Satellite satellite1,Satellite satellite2){
-    Eigen::Vector3d  position1 = getSatellitePosition(satellite1);
-    Eigen::Vector3d  position2 = getSatellitePosition(satellite2);
+    Eigen::Vector3  position1 = satellite1.getPosition();
+    Eigen::Vector3  position2 = satellite2.getPosition();
 
     double distance = pow(position2.x()-position1.x(),2)+
             pow(position2.y()-position1.y(),2)+
