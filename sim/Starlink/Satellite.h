@@ -2,15 +2,18 @@
 #include "ISL.h"
 #include <Eigen/Dense>
 
+using namespace Eigen;
+
 #define ORBIT_PERIOD_SEC 5739
 
 class Satellite {
     private:
         int _id;
         double _meanAnomaly;
-        Vector3 _position;
+        Vector3d _position;
     public:
-        inline Vector3 getPosition() { return _position; };
-        void setPosition(const Vector3);
+        Satellite(const int id, const double offset);
+        inline Vector3d getPosition() { return _position; };
+        void setPosition(const Vector3d);
         double getAnomaly(simtime_picosec);
 };

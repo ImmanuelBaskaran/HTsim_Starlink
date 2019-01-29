@@ -1,4 +1,6 @@
 // -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-
+#include "OrbitalPlane.h"
+
 #include "config.h"
 #include <sstream>
 #include <string.h>
@@ -15,8 +17,6 @@
 #include "clock.h"
 #include "mtcp.h"
 #include "exoqueue.h"
-
-#include "OrbitalPlane.h"
 
 string ntoa(double n);
 string itoa(uint64_t n);
@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
 
     int bufsize = timeAsSec(RTT2)*speedAsPktps(SERVICE2)*4;
     if (bufsize<10)
+#include "network.h"
         bufsize = 10;
 
     mem_b BUFFER2=memFromPkt(RANDOM_BUFFER+bufsize);
@@ -119,10 +120,9 @@ int main(int argc, char **argv) {
     logfile.write("# numflows="+ntoa(NUMFLOWS));
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
-
     OrbitalPlane testPlane(1, 0.0, 53.0, 550000, 0.0);
-    Vector3 pos = testPlane.getPosForSat(0, 0);
-    printf("%d, %d, %d", pos.x, pos.y, pos.z);
+    Vector3d pos = testPlane.getPosForSat(0, 0);
+    printf("%f, %f, %f", pos.x(), pos.y(), pos.z());
 
     // GO!
     while (eventlist.doNextEvent()) {
