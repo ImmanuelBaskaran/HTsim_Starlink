@@ -9,11 +9,11 @@ class OrbitalPlane {
     private:
         int _id;
         Satellite* _satellites[SATS_PER_PLANE];
+        double _planeOffset;
         double _raan;
         double _firstSatOffset;
         double _inclination;
         double _satAltitude;
-        void initSatellites();
         int satIdToIndex(int satId);
     public:
         OrbitalPlane(int id, double raan, double inclination, double satAltitude, double firstSatOffset);

@@ -121,8 +121,8 @@ int main(int argc, char **argv) {
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
     OrbitalPlane testPlane(1, 0.0, 53.0, 550000, 0.0);
-    Vector3d pos = testPlane.getPosForSat(0, 0);
-    printf("%f, %f, %f", pos.x(), pos.y(), pos.z());
+    Vector3d pos = testPlane.getPosForSat(1, 0);
+    printf("%f, %f, %f\n", pos.x(), pos.y(), pos.z());
 
     // GO!
     while (eventlist.doNextEvent()) {
