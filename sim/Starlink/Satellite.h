@@ -10,10 +10,10 @@ class Satellite {
     private:
         int _id;
         double _meanAnomaly;
-        Vector3d _position;
+        Vector3f _position;
     public:
         Satellite(const int id, const double offset);
-        inline Vector3d getPosition() { return _position; };
-        void setPosition(const Vector3d);
+        inline Vector3f getPosition() { return _position; };
+        void setPosition(const Vector3f);
         double getAnomaly(simtime_picosec);
 };

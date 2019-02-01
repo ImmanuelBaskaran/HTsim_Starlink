@@ -59,7 +59,6 @@ int main(int argc, char **argv) {
 
     int bufsize = timeAsSec(RTT2)*speedAsPktps(SERVICE2)*4;
     if (bufsize<10)
-#include "network.h"
         bufsize = 10;
 
     mem_b BUFFER2=memFromPkt(RANDOM_BUFFER+bufsize);
