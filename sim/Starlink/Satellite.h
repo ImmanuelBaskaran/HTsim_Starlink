@@ -1,19 +1,19 @@
 #pragma once
-#include "config.h"
-#include <eigen3/Eigen/Dense>
+#include "ISL.h"
+#include <Eigen/Dense>
+
+using namespace Eigen;
 
 #define ORBIT_PERIOD_SEC 5739
-
-
 
 class Satellite {
     private:
         int _id;
         double _meanAnomaly;
-        Eigen::Vector3f _position;
+        Vector3d _position;
     public:
-        Satellite(int id, double offset);
-        inline Eigen::Vector3f getPosition() { return _position; };
-        void setPosition(const Eigen::Vector3f);
+        Satellite(const int id, const double offset);
+        inline Vector3d getPosition() { return _position; };
+        void setPosition(const Vector3d);
         double getAnomaly(simtime_picosec);
 };

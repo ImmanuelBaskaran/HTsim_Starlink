@@ -1,4 +1,6 @@
 // -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-
+#include "OrbitalPlane.h"
+
 #include "config.h"
 #include <sstream>
 #include <string.h>
@@ -57,6 +59,7 @@ int main(int argc, char **argv) {
 
     int bufsize = timeAsSec(RTT2)*speedAsPktps(SERVICE2)*4;
     if (bufsize<10)
+#include "network.h"
         bufsize = 10;
 
     mem_b BUFFER2=memFromPkt(RANDOM_BUFFER+bufsize);
@@ -122,14 +125,20 @@ int main(int argc, char **argv) {
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
 
-
+    int id = 1;
+    for (int i = 0; i < 23; i++) {
+        OrbitalPlane plane(i + 1, i * 15, 53.0, 550000, i * 5.5);
+        for (int j = 0; j < SATS_PER_PLANE; j++) {
+            Vector3d pos = plane.getPosForSat(id++, 0);
+            printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+        }
+        printf("\n\n");
+    }
 
     // GO!
-    while (eventlist.doNextEvent()) {}
-
-    ConnectionMatrix mat = ConnectionMatrix();
-
-
+    // while (eventlist.doNextEvent()) {
+        
+    // }
 }
 
 string ntoa(double n) {
