@@ -125,14 +125,15 @@ int main(int argc, char **argv) {
         OrbitalPlane plane(i + 1, i * 15, 53.0, 550000, i * 5.5);
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Vector3d pos = plane.getPosForSat(id++, 0);
-            printf("%f, %f, %f\n", pos.x(), pos.y(), pos.z());
+            printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
         }
+        printf("\n\n");
     }
 
     // GO!
-    while (eventlist.doNextEvent()) {
+    // while (eventlist.doNextEvent()) {
         
-    }
+    // }
 }
 
 string ntoa(double n) {
