@@ -12,7 +12,7 @@
 
 class GroundStation: public PacketSink {
 public:
-    GroundStation(double lat, double lon,);
+    GroundStation(double lat, double lon);
     vector<Satellite> getSatellitesInRange(vector<Satellite> positionMatrix);
     bool isSatelliteInRange(Satellite satellite);
 private:
