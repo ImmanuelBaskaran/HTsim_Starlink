@@ -120,9 +120,14 @@ int main(int argc, char **argv) {
     logfile.write("# numflows="+ntoa(NUMFLOWS));
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
-    OrbitalPlane testPlane(1, 0.0, 53.0, 550000, 0.0);
-    Vector3d pos = testPlane.getPosForSat(1, 0);
-    printf("%f, %f, %f\n", pos.x(), pos.y(), pos.z());
+    int id = 1;
+    for (int i = 0; i < 23; i++) {
+        OrbitalPlane plane(i + 1, i * 15, 53.0, 550000, i * 5.5);
+        for (int j = 0; j < SATS_PER_PLANE; j++) {
+            Vector3d pos = plane.getPosForSat(id++, 0);
+            printf("%f, %f, %f\n", pos.x(), pos.y(), pos.z());
+        }
+    }
 
     // GO!
     while (eventlist.doNextEvent()) {
