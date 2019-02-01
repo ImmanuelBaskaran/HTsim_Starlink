@@ -21,9 +21,13 @@ ConnectionMatrix::ConnectionMatrix(void) {
 
             matrix[satetllite+(66*orbit)][ahead+(66*orbit)] = 1;
             matrix[satetllite+(66*orbit)][behind+(66*orbit)] = 1;
+
+            matrix[satetllite+(66*orbit)][ahead+(66*orbit)] = 1;
+            matrix[satetllite+(66*orbit)][behind+(66*orbit)] = 1;
+
     }
     FILE *fp;
-    fp=fopen("Shenanigans.csv","w+");
+    fp=fopen("connectionMatrix.csv","w+");
     for(int i = 0; i < NUMSATELLITES; i++){
         for(int j = 0; j < NUMSATELLITES; j++){
             fprintf(fp,"%d,",matrix[i][j]);

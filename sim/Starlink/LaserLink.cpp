@@ -3,7 +3,15 @@
 //
 
 #include "LaserLink.h"
+#include "Satellite.h"
 #include <eigen3/Eigen/Dense>
+
+
+LaserLink::LaserLink(simtime_picosec delay1, EventList &eventlist1, simtime_picosec delay, EventList &eventlist)
+        : Pipe(delay1, eventlist1) {
+
+
+}
 
 void LaserLink::doNextEvent() {
 
@@ -14,15 +22,15 @@ void LaserLink::doNextEvent() {
     Pipe::doNextEvent();
 }
 
-Eigen::Vector3 LaserLink::getSatellitePosition(Satellite satellite){
+Eigen::Vector3f LaserLink::getSatellitePosition(Satellite satellite){
 
-    return satellite.getPosition(EventSource::eventlist().now());
+    return satellite.getPosition();
 }
 
 
 double LaserLink::getDistanceBetweenSatellitePair(Satellite satellite1,Satellite satellite2){
-    Eigen::Vector3  position1 = satellite1.getPosition();
-    Eigen::Vector3  position2 = satellite2.getPosition();
+    Eigen::Vector3f  position1 = satellite1.getPosition();
+    Eigen::Vector3f  position2 = satellite2.getPosition();
 
     double distance = pow(position2.x()-position1.x(),2)+
             pow(position2.y()-position1.y(),2)+
