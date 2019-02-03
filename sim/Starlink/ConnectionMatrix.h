@@ -8,7 +8,7 @@
 
 const int NUM_SATELLITES = 1584;
 const int ORBITAL_PLANES=24;
-const int SATTELITES_PER_PLANE=66;
+const int SATELLITES_PER_PLANE=66;
 
 
 class ConnectionMatrix {
