@@ -6,7 +6,9 @@
 #define SIM_CONNECTIONMATRIX_H
 
 
-const int NUMSATELLITES = 1584;
+const int NUM_SATELLITES = 1584;
+const int ORBITAL_PLANES=24;
+const int SATTELITES_PER_PLANE=66;
 
 
 class ConnectionMatrix {
