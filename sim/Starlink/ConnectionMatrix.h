@@ -16,7 +16,7 @@ public:
     ConnectionMatrix();  // This is the constructor
 
 private:
-    __uint8_t matrix[NUMSATELLITES][NUMSATELLITES];
+    __uint8_t matrix[NUM_SATELLITES][NUM_SATELLITES];
 };
 
 

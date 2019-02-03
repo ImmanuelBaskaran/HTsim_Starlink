@@ -10,7 +10,6 @@
 ConnectionMatrix::ConnectionMatrix(void) {
     for (int satellite = 0; satellite < NUM_SATELLITES; satellite++) {
 
-        int orbit = satellite / SATTELITES_PER_PLANE;
         int ahead_same_orb_plane;
         int behind_same_orb_plane;
         int ahead_diff_orb_plane;
@@ -27,14 +26,14 @@ ConnectionMatrix::ConnectionMatrix(void) {
             behind_same_orb_plane = satellite - 1;
 
         if(satellite < SATTELITES_PER_PLANE)
-            ahead_diff_orb_plane = NUM_SATELLITES - SATTELITES_PER_PLANE;
+            ahead_diff_orb_plane = NUM_SATELLITES -1 - SATTELITES_PER_PLANE -1 + satellite;
         else
-            ahead_diff_orb_plane = satellite - SATTELITES_PER_PLANE;
+            ahead_diff_orb_plane = satellite - SATTELITES_PER_PLANE +1;
 
         if(satellite > NUM_SATELLITES-SATTELITES_PER_PLANE)
-            behind_diff_orb_plane = 65-satellite;
+            behind_diff_orb_plane = SATTELITES_PER_PLANE -1 - (NUM_SATELLITES - 1 - satellite);
         else
-            behind_diff_orb_plane = satellite+66;
+            behind_diff_orb_plane = satellite + SATTELITES_PER_PLANE -1;
 
 
         //same orbital plane
