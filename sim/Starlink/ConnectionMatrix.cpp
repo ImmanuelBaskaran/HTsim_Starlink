@@ -15,13 +15,13 @@ ConnectionMatrix::ConnectionMatrix(void) {
         int ahead_diff_orb_plane;
         int behind_diff_orb_plane;
 
-        if (satellite == NUM_SATELLITES)
-            ahead_same_orb_plane = 1;
+        if (satellite % SATELLITES_PER_PLANE == 0)
+            ahead_same_orb_plane = satellite - (SATELLITES_PER_PLANE - 1);
         else
             ahead_same_orb_plane = satellite + 1;
 
-        if (satellite == 1)
-            behind_same_orb_plane = SATELLITES_PER_PLANE;
+        if (satellite % SATELLITES_PER_PLANE == 1)
+            behind_same_orb_plane = satellite + (SATELLITES_PER_PLANE-1);
         else
             behind_same_orb_plane = satellite - 1;
 
