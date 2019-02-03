@@ -21,7 +21,6 @@ add_executable(sim
         Starlink/GroundStation.cpp
         Starlink/Satellite.cpp
         Starlink/OrbitalPlane.cpp
-
         )
 
 target_link_libraries(sim ${CMAKE_CURRENT_SOURCE_DIR}/libhtsim.a)

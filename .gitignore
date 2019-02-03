@@ -1,0 +1,3 @@
+*.o
+.vscode
+libhtsim.a

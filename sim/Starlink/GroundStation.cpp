@@ -9,11 +9,11 @@
 #include <math.h>
 #include <cmath>
 
-float dot(Eigen::Vector3d a,Eigen::Vector3d b){
+float dot(Eigen::Vector3f a,Eigen::Vector3f b){
     return a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
 }
 
-float mag(Eigen::Vector3d a){
+float mag(Eigen::Vector3f a){
     return std::sqrt(a.x() * a.x() + a.y() * a.y() + a.z() * a.z());
 }
 
@@ -21,13 +21,13 @@ float mag(Eigen::Vector3d a){
 // as lat,long, earth radius
 bool GroundStation::isSatelliteInRange(Satellite satellite)
 {
-    Eigen::Vector3d gsCartCoords;
+    Eigen::Vector3f gsCartCoords;
     gsCartCoords.x()=EARTH_RADIUS*sin(lat)*cos(lon);
     gsCartCoords.y()=EARTH_RADIUS*sin(lat)*sin(lon);
     gsCartCoords.z()=EARTH_RADIUS*cos(lat);
 
     //the angle we are looking for is the angle between the vector difference (satellite, GS) and GS
-    Eigen::Vector3d diffVect;
+    Eigen::Vector3f diffVect;
     diffVect.x()=gsCartCoords.x()-satellite.getPosition().x();
     diffVect.y()=gsCartCoords.y()-satellite.getPosition().y();
     diffVect.z()=gsCartCoords.z()-satellite.getPosition().z();

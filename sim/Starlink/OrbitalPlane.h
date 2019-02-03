@@ -1,6 +1,6 @@
 #pragma once
 #include "Satellite.h"
-#include "eigen3/Eigen/Dense"
+#include <Eigen/Geometry>
 
 #define SATS_PER_PLANE 66
 #define EARTH_RADIUS 6371000
@@ -8,15 +8,15 @@
 class OrbitalPlane {
     private:
         int _id;
+        Satellite* _satellites[SATS_PER_PLANE];
+        double _planeOffset;
         double _raan;
         double _firstSatOffset;
         double _inclination;
         double _satAltitude;
-        void initSatellites();
         int satIdToIndex(int satId);
-        Satellite* _satellites[];
     public:
         OrbitalPlane(int id, double raan, double inclination, double satAltitude, double firstSatOffset);
-        const Eigen::Vector3d getPosForSat(int satId, simtime_picosec currentTime);
+        Vector3d const getPosForSat(int satId, simtime_picosec currentTime);
 };
 
