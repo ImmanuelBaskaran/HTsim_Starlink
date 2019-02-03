@@ -11,7 +11,7 @@ ConnectionMatrix::ConnectionMatrix(void) {
     for(int i=0;i<NUMSATELLITES;i++){
 
             int orbit = (i / 66);
-            int satetllite = i % 66;
+            int satellite = i % 66;
 
             int ahead = (i + 1) % 66;
             int behind = (i - 1) % 66;
@@ -19,11 +19,11 @@ ConnectionMatrix::ConnectionMatrix(void) {
                 behind = 65;
             }
 
-            matrix[satetllite+(66*orbit)][ahead+(66*orbit)] = 1;
-            matrix[satetllite+(66*orbit)][behind+(66*orbit)] = 1;
+            matrix[satellite+(66*orbit)][ahead+(66*orbit)] = 1;
+            matrix[satellite+(66*orbit)][behind+(66*orbit)] = 1;
 
-            matrix[satetllite+(66*orbit)][ahead+(66*orbit)] = 1;
-            matrix[satetllite+(66*orbit)][behind+(66*orbit)] = 1;
+            matrix[satellite+(66*orbit)][ahead+(66*orbit)] = 1;
+            matrix[satellite+(66*orbit)][behind+(66*orbit)] = 1;
 
     }
     FILE *fp;

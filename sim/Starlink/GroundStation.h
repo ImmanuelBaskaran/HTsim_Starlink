@@ -5,7 +5,6 @@
 #ifndef SIM_GROUNDSTATION_H
 #define SIM_GROUNDSTATION_H
 
-#include <eigen3/Eigen/Dense>
 #include "network.h"
 #include "Satellite.h"
 

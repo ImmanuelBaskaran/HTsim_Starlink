@@ -35,7 +35,7 @@ bool GroundStation::isSatelliteInRange(Satellite satellite)
     //acos = arc cosine of x, expressed in radians
     //mag = magnitude of vector
     float angle=std::acos(dot(diffVect, gsCartCoords)/mag(diffVect)*mag(gsCartCoords));
-    if(angle<ANGLE_IN_RANGE &&angle>ANGLE_IN_RANGE)
+    if(angle<ANGLE_IN_RANGE && angle>ANGLE_IN_RANGE)
           return true;
     return false;
 }
