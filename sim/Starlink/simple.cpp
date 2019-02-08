@@ -39,6 +39,10 @@ void exit_error(char* progr){
     exit(1);
 }
 
+double toRadians(double degrees){
+    return (degrees * (M_PI/180));
+}
+
 int main(int argc, char **argv) {
     EventList eventlist;
     eventlist.setEndtime(timeFromSec(60));
@@ -122,7 +126,7 @@ int main(int argc, char **argv) {
 
     int id = 1;
     for (int i = 0; i < 23; i++) {
-        OrbitalPlane plane(i + 1, i * 15, 53.0, 550000, i * 5.5);
+        OrbitalPlane plane(i + 1, i * toRadians(15), toRadians(53.0), 550000, i * toRadians(5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Vector3d pos = plane.getPosForSat(id++, 0);
             printf("%f %f %f\n", pos.x(), pos.y(), pos.z());

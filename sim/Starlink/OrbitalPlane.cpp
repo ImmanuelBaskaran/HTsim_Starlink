@@ -22,7 +22,7 @@ Vector3d const OrbitalPlane::getPosForSat(int satId, simtime_picosec currentTime
     Vector3d result;
     AngleAxis<double> m1(_planeOffset, Vector3d(0.0, 0.0, 1.0));
     AngleAxis<double> m2(sat->getAnomaly(currentTime), Vector3d(0.0, 0.0, 1.0));
-    AngleAxis<double> m3(_inclination, Vector3d(1.0, 0.0, 0.0));
+    AngleAxis<double> m3( M_PI/2 - _inclination, Vector3d(1.0, 0.0, 0.0));
     AngleAxis<double> m4(_raan, Vector3d(0.0, 1.0, 0.0));
     result = m4*m3*m2*m1*startPosition;
     return result;
