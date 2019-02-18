@@ -126,14 +126,22 @@ int main(int argc, char **argv) {
 
     int id = 1;
     for (int i = 0; i < 23; i++) {
-        OrbitalPlane plane(i + 1, i * toRadians(15), toRadians(53.0), 550000, i * toRadians(5.5));
+        OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), 550000, toRadians(i * 5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Vector3d pos = plane.getPosForSat(id++, 0);
-            printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+                printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
         }
         printf("\n\n");
     }
 
+    
+
+    //  double dist = sqrt(pow(6889661.176128-6267388.183644,2.)+
+    //                    pow(525408.625993-2880554.437000,2.)+
+    //                    pow(395923.798076-567884.223235,2.));
+
+    // printf("This is distance %f \n", dist/1000);
+   
     // GO!
     // while (eventlist.doNextEvent()) {
         
