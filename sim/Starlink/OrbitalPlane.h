@@ -5,6 +5,8 @@
 #define SATS_PER_PLANE 66
 #define EARTH_RADIUS 6371000
 
+using namespace Eigen;
+
 class OrbitalPlane {
     private:
         int _id;

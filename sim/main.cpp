@@ -1,4 +1,4 @@
-// -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-        
+// -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-
 #include "config.h"
 #include <sstream>
 #include <string.h>
@@ -45,59 +45,59 @@ int main(int argc, char **argv) {
     int crt = 2;
 
     if (argc>1){
-	if (!strcmp(argv[1],"UNCOUPLED"))
-	    algo = UNCOUPLED;
-	else if (!strcmp(argv[1],"COUPLED_INC"))
-	    algo = COUPLED_INC;
-	else if (!strcmp(argv[1],"FULLY_COUPLED"))
-	    algo = FULLY_COUPLED;
-	else if (!strcmp(argv[1],"COUPLED_TCP"))
-	    algo = COUPLED_TCP;
-	else if (!strcmp(argv[1],"COUPLED_EPSILON")) {
-	    algo = COUPLED_EPSILON;
-	    if (argc > 2){
-		epsilon = atof(argv[2]);
-		crt++;
-		printf("Using epsilon %f\n",epsilon);
-	    }
-	} else {
-	    exit_error(argv[0]);
-	}
+        if (!strcmp(argv[1],"UNCOUPLED"))
+            algo = UNCOUPLED;
+        else if (!strcmp(argv[1],"COUPLED_INC"))
+            algo = COUPLED_INC;
+        else if (!strcmp(argv[1],"FULLY_COUPLED"))
+            algo = FULLY_COUPLED;
+        else if (!strcmp(argv[1],"COUPLED_TCP"))
+            algo = COUPLED_TCP;
+        else if (!strcmp(argv[1],"COUPLED_EPSILON")) {
+            algo = COUPLED_EPSILON;
+            if (argc > 2){
+                epsilon = atof(argv[2]);
+                crt++;
+                printf("Using epsilon %f\n",epsilon);
+            }
+        } else {
+            exit_error(argv[0]);
+        }
     }
     linkspeed_bps SERVICE1 = speedFromPktps(166);
     linkspeed_bps SERVICE2;
-    if (argc>crt) 
-	SERVICE2 = speedFromPktps(atoi(argv[crt++]));
+    if (argc>crt)
+        SERVICE2 = speedFromPktps(atoi(argv[crt++]));
     else
-	SERVICE2 = speedFromPktps(400);
+        SERVICE2 = speedFromPktps(400);
 
     simtime_picosec RTT1=timeFromMs(150);
     simtime_picosec RTT2;
     if (argc>crt)
-	RTT2 = timeFromMs(atoi(argv[crt++]));
+        RTT2 = timeFromMs(atoi(argv[crt++]));
     else
-	RTT2 = timeFromMs(10);
-		      
+        RTT2 = timeFromMs(10);
+
     mem_b BUFFER1=memFromPkt(RANDOM_BUFFER+timeAsSec(RTT1)*speedAsPktps(SERVICE1)*12);//NUMFLOWS * targetwnd);
 
-    int bufsize = timeAsSec(RTT2)*speedAsPktps(SERVICE2)*4; 
-    if (bufsize<10) 
-	bufsize = 10;
-  
+    int bufsize = timeAsSec(RTT2)*speedAsPktps(SERVICE2)*4;
+    if (bufsize<10)
+        bufsize = 10;
+
     mem_b BUFFER2=memFromPkt(RANDOM_BUFFER+bufsize);
 
     int rwnd;
 
     if (argc > crt)
-	rwnd = atoi(argv[crt++]);
+        rwnd = atoi(argv[crt++]);
     else
-	rwnd = 3 * timeAsSec(max(RTT1,RTT2)) * (speedAsPktps(SERVICE1)+speedAsPktps(SERVICE2));
+        rwnd = 3 * timeAsSec(max(RTT1,RTT2)) * (speedAsPktps(SERVICE1)+speedAsPktps(SERVICE2));
 
     int run_paths = 2;
     //0 means run 3g only
     //1 means run wifi only
     if (argc > crt){
-	run_paths = atoi(argv[crt++]);
+        run_paths = atoi(argv[crt++]);
     }
 
     srand(time(NULL));
@@ -107,14 +107,14 @@ int main(int argc, char **argv) {
     filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd"; // rand();
     cout << "Outputting to " << filename.str() << endl;
     Logfile logfile(filename.str(),eventlist);
-  
+
     logfile.setStartTime(timeFromSec(0.5));
     QueueLoggerSimple logQueue = QueueLoggerSimple(); logfile.addLogger(logQueue);
     //	QueueLoggerSimple logPQueue1 = QueueLoggerSimple(); logfile.addLogger(logPQueue1);
     //QueueLoggerSimple logPQueue3 = QueueLoggerSimple(); logfile.addLogger(logPQueue3);
     QueueLoggerSimple logPQueue = QueueLoggerSimple(); logfile.addLogger(logPQueue);
     MultipathTcpLoggerSimple mlogger = MultipathTcpLoggerSimple(); logfile.addLogger(mlogger);
-  
+
     //TrafficLoggerSimple logger;
 
     Queue * pqueue;
@@ -142,23 +142,23 @@ int main(int argc, char **argv) {
 
     RandomQueue queue2(SERVICE2, BUFFER2, eventlist,&qs2,memFromPkt(RANDOM_BUFFER)); queue2.setName("Queue2"); logfile.writeName(queue2);
 
-    //ExoQueue queue22(0.001); 
+    //ExoQueue queue22(0.001);
     //	ExoQueue queue2(0.01);
-    Queue pqueue2(SERVICE2*2, memFromPkt(FEEDER_BUFFER), eventlist,NULL); 
-    pqueue2.setName("PQueue2"); 
+    Queue pqueue2(SERVICE2*2, memFromPkt(FEEDER_BUFFER), eventlist,NULL);
+    pqueue2.setName("PQueue2");
     logfile.writeName(pqueue2);
 
-    Queue pqueue3(SERVICE1*2, memFromPkt(FEEDER_BUFFER), eventlist,NULL); 
-    pqueue3.setName("PQueue3"); 
+    Queue pqueue3(SERVICE1*2, memFromPkt(FEEDER_BUFFER), eventlist,NULL);
+    pqueue3.setName("PQueue3");
     logfile.writeName(pqueue3);
 
-    Queue pqueue4(SERVICE2*2, memFromPkt(FEEDER_BUFFER), eventlist,NULL); 
-    pqueue4.setName("PQueue4"); 
+    Queue pqueue4(SERVICE2*2, memFromPkt(FEEDER_BUFFER), eventlist,NULL);
+    pqueue4.setName("PQueue4");
     logfile.writeName(pqueue4);
 
-    Queue queue_back(max(SERVICE1,SERVICE2)*4, memFromPkt(1000), 
-		     eventlist,NULL); 
-    queue_back.setName("queue_back"); 
+    Queue queue_back(max(SERVICE1,SERVICE2)*4, memFromPkt(1000),
+                     eventlist,NULL);
+    queue_back.setName("queue_back");
     logfile.writeName(queue_back);
 
     TcpRtxTimerScanner tcpRtxScanner(timeFromMs(10), eventlist);
@@ -171,76 +171,76 @@ int main(int argc, char **argv) {
     double extrastarttime;
 
     for (int i=0;i<TCP_1;i++){
-	tcpSrc = new TcpSrc(NULL,NULL,eventlist); 
-	tcpSrc->setName("Tcp1"); 
-	logfile.writeName(*tcpSrc);
+        tcpSrc = new TcpSrc(NULL,NULL,eventlist);
+        tcpSrc->setName("Tcp1");
+        logfile.writeName(*tcpSrc);
 
-	tcpSrc->_ssthresh = timeAsSec(RTT1) * speedAsPktps(SERVICE1) * 1000;
-	tcpSnk = new TcpSink(); 
-	tcpSnk->setName("TcpSink1"); 
-	logfile.writeName(*tcpSnk);
-	
-	tcpRtxScanner.registerTcp(*tcpSrc);
-	
-	pqueue = new Queue(SERVICE1*2, memFromPkt(FEEDER_BUFFER), 
-			   eventlist,NULL); 
-	pqueue->setName("PQueue1_"+ntoa(i)); 
-	logfile.writeName(*pqueue);
+        tcpSrc->_ssthresh = timeAsSec(RTT1) * speedAsPktps(SERVICE1) * 1000;
+        tcpSnk = new TcpSink();
+        tcpSnk->setName("TcpSink1");
+        logfile.writeName(*tcpSnk);
 
-	// tell it the route
-	routeout = new route_t(); 
-	routeout->push_back(pqueue);
-	routeout->push_back(&queue1); 
-	routeout->push_back(&pipe1); 
-	routeout->push_back(tcpSnk);
-	
-	routein  = new route_t(); 
-	routein->push_back(&pipe1);
-	routein->push_back(tcpSrc); 
+        tcpRtxScanner.registerTcp(*tcpSrc);
 
-	extrastarttime = drand()*50;
-	tcpSrc->connect(*routeout, *routein, *tcpSnk, 
-			timeFromMs(extrastarttime));
-	sinkLogger.monitorSink(tcpSnk);
-	memoryLogger.monitorTcpSink(tcpSnk);
-	memoryLogger.monitorTcpSource(tcpSrc);
+        pqueue = new Queue(SERVICE1*2, memFromPkt(FEEDER_BUFFER),
+                           eventlist,NULL);
+        pqueue->setName("PQueue1_"+ntoa(i));
+        logfile.writeName(*pqueue);
+
+        // tell it the route
+        routeout = new route_t();
+        routeout->push_back(pqueue);
+        routeout->push_back(&queue1);
+        routeout->push_back(&pipe1);
+        routeout->push_back(tcpSnk);
+
+        routein  = new route_t();
+        routein->push_back(&pipe1);
+        routein->push_back(tcpSrc);
+
+        extrastarttime = drand()*50;
+        tcpSrc->connect(*routeout, *routein, *tcpSnk,
+                        timeFromMs(extrastarttime));
+        sinkLogger.monitorSink(tcpSnk);
+        memoryLogger.monitorTcpSink(tcpSnk);
+        memoryLogger.monitorTcpSource(tcpSrc);
     }
 
     //TCP flow on path 2
     for (int i=0;i<TCP_2;i++){
-	tcpSrc = new TcpSrc(NULL, NULL, eventlist); 
-	tcpSrc->setName("Tcp2"); 
-	tcpSrc->_ssthresh = timeAsSec(RTT2) * speedAsPktps(SERVICE2) * 1000;
-	logfile.writeName(*tcpSrc);
+        tcpSrc = new TcpSrc(NULL, NULL, eventlist);
+        tcpSrc->setName("Tcp2");
+        tcpSrc->_ssthresh = timeAsSec(RTT2) * speedAsPktps(SERVICE2) * 1000;
+        logfile.writeName(*tcpSrc);
 
-	tcpSnk = new TcpSink(); 
-	tcpSnk->setName("TcpSink2"); 
-	logfile.writeName(*tcpSnk);
+        tcpSnk = new TcpSink();
+        tcpSnk->setName("TcpSink2");
+        logfile.writeName(*tcpSnk);
 
-	tcpRtxScanner.registerTcp(*tcpSrc);
-	
-	pqueue = new Queue(SERVICE2*2, memFromPkt(FEEDER_BUFFER), 
-			   eventlist, NULL); 
-	pqueue->setName("PQueue2_"+ntoa(i)); logfile.writeName(*pqueue);
+        tcpRtxScanner.registerTcp(*tcpSrc);
 
-	// tell it the route
-	routeout = new route_t(); 
-	routeout->push_back(pqueue); 
-	routeout->push_back(&queue2); 
-	routeout->push_back(&pipe2); 
-	routeout->push_back(tcpSnk);
-	
-	routein  = new route_t(); //routein->push_back(&queue_back); routein->push_back(&pipe_back); 
-	routein->push_back(&pipe2);
-	routein->push_back(tcpSrc);
+        pqueue = new Queue(SERVICE2*2, memFromPkt(FEEDER_BUFFER),
+                           eventlist, NULL);
+        pqueue->setName("PQueue2_"+ntoa(i)); logfile.writeName(*pqueue);
 
-	extrastarttime = 50*drand();
-	tcpSrc->connect(*routeout, *routein, *tcpSnk,
-			timeFromMs(extrastarttime));
-	sinkLogger.monitorSink(tcpSnk);
+        // tell it the route
+        routeout = new route_t();
+        routeout->push_back(pqueue);
+        routeout->push_back(&queue2);
+        routeout->push_back(&pipe2);
+        routeout->push_back(tcpSnk);
 
-	memoryLogger.monitorTcpSink(tcpSnk);
-	memoryLogger.monitorTcpSource(tcpSrc);
+        routein  = new route_t(); //routein->push_back(&queue_back); routein->push_back(&pipe_back);
+        routein->push_back(&pipe2);
+        routein->push_back(tcpSrc);
+
+        extrastarttime = 50*drand();
+        tcpSrc->connect(*routeout, *routein, *tcpSnk,
+                        timeFromMs(extrastarttime));
+        sinkLogger.monitorSink(tcpSnk);
+
+        memoryLogger.monitorTcpSink(tcpSnk);
+        memoryLogger.monitorTcpSource(tcpSrc);
     }
 
     MultipathTcpSrc* mtcp;
@@ -254,80 +254,80 @@ int main(int argc, char **argv) {
     logfile.writeName(*mtcp_sink);
 
     //MTCP flow 1
-    tcpSrc = new TcpSrc(NULL,NULL,eventlist); 
-    tcpSrc->setName("Subflow1"); 
+    tcpSrc = new TcpSrc(NULL,NULL,eventlist);
+    tcpSrc->setName("Subflow1");
     tcpSrc->_ssthresh = timeAsSec(RTT1) * speedAsPktps(SERVICE1) * 1000;
     logfile.writeName(*tcpSrc);
 
-    tcpSnk = new TcpSink(); 
-    tcpSnk->setName("Subflow1Sink"); 
+    tcpSnk = new TcpSink();
+    tcpSnk->setName("Subflow1Sink");
     logfile.writeName(*tcpSnk);
 
     tcpSrc->_cap = CAP;
     tcpRtxScanner.registerTcp(*tcpSrc);
-	
+
     // tell it the route
-    routeout = new route_t(); 
-    routeout->push_back(&pqueue3); 
-    routeout->push_back(&queue1); 
-    routeout->push_back(&pipe1); 
+    routeout = new route_t();
+    routeout->push_back(&pqueue3);
+    routeout->push_back(&queue1);
+    routeout->push_back(&pipe1);
     routeout->push_back(tcpSnk);
-	
-    routein  = new route_t(); 
-    //routein->push_back(&queue_back); routein->push_back(&pipe_back); 
+
+    routein  = new route_t();
+    //routein->push_back(&queue_back); routein->push_back(&pipe_back);
     routein->push_back(&pipe1);
-    routein->push_back(tcpSrc); 
+    routein->push_back(tcpSrc);
     extrastarttime = 50*drand();
 
     //join multipath connection
 
     if (run_paths!=1){
-	mtcp->addSubflow(tcpSrc);
-	mtcp_sink->addSubflow(tcpSnk);
-	  
-	tcpSrc->connect(*routeout,*routein,*tcpSnk,timeFromMs(extrastarttime));
-	sinkLogger.monitorMultipathSink(tcpSnk);
+        mtcp->addSubflow(tcpSrc);
+        mtcp_sink->addSubflow(tcpSnk);
 
-	memoryLogger.monitorTcpSink(tcpSnk);
-	memoryLogger.monitorTcpSource(tcpSrc);
+        tcpSrc->connect(*routeout,*routein,*tcpSnk,timeFromMs(extrastarttime));
+        sinkLogger.monitorMultipathSink(tcpSnk);
+
+        memoryLogger.monitorTcpSink(tcpSnk);
+        memoryLogger.monitorTcpSource(tcpSrc);
     }
     //	BufferBloat * detect = new BufferBloat(eventlist,tcpSrc);
 
     //MTCP flow 2
-    tcpSrc = new TcpSrc(NULL,NULL,eventlist); 
-    tcpSrc->setName("Subflow2"); 
+    tcpSrc = new TcpSrc(NULL,NULL,eventlist);
+    tcpSrc->setName("Subflow2");
     tcpSrc->_ssthresh = timeAsSec(RTT2) * speedAsPktps(SERVICE2) * 1000;
     logfile.writeName(*tcpSrc);
 
-    tcpSnk = new TcpSink(); 
-    tcpSnk->setName("Subflow2Sink"); 
+    tcpSnk = new TcpSink();
+    tcpSnk->setName("Subflow2Sink");
     logfile.writeName(*tcpSnk);
 
     tcpRtxScanner.registerTcp(*tcpSrc);
-	
+
     // tell it the route
-    routeout = new route_t(); 
+    routeout = new route_t();
     routeout->push_back(&pqueue4);
-    routeout->push_back(&queue2); 
-    routeout->push_back(&pipe2); 
+    routeout->push_back(&queue2);
+    routeout->push_back(&pipe2);
     routeout->push_back(tcpSnk);
-	
-    routein  = new route_t(); 
-    //routein->push_back(&queue_back); routein->push_back(&pipe_back); 
+
+    routein  = new route_t();
+    //routein->push_back(&queue_back); routein->push_back(&pipe_back);
     routein->push_back(&pipe2);
-    routein->push_back(tcpSrc); 
+    routein->push_back(tcpSrc);
     extrastarttime = 50*drand();
 
     if (run_paths!=0){
-	//join multipath connection
-	mtcp->addSubflow(tcpSrc);
-	mtcp_sink->addSubflow(tcpSnk);
-	  
-	tcpSrc->connect(*routeout,*routein,*tcpSnk,timeFromMs(extrastarttime));
-	sinkLogger.monitorMultipathSink(tcpSnk);
+        //join multipath connection
+        mtcp->addSubflow(tcpSrc);
+        mtcp_sink->addSubflow(tcpSnk);
 
-	memoryLogger.monitorTcpSink(tcpSnk);
-	memoryLogger.monitorTcpSource(tcpSrc);
+        tcpSrc->connect(*routeout,*routein,*tcpSnk,timeFromMs(extrastarttime));
+        sinkLogger.monitorMultipathSink(tcpSnk);
+
+        memoryLogger.monitorTcpSink(tcpSnk);
+        memoryLogger.monitorTcpSource(tcpSrc);
     }
     tcpSrc->_cap = CAP;
 

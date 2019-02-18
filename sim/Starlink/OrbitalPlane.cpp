@@ -2,6 +2,8 @@
 #include "Satellite.h"
 #include <Eigen/Geometry>
 
+using namespace Eigen;
+
 OrbitalPlane::OrbitalPlane(int id, double raan, double inclination, double satAltitude, double firstSatOffset)
 : _id(id), _raan(raan), _satAltitude(satAltitude), _inclination(inclination), _firstSatOffset(firstSatOffset) {
     _planeOffset = ((id - 1) / 24.0) * 2.0 * M_PI;

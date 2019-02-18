@@ -18,6 +18,7 @@
 #include "mtcp.h"
 #include "exoqueue.h"
 #include "ConnectionMatrix.h"
+#include "LaserLink.h"
 
 string ntoa(double n);
 string itoa(uint64_t n);
@@ -79,7 +80,7 @@ int main(int argc, char **argv) {
 
     // prepare the loggers
     stringstream filename(ios_base::out);
-    filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd.txt"; // rand();
+    filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd2.txt"; // rand();
     cout << "Outputting to " << filename.str() << endl;
     Logfile logfile(filename.str(),eventlist);
 
@@ -95,8 +96,14 @@ int main(int argc, char **argv) {
     CbrSrc* cbrSource;
     CbrSink* cbrSink1;
     route_t* route;
+    Eigen::Vector3f pos1(1,1,1);
+    Eigen::Vector3f pos2(20,2000000000000000000,20);
+    Satellite dummy = Satellite(1,1);
+    Satellite dummy2 = Satellite(1,1);
+    dummy.setPosition(pos2);
+    dummy2.setPosition(pos1);
 
-    Pipe pipe1(RTT1/2, eventlist);
+    LaserLink pipe1(100000, eventlist,dummy,dummy2);
     pipe1.setName("pipe1");
     logfile.writeName(pipe1);
 
@@ -104,9 +111,11 @@ int main(int argc, char **argv) {
     cbrSink1 = new CbrSink();
 
     route = new route_t();
-    route->push_back(cbrSink1);
-    route->push_back(&pipe1);
     route->push_back(&testQueue);
+    route->push_back(&pipe1);
+    route->push_back(cbrSink1);
+
+
 
     double extrastarttime = drand()*50;
     cbrSource->connect(*route,*cbrSink1,timeFromMs(extrastarttime));
@@ -132,16 +141,16 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 23; i++) {
         OrbitalPlane plane(i + 1, i * toRadians(15), toRadians(53.0), 550000, i * toRadians(5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
-            Vector3d pos = plane.getPosForSat(id++, 0);
+            Eigen::Vector3d pos = plane.getPosForSat(id++, 0);
             printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
         }
         printf("\n\n");
     }
 
     // GO!
-    // while (eventlist.doNextEvent()) {
+     while (eventlist.doNextEvent()) {
         
-    // }
+     }
 }
 
 string ntoa(double n) {
