@@ -17,6 +17,6 @@ class OrbitalPlane {
         int satIdToIndex(int satId);
     public:
         OrbitalPlane(int id, double raan, double inclination, double satAltitude, double firstSatOffset);
-        Vector3d const getPosForSat(int satId, simtime_picosec currentTime);
+        Eigen::Vector3d const getPosForSat(int satId, simtime_picosec currentTime);
 };
 

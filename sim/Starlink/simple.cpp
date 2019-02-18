@@ -18,6 +18,7 @@
 #include "mtcp.h"
 #include "exoqueue.h"
 #include "ConnectionMatrix.h"
+#include <eigen3/Eigen/Dense>
 
 string ntoa(double n);
 string itoa(uint64_t n);
@@ -124,13 +125,27 @@ int main(int argc, char **argv) {
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
 
+
     int id = 1;
     for (int i = 0; i < 23; i++) {
         OrbitalPlane plane(i + 1, i * 15, 53.0, 550000, i * 5.5);
         for (int j = 0; j < SATS_PER_PLANE; j++) {
-            Vector3d pos = plane.getPosForSat(id++, 0);
+            Eigen::Vector3d pos = plane.getPosForSat(id++, 0);
             printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
         }
+        printf("\n\n");
+    }
+
+    ConnectionMatrix matrix;
+    __uint8_t connection_matrix[NUM_SATELLITES][NUM_SATELLITES] = matrix.get_connection_matrix();
+    for(int i=0;i<ORBITAL_PLANES;i++){
+        OrbitalPlane plane(i + 1, i * 15, 53.0, 550000, i * 5.5);
+            for (int j = 0; j < SATS_PER_PLANE; j++) {
+                if(connection_matrix[i][j]==1) {
+                    Eigen::Vector3d pos = plane.getPosForSat(id++, 0);
+                    printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+                }
+            }
         printf("\n\n");
     }
 

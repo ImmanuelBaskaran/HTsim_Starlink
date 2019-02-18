@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -g -fpermissive -Wuninitialized -g   CMakeFiles/sim.dir/Starlink/simple.cpp.o CMakeFiles/sim.dir/Starlink/ConnectionMatrix.cpp.o CMakeFiles/sim.dir/Starlink/LaserLink.cpp.o CMakeFiles/sim.dir/Starlink/GroundStation.cpp.o CMakeFiles/sim.dir/Starlink/Satellite.cpp.o CMakeFiles/sim.dir/Starlink/OrbitalPlane.cpp.o  -o sim ../libhtsim.a 

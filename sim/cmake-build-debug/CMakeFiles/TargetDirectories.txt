@@ -1,0 +1,4 @@
+/home/user/Desktop/HTSim/HTsim_Starlink/sim/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/user/Desktop/HTSim/HTsim_Starlink/sim/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/user/Desktop/HTSim/HTsim_Starlink/sim/cmake-build-debug/CMakeFiles/buildHTSim.dir
+/home/user/Desktop/HTSim/HTsim_Starlink/sim/cmake-build-debug/CMakeFiles/sim.dir

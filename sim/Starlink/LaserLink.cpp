@@ -1,6 +1,3 @@
-//
-// Created by metal on 25/01/19.
-//
 
 #include "LaserLink.h"
 #include "Satellite.h"

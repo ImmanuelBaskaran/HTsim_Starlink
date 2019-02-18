@@ -1,13 +1,10 @@
-//
-// Created by metal on 25/01/19.
-//
-
 
 #include <cstdio>
 #include <string.h>
 #include "ConnectionMatrix.h"
 
-ConnectionMatrix::ConnectionMatrix(void) {
+__uint8_t[1584][1584]  ConnectionMatrix::get_connection_matrix()
+{
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
 
         int ahead_same_orb_plane;
@@ -26,12 +23,12 @@ ConnectionMatrix::ConnectionMatrix(void) {
             behind_same_orb_plane = satellite - 1;
 
         if(satellite <= SATELLITES_PER_PLANE)
-            ahead_diff_orb_plane = NUM_SATELLITES - SATELLITES_PER_PLANE + satellite;
+            ahead_diff_orb_plane = NUM_SATELLITES - SATELLITES_PER_PLANE + satellite-13;
         else
             ahead_diff_orb_plane = satellite - SATELLITES_PER_PLANE ;
 
         if(satellite >= NUM_SATELLITES - SATELLITES_PER_PLANE)
-            behind_diff_orb_plane = SATELLITES_PER_PLANE - (NUM_SATELLITES - satellite);
+            behind_diff_orb_plane = SATELLITES_PER_PLANE - (NUM_SATELLITES - satellite)+13;
         else
             behind_diff_orb_plane = satellite + SATELLITES_PER_PLANE ;
 
@@ -49,15 +46,6 @@ ConnectionMatrix::ConnectionMatrix(void) {
         matrix[behind_diff_orb_plane][satellite] = 1;
 
     }
-    FILE *fp;
-    fp = fopen("connectionMatrix.csv", "w+");
-    for (int i = 1; i <= NUM_SATELLITES; i++) {
-        for (int j = 1; j <= NUM_SATELLITES; j++) {
-            fprintf(fp, "%d,", matrix[i][j]);
-        }
-        fprintf(fp, "\n");
-    }
-    fclose(fp);
-
+    return matrix;
 }
 
