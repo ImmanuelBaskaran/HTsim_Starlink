@@ -16,6 +16,7 @@ public:
     const string& nodename() { return _nodename; }
     Eigen::Vector3f getSatellitePosition(Satellite satellite);
     double getDistanceBetweenSatellitePair(Satellite satellite,Satellite satellite2);
+    virtual ~LaserLink(){};
 private:
     simtime_picosec _delay;
     typedef pair<simtime_picosec,Packet*> pktrecord_t;

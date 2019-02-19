@@ -1,5 +1,5 @@
-OBJS=OrbitalPlane.o Satellite.o ISL.o
-HDRS=OrbitalPlane.h Satellite.h ISL.h
+OBJS=OrbitalPlane.o Satellite.o ISL.o LaserLink.o
+HDRS=OrbitalPlane.h Satellite.h ISL.h LaserLink.h
 
 CC = g++
 CFLAGS = -Wall -g -O
@@ -15,6 +15,9 @@ all:	simple lib
 
 CFLAGS = -I ..
 
+clean:	
+	rm -f *.o simple libhtsim.a
+
 simple:	simple.o $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) simple.o $(LIB) -lhtsim -o simple
 
@@ -28,6 +31,9 @@ OrbitalPlane.o: OrbitalPlane.cpp $(HDRS)
 
 Satellite.o: Satellite.cpp $(HDRS)
 	$(CC) $(INCLUDE) $(CFLAGS) -c Satellite.cpp 
+
+LaserLink.o: LaserLink.cpp $(HDRS)
+	$(CC) $(INCLUDE) $(CFLAGS) -c LaserLink.cpp 
 
 ISL.o: ISL.cpp $(HDRS)
 	$(CC) $(INCLUDE) $(CFLAGS) -c ISL.cpp 
