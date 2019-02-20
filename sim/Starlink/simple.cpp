@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
     int id = 1;
-    for (int i = 0; i < 23; i++) {
+    for (int i = 0; i < 24; i++) {
         OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), 550000, toRadians(i * 5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Vector3d pos = plane.getPosForSat(id++, 0);
