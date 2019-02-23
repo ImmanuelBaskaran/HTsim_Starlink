@@ -50,3 +50,9 @@ std::vector<Satellite> GroundStation::getSatellitesInRange(vector<Satellite> pos
         }
     return satellites;
 }
+
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : CbrSrc(eventlist1,speedFromPktps(166)),
+lat(lat),lon(lon){
+
+}
+

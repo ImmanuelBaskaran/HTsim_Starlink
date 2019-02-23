@@ -6,12 +6,13 @@
 #define SIM_GROUNDSTATION_H
 
 #include "network.h"
+#include "cbr.h"
 #include "Satellite.h"
 
 
-class GroundStation: public PacketSink {
+class GroundStation: public CbrSink, public CbrSrc {
 public:
-    GroundStation(double lat, double lon);
+    GroundStation(EventList &eventlist1,double lat, double lon);
     vector<Satellite> getSatellitesInRange(vector<Satellite> positionMatrix);
     bool isSatelliteInRange(Satellite satellite);
 private:

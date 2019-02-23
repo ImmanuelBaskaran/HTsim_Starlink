@@ -19,6 +19,7 @@
 #include "exoqueue.h"
 #include "ConnectionMatrix.h"
 #include "LaserLink.h"
+#include "GroundStation.h"
 
 string ntoa(double n);
 string itoa(uint64_t n);
@@ -97,28 +98,61 @@ int main(int argc, char **argv) {
     CbrSink* cbrSink1;
     route_t* route;
     Eigen::Vector3f pos1(1,1,1);
-    Eigen::Vector3f pos2(20,2000000000000000000,20);
+    Eigen::Vector3f pos2(20,20,20);
+
+    GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278);
+    GroundStation station2 = GroundStation(eventlist,37.0902,95.7129);
+
     Satellite dummy = Satellite(1,1);
     Satellite dummy2 = Satellite(1,1);
+
+
     dummy.setPosition(pos2);
     dummy2.setPosition(pos1);
 
-    LaserLink pipe1(100000, eventlist,dummy,dummy2);
-    pipe1.setName("pipe1");
-    logfile.writeName(pipe1);
+    LaserLink* pipe1 = new LaserLink(100000, eventlist,dummy,dummy2);
+    pipe1->setName("pipe1");
+    logfile.writeName(*pipe1);
 
     cbrSource = new CbrSrc(eventlist,SERVICE1);
     cbrSink1 = new CbrSink();
 
+
+    Queue linkUp(SERVICE1, BUFFER1, eventlist,&loggerSimple);
+    testQueue.setName("linkUp");
+    logfile.writeName(linkUp);
+
+    Pipe* pipeup = new Pipe(100000, eventlist);
+    pipe1->setName("pipeup");
+    logfile.writeName(*pipeup);
+
+
+    Queue linkDown(SERVICE1, BUFFER1, eventlist,&loggerSimple);
+    testQueue.setName("linkDown");
+    logfile.writeName(linkDown);
+
+    Pipe* pipedown = new Pipe(100000, eventlist);
+    pipe1->setName("pipedown");
+    logfile.writeName(*pipedown);
+
     route = new route_t();
+
+    route->push_back(&linkUp);
+    route->push_back(pipeup);
+
     route->push_back(&testQueue);
-    route->push_back(&pipe1);
-    route->push_back(cbrSink1);
+    route->push_back(pipe1);
+
+    route->push_back(&linkDown);
+    route->push_back(pipedown);
+
+    route->push_back(((PacketSink*) &station1));
 
 
 
     double extrastarttime = drand()*50;
-    cbrSource->connect(*route,*cbrSink1,timeFromMs(extrastarttime));
+    station2.connect(*route,*cbrSink1,timeFromMs(extrastarttime));
+
 
 
 
@@ -149,8 +183,8 @@ int main(int argc, char **argv) {
 
     // GO!
      while (eventlist.doNextEvent()) {
-        
      }
+     delete pipe1;
 }
 
 string ntoa(double n) {

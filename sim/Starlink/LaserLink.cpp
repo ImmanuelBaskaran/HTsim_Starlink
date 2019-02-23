@@ -17,11 +17,9 @@ void LaserLink::doNextEvent() {
 
     double distance = getDistanceBetweenSatellitePair(_sat1,_sat2);
 
-    Pipe::_delay = (distance/299792458);
+    Pipe::_delay = timeFromSec(distance/299792458);
     //Pipe::_delay -= 1;
 
-    printf("delay %li\n",Pipe::_delay);
-    printf("distance %f\n",distance/299792458);
     //Run regular behavior of Pipe
     Pipe::doNextEvent();
 }
