@@ -13,7 +13,7 @@ class Satellite {
         Vector3d _position;
     public:
         Satellite(const int id, const double offset);
-        inline Vector3d getPosition() { return _position; };
+        inline Vector3d getPosition() const { return _position; };
         void setPosition(const Vector3d);
         double getAnomaly(simtime_picosec);
 };

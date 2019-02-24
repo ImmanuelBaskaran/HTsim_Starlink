@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
     // prepare the loggers
     stringstream filename(ios_base::out);
     filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd"; // rand();
-    cout << "Outputting to " << filename.str() << endl;
+    // cout << "Outputting to " << filename.str() << endl;
     Logfile logfile(filename.str(),eventlist);
 
     logfile.setStartTime(timeFromSec(0.5));
@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 24; i++) {
         OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), 550000, toRadians(i * 5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
-            Vector3d pos = plane.getPosForSat(id++, 0);
+            Vector3d pos = plane.getPosForSat(id++, timeFromSec(0));
                 printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
         }
         printf("\n\n");

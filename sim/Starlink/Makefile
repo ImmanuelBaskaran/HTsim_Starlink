@@ -4,7 +4,7 @@ HDRS=OrbitalPlane.h Satellite.h ISL.h
 CC = g++
 CFLAGS = -Wall -g -O
 CRT=`pwd`
-INCLUDE= -I/$(CRT)/.. -I$(CRT)
+INCLUDE= -I/$(CRT)/.. -I$(CRT) -g
 #EIGEN= -I /home/user/eigen/Eigen
 #-I$(CRT)/ksp -I$(CRT)/ksp/boost
 LIB=-L.. 
