@@ -45,7 +45,8 @@ double** get_dist_sat_conn_matrix(uint8_t** matrix)
 
 void dijkstra (uint8_t ** connectionMatrix, Satellite src)
 {
-    connectionMatrix = ConnectionMatrix.get_connection_matrix();
+    ConnectionMatrix* matrix = new ConnectionMatrix();
+    connectionMatrix = matrix->get_connection_matrix();
     double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
 
     double dist[NUM_SATELLITES];   //output, will hold the shortest distance from src to i, should to to sink

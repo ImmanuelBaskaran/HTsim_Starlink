@@ -1,4 +1,3 @@
-
 #include "LaserLink.h"
 #include "Satellite.h"
 #include <eigen3/Eigen/Dense>
@@ -35,4 +34,3 @@ double LaserLink::getDistanceBetweenSatellitePair(const Satellite& satellite1, c
     Eigen::Vector3d position2 = satellite2.getPosition();
     return (position2 - position1).norm();
 }
-
