@@ -1,4 +1,3 @@
-
 #include "LaserLink.h"
 #include "Satellite.h"
 #include <eigen3/Eigen/Dense>
@@ -39,4 +38,3 @@ double LaserLink::getDistanceBetweenSatellitePair(Satellite satellite1,Satellite
             pow(position2.z()-position1.z(),2);
     return sqrt(distance);
 }
-
