@@ -13,10 +13,10 @@
 class GroundStation: public CbrSink, public CbrSrc {
 public:
     GroundStation(EventList &eventlist1,double lat, double lon);
-    vector<Satellite> getSatellitesInRange(vector<Satellite> positionMatrix);
-    bool isSatelliteInRange(Satellite satellite);
+    vector<Satellite> getSatellitesInRange(const vector<Satellite>& positionMatrix);
+    bool isSatelliteInRange(const Satellite& satellite);
 private:
-    double lat,lon;
+    double _lat, _lon;
 };
 
 

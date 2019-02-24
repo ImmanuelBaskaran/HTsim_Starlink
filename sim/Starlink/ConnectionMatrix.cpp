@@ -35,7 +35,7 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
 
          matrix = new uint8_t *[1584];
          for(int i=0; i<1584;i++){
-             matrix = new uint8_t *;
+             matrix[i] = new uint8_t;
          }
 
         //same orbital plane

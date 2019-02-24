@@ -11,11 +11,11 @@
 
 class LaserLink : public Pipe {
 public:
-    LaserLink(simtime_picosec delay, EventList &eventlist,Satellite sat1,Satellite sat2);
+    LaserLink(simtime_picosec delay, EventList &eventlist, const Satellite& sat1, const Satellite& sat2);
     void doNextEvent(); // inherited from Pipe
     const string& nodename() { return _nodename; }
-    Eigen::Vector3f getSatellitePosition(Satellite satellite);
-    double getDistanceBetweenSatellitePair(Satellite satellite,Satellite satellite2);
+    Eigen::Vector3f getSatellitePosition(const Satellite& satellite);
+    double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2);
     virtual ~LaserLink(){};
 private:
     simtime_picosec _delay;
