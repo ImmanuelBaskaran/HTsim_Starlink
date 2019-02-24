@@ -1,5 +1,5 @@
-OBJS=OrbitalPlane.o Satellite.o ISL.o LaserLink.o
-HDRS=OrbitalPlane.h Satellite.h ISL.h LaserLink.h
+OBJS=OrbitalPlane.o Satellite.o ISL.o LaserLink.o GroundStation.o
+HDRS=OrbitalPlane.h Satellite.h ISL.h LaserLink.h GroundStation.h
 
 CC = g++
 CFLAGS = -Wall -g -O
@@ -37,4 +37,8 @@ LaserLink.o: LaserLink.cpp $(HDRS)
 
 ISL.o: ISL.cpp $(HDRS)
 	$(CC) $(INCLUDE) $(CFLAGS) -c ISL.cpp 
+
+GroundStation.o: GroundStation.cpp $(HDRS)
+	$(CC) $(INCLUDE) $(CFLAGS) -c GroundStation.cpp 
+
 
