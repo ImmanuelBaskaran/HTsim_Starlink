@@ -1,9 +1,10 @@
 
 #include <cstdio>
 #include <string.h>
+#include <stdint.h>
 #include "ConnectionMatrix.h"
 
-__uint8_t **  ConnectionMatrix::get_connection_matrix()
+uint8_t **  ConnectionMatrix::get_connection_matrix()
 {
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
 
@@ -32,9 +33,9 @@ __uint8_t **  ConnectionMatrix::get_connection_matrix()
         else
             behind_diff_orb_plane = satellite + SATELLITES_PER_PLANE ;
 
-         matrix = new __uint8_t *[1584];
+         matrix = new uint8_t *[1584];
          for(int i=0; i<1584;i++){
-             matrix = new __uint8_t *;
+             matrix = new uint8_t *;
          }
 
         //same orbital plane
