@@ -11,11 +11,11 @@ const int SATELLITES_PER_PLANE=66;
 
 class ConnectionMatrix {
 public:
-    ConnectionMatrix();  // This is the constructor
-    __uint8_t ** get_connection_matrix();
+    ConnectionMatrix(){};  // This is the constructor
+    uint8_t ** get_connection_matrix();
 
 private:
-    __uint8_t ** matrix;
+    uint8_t ** matrix;
 };
 
 

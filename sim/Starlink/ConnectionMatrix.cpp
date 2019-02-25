@@ -1,10 +1,16 @@
 #include <cstdio>
 #include <string.h>
 #include <stdint.h>
+#include <fstream>
 #include "ConnectionMatrix.h"
 
 uint8_t **  ConnectionMatrix::get_connection_matrix()
 {
+    matrix = new uint8_t * [NUM_SATELLITES+1];
+    for(int i=0; i<=NUM_SATELLITES;i++){
+        matrix[i] = new uint8_t [NUM_SATELLITES+1];
+    }
+
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
 
         int ahead_same_orb_plane;
@@ -32,10 +38,7 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         else
             behind_diff_orb_plane = satellite + SATELLITES_PER_PLANE ;
 
-         matrix = new uint8_t *[1584];
-         for(int i=0; i<1584;i++){
-             matrix = new uint8_t *;
-         }
+
 
         //same orbital plane
         matrix[satellite][ahead_same_orb_plane] = 1;
@@ -50,6 +53,15 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         matrix[behind_diff_orb_plane][satellite] = 1;
 
     }
+    std::ofstream myfile;
+    myfile.open ("example.csv");
+    for(int i=0; i<=NUM_SATELLITES;i++){
+        for(int j=0; j<=NUM_SATELLITES;j++){
+            myfile <<  std::to_string(matrix[i][j]) + ",";
+        }
+        myfile <<  "\n";
+    }
+    myfile.close();
     return matrix;
 }
 

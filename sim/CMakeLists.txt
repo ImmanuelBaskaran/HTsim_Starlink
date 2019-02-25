@@ -21,7 +21,7 @@ add_executable(sim
         Starlink/GroundStation.cpp
         Starlink/Satellite.cpp
         Starlink/OrbitalPlane.cpp
-        Starlink/RouteFinder.cpp Starlink/RouteFinder.h)
+        Starlink/RouteFinder.cpp Starlink/RouteFinder.h Starlink/Constellation.cpp Starlink/Constellation.h)
 
 target_link_libraries(sim ${CMAKE_CURRENT_SOURCE_DIR}/libhtsim.a)
 add_dependencies(sim buildHTSim)

@@ -47,10 +47,9 @@ double** get_dist_sat_conn_matrix(uint8_t** matrix)
     return min_index;
 }
 
-void dijkstra (uint8_t ** connectionMatrix, Satellite src)
+bool* dijkstra (uint8_t ** connectionMatrix, Satellite src)
 {
-    ConnectionMatrix* matrix = new ConnectionMatrix();
-    connectionMatrix = matrix->get_connection_matrix();
+
     double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
 
     double dist[NUM_SATELLITES];   //output, will hold the shortest distance from src to i, should to to sink
@@ -71,10 +70,11 @@ void dijkstra (uint8_t ** connectionMatrix, Satellite src)
                 dist[v] = dist[u] + dist_matrix[u][v];
         }
     }
+    return sptSet;
 }
 
 
-RouteFinder::RouteFinder(EventList &eventlist, const string &name, ConnectionMatrix *matrix)
+RouteFinder::RouteFinder(EventList &eventlist, const string &name, ConnectionMatrix *matrix): EventSource(eventlist,name), _matrix(matrix)
 {
 
 }
