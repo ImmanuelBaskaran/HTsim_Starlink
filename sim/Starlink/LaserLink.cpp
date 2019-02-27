@@ -23,13 +23,12 @@ void LaserLink::doNextEvent() {
     Pipe::doNextEvent();
 }
 
-Eigen::Vector3f LaserLink::getSatellitePosition(const Satellite& satellite){
-
+Eigen::Vector3d LaserLink::getSatellitePosition(const Satellite& satellite) const {
     return satellite.getPosition();
 }
 
 
-double LaserLink::getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2){
+double LaserLink::getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2) const {
     Eigen::Vector3d position1 = satellite1.getPosition();
     Eigen::Vector3d position2 = satellite2.getPosition();
     return (position2 - position1).norm();

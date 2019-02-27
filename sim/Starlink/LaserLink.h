@@ -13,9 +13,9 @@ class LaserLink : public Pipe {
 public:
     LaserLink(simtime_picosec delay, EventList &eventlist, const Satellite& sat1, const Satellite& sat2);
     void doNextEvent(); // inherited from Pipe
-    const string& nodename() { return _nodename; }
-    Eigen::Vector3f getSatellitePosition(const Satellite& satellite);
-    double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2);
+    string nodename() const { return _nodename; }
+    Eigen::Vector3d getSatellitePosition(const Satellite& satellite) const;
+    double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2) const;
     virtual ~LaserLink(){};
 private:
     simtime_picosec _delay;

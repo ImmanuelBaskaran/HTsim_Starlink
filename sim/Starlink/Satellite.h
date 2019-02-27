@@ -14,7 +14,7 @@ class Satellite {
     public:
         Satellite(int id, double offset);
         inline Eigen::Vector3d getPosition() const { return _position; };
-        inline int getID() { return _id; };
-        inline void setPosition(const Eigen::Vector3d position) {_position = position;};
-        double getAnomaly(simtime_picosec);
+        inline int getID() const { return _id; };
+        inline void setPosition(Eigen::Vector3d position) {_position = position;};
+        double getAnomaly(simtime_picosec) const;
 };

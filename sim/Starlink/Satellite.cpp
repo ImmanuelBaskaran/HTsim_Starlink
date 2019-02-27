@@ -7,7 +7,7 @@ Satellite::Satellite(const int id, const double offset) : _id(id) {
 }
 
 
-double Satellite::getAnomaly(simtime_picosec currentTime) {
+double Satellite::getAnomaly(simtime_picosec currentTime) const {
     simtime_picosec orbitPeriod = timeFromSec(ORBIT_PERIOD_SEC);
     
     double anomalyRot = (currentTime / orbitPeriod) * 2 * M_PI;

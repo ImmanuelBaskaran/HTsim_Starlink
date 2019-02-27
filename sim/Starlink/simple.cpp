@@ -97,8 +97,8 @@ int main(int argc, char **argv) {
     CbrSrc* cbrSource;
     CbrSink* cbrSink1;
     route_t* route;
-    Eigen::Vector3f pos1(1,1,1);
-    Eigen::Vector3f pos2(20,20,20);
+    Eigen::Vector3d pos1(1,1,1);
+    Eigen::Vector3d pos2(20,20,20);
 
     GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278);
     GroundStation station2 = GroundStation(eventlist,37.0902,95.7129);
