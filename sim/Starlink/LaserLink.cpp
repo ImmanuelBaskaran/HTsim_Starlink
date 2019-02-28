@@ -8,6 +8,8 @@ LaserLink::LaserLink(simtime_picosec delay1, EventList &eventlist1,Satellite sat
     double distance = getDistanceBetweenSatellitePair(_sat1,_sat2);
 
     Pipe::_delay = timeFromSec(distance/299792458);
+
+
 }
 
 void LaserLink::doNextEvent() {
@@ -18,6 +20,8 @@ void LaserLink::doNextEvent() {
 
     Pipe::_delay = timeFromSec(distance/299792458);
     //Pipe::_delay -= 1;
+
+   // printf("%i\n",_sat1.getID());
 
     //Run regular behavior of Pipe
     Pipe::doNextEvent();

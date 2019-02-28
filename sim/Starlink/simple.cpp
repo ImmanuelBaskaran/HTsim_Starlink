@@ -42,6 +42,14 @@ void exit_error(char* progr){
     cout << "Usage " << progr << " [UNCOUPLED(DEFAULT)|COUPLED_INC|FULLY_COUPLED|COUPLED_EPSILON] rate rtt" << endl;
     exit(1);
 }
+int getLinkFromPair(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
+    for(int i = 0;i<l.size();i++){
+        if(l[i].first.first==p.first && l[i].first.second==p.second){
+            printf("This is going to return satellite %i\n",l[i].first.first);
+            return i;
+        }
+    }
+}
 
 
 
@@ -54,7 +62,7 @@ int main(int argc, char **argv) {
     int crt = 2;
 
 
-    linkspeed_bps SERVICE1 = speedFromPktps(400);
+    linkspeed_bps SERVICE1 = speedFromPktps(4000000000);
     linkspeed_bps SERVICE2 = speedFromPktps(400);
 
     simtime_picosec RTT1=timeFromMs(150);
@@ -181,7 +189,7 @@ int main(int argc, char **argv) {
     Queue* queues[NUM_SATELLITES];
 
     for(int i =0;i<NUM_SATELLITES;i++){
-        queues[i] = new Queue(SERVICE1, BUFFER1, eventlist,nullptr);
+        queues[i] = new Queue(SERVICE1, BUFFER1, eventlist,&loggerSimple);
     }
 
     vector<pair<pair<int,int>,LaserLink>> list;
@@ -193,9 +201,10 @@ int main(int argc, char **argv) {
             }
         }
     }
+
     route = new route_t();
 
-    Queue linkUp(SERVICE1, BUFFER1, eventlist, &loggerSimple);
+    Queue linkUp(SERVICE1, BUFFER1, eventlist, nullptr);
     linkUp.setName("linkUp");
     logfile.writeName(linkUp);
 
@@ -214,10 +223,14 @@ int main(int argc, char **argv) {
     route->push_back(&linkUp);
     route->push_back(pipeup);
 
-    for(int p = 0;p<66;p++){
-        route->push_back(queues[p]);
-        route->push_back(&list[p].second);
+    for(int p = 0;p <= 65;p++){
+   //     route->push_back(queues[p]);
+   //     route->push_back(&list[getLinkFromPair(make_pair(p+1,p+2),list)].second);
     }
+    LaserLink* lis = &list[getLinkFromPair(make_pair(66,1),list)].second;
+
+  //  route->push_back(queues[65]);
+  //  route->push_back(&list[getLinkFromPair(make_pair(66,1),list)].second);
 
     route->push_back(&linkDown);
     route->push_back(pipedown);
@@ -241,3 +254,4 @@ string itoa(uint64_t n) {
     s << n;
     return s.str();
 }
+
