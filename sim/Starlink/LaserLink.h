@@ -1,4 +1,4 @@
-
+#pragma once
 #define SIM_LASERLINK_H
 
 
@@ -11,11 +11,11 @@
 
 class LaserLink : public Pipe {
 public:
-    LaserLink(simtime_picosec delay, EventList &eventlist,Satellite sat1,Satellite sat2);
+    LaserLink(simtime_picosec delay, EventList &eventlist, Satellite sat1, Satellite sat2);
     void doNextEvent(); // inherited from Pipe
-    const string& nodename() { return _nodename; }
-    Eigen::Vector3f getSatellitePosition(Satellite satellite);
-    double getDistanceBetweenSatellitePair(Satellite satellite,Satellite satellite2);
+    string nodename() const { return _nodename; }
+    Eigen::Vector3d getSatellitePosition(const Satellite& satellite) const;
+    double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2) const;
     virtual ~LaserLink(){};
 private:
     typedef pair<simtime_picosec,Packet*> pktrecord_t;
