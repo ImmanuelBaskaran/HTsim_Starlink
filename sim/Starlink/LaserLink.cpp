@@ -21,7 +21,7 @@ void LaserLink::doNextEvent() {
     Pipe::_delay = timeFromSec(distance / 299792458);
     //Pipe::_delay -= 1;
 
-   // printf("%i\n",_sat1.getID());
+    printf("%i\n",_sat1.getID());
 
     //Run regular behavior of Pipe
     Pipe::doNextEvent();
