@@ -1,5 +1,5 @@
-OBJS=OrbitalPlane.o Satellite.o ISL.o LaserLink.o GroundStation.o
-HDRS=OrbitalPlane.h Satellite.h ISL.h LaserLink.h GroundStation.h
+OBJS=OrbitalPlane.o Satellite.o ISL.o LaserLink.o GroundStation.o ConnectionMatrix.o
+HDRS=OrbitalPlane.h Satellite.h ISL.h LaserLink.h GroundStation.h ConnectionMatrix.h
 
 CC = g++
 CFLAGS = -Wall -g -O
@@ -12,8 +12,6 @@ LIB=-L..
 
 all:	simple lib
 #htsim_ndp_incast_shortflows_demo 
-
-CFLAGS = -I ..
 
 clean:	
 	rm -f *.o simple libhtsim.a
@@ -40,5 +38,10 @@ ISL.o: ISL.cpp $(HDRS)
 
 GroundStation.o: GroundStation.cpp $(HDRS)
 	$(CC) $(INCLUDE) $(CFLAGS) -c GroundStation.cpp 
+
+ConnectionMatrix.o: ConnectionMatrix.cpp $(HDRS)
+	$(CC) $(INCLUDE) $(CFLAGS) -c ConnectionMatrix.cpp 
+
+
 
 

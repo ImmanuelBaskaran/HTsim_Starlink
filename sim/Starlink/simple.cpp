@@ -181,6 +181,11 @@ int main(int argc, char **argv) {
         printf("\n\n");
     }
 
+    // ConnectionMatrix* matrix=new ConnectionMatrix();
+    // uint8_t** result= matrix->get_connection_matrix();
+
+
+
     // GO!
      while (eventlist.doNextEvent()) {
      }

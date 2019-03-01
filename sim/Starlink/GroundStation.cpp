@@ -11,7 +11,7 @@
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
-bool GroundStation::isSatelliteInRange(const Satellite& satellite)
+bool GroundStation::isSatelliteInRange(const Satellite& satellite, simtime_picosec currentTime)
 {
     Eigen::Vector3d gsCartCoords;
     gsCartCoords.x()=EARTH_RADIUS*sin(_lat)*cos(_lon);
@@ -35,7 +35,7 @@ std::vector<Satellite> GroundStation::getSatellitesInRange(const vector<Satellit
 {
     std::vector<Satellite> satellites;
     for(Satellite satellite : positionMatrix)
-        if(isSatelliteInRange(satellite)) {
+        if(isSatelliteInRange(satellite,0)) {
             satellites.push_back(satellite);
         }
     return satellites;

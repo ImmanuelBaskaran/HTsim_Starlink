@@ -22,15 +22,31 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         else
             behind_same_orb_plane = satellite - 1;
 
-        if(satellite <= SATELLITES_PER_PLANE)
-            ahead_diff_orb_plane = NUM_SATELLITES - SATELLITES_PER_PLANE + satellite-13;
-        else
-            ahead_diff_orb_plane = satellite - SATELLITES_PER_PLANE ;
+        if(satellite <= SATELLITES_PER_PLANE){
+            behind_diff_orb_plane = NUM_SATELLITES - SATELLITES_PER_PLANE + satellite-13;
+        }
+        else{
+
+            if(satellite % SATELLITES_PER_PLANE == 0){
+                behind_diff_orb_plane = (satellite - (2*SATELLITES_PER_PLANE)) + 1;
+            }
+            else{
+                behind_diff_orb_plane = satellite - (SATELLITES_PER_PLANE - 1);
+            }
+
+        }
+
 
         if(satellite >= NUM_SATELLITES - SATELLITES_PER_PLANE)
-            behind_diff_orb_plane = SATELLITES_PER_PLANE - (NUM_SATELLITES - satellite)+13;
-        else
-            behind_diff_orb_plane = satellite + SATELLITES_PER_PLANE ;
+            ahead_diff_orb_plane = SATELLITES_PER_PLANE - (NUM_SATELLITES - satellite)+13;
+        else{
+            if(satellite % SATELLITES_PER_PLANE == 1){
+                ahead_diff_orb_plane = (satellite + (2*SATELLITES_PER_PLANE)) - 1;
+            }
+            else{
+                ahead_diff_orb_plane = satellite + (SATELLITES_PER_PLANE -1);
+            }
+        }
 
          matrix = new uint8_t *[1584];
          for(int i=0; i<1584;i++){
@@ -44,10 +60,10 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         matrix[behind_same_orb_plane][satellite] = 1;
 
         //different orbital planes
-        matrix[satellite][ahead_diff_orb_plane] = 1;
         matrix[satellite][behind_diff_orb_plane] = 1;
-        matrix[ahead_diff_orb_plane][satellite] = 1;
+        matrix[satellite][ahead_diff_orb_plane] = 1;
         matrix[behind_diff_orb_plane][satellite] = 1;
+        matrix[ahead_diff_orb_plane][satellite] = 1;
 
     }
     return matrix;
