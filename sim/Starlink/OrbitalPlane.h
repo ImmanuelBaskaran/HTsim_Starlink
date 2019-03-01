@@ -11,7 +11,6 @@ class OrbitalPlane {
     private:
         int _id;
         Satellite* _satellites[SATS_PER_PLANE];
-        double _planeOffset;
         double _raan;
         double _firstSatOffset;
         double _inclination;

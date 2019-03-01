@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 OBJS=OrbitalPlane.o Satellite.o ISL.o LaserLink.o GroundStation.o ConnectionMatrix.o
 HDRS=OrbitalPlane.h Satellite.h ISL.h LaserLink.h GroundStation.h ConnectionMatrix.h
+=======
+OBJS=OrbitalPlane.o Satellite.o LaserLink.o GroundStation.o
+HDRS=OrbitalPlane.h Satellite.h LaserLink.h GroundStation.h
+>>>>>>> 513434734a8a9b1edde354dfb098ed8d49f28e24
 
 CC = g++
 CFLAGS = -Wall -g -O
 CRT=`pwd`
-INCLUDE= -I/$(CRT)/.. -I$(CRT)
+INCLUDE= -I/$(CRT)/.. -I$(CRT) -g
 #EIGEN= -I /home/user/eigen/Eigen
 #-I$(CRT)/ksp -I$(CRT)/ksp/boost
 LIB=-L.. 
@@ -13,6 +18,11 @@ LIB=-L..
 all:	simple lib
 #htsim_ndp_incast_shortflows_demo 
 
+<<<<<<< HEAD
+=======
+# CFLAGS = -I ..
+
+>>>>>>> 513434734a8a9b1edde354dfb098ed8d49f28e24
 clean:	
 	rm -f *.o simple libhtsim.a
 
@@ -32,9 +42,6 @@ Satellite.o: Satellite.cpp $(HDRS)
 
 LaserLink.o: LaserLink.cpp $(HDRS)
 	$(CC) $(INCLUDE) $(CFLAGS) -c LaserLink.cpp 
-
-ISL.o: ISL.cpp $(HDRS)
-	$(CC) $(INCLUDE) $(CFLAGS) -c ISL.cpp 
 
 GroundStation.o: GroundStation.cpp $(HDRS)
 	$(CC) $(INCLUDE) $(CFLAGS) -c GroundStation.cpp 
