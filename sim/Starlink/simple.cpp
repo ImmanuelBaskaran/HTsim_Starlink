@@ -42,13 +42,27 @@ void exit_error(char* progr){
     cout << "Usage " << progr << " [UNCOUPLED(DEFAULT)|COUPLED_INC|FULLY_COUPLED|COUPLED_EPSILON] rate rtt" << endl;
     exit(1);
 }
-int getLinkFromPair(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
+int getLinkFromFirstSat(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
     for(int i = 0;i<l.size();i++){
-        if(l[i].first.first==p.first && l[i].first.second==p.second){
+       // printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
+        if(l[i].first.first==p.first){
             printf("This is going to return satellite %i\n",l[i].first.first);
             return i;
         }
     }
+    abort();
+}
+
+int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
+    printf("I am looking for Test %i,%i\n",p.first,p.second);
+    for(int i = 0;i<l.size();i++){
+        //printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
+        if(l[i].first.first==p.first && l[i].first.second == p.second){
+            printf("This is going to return satellite %i\n",l[i].first.second);
+            return i;
+        }
+    }
+    abort();
 }
 
 
@@ -62,7 +76,7 @@ int main(int argc, char **argv) {
     int crt = 2;
 
 
-    linkspeed_bps SERVICE1 = speedFromPktps(4000000000);
+    linkspeed_bps SERVICE1 = speedFromPktps(400);
     linkspeed_bps SERVICE2 = speedFromPktps(400);
 
     simtime_picosec RTT1=timeFromMs(150);
@@ -184,7 +198,7 @@ int main(int argc, char **argv) {
     ConnectionMatrix mat = ConnectionMatrix();
     uint8_t ** test = mat.get_connection_matrix();
 
-    Constellation constellation = Constellation();
+    Constellation constellation = Constellation(eventlist,"ElonMusk");
 
     Queue* queues[NUM_SATELLITES];
 
@@ -193,13 +207,17 @@ int main(int argc, char **argv) {
     }
 
     vector<pair<pair<int,int>,LaserLink>> list;
-    for(int i =1;i<=NUM_SATELLITES;i++){
-        for(int j =1;j<=NUM_SATELLITES;j++){
-            if(test[i][j]!=0){
-                list.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*constellation.getSatByID(i),
-                        *constellation.getSatByID(j))));
+    for(int i =1;i<NUM_SATELLITES;i++){
+        for(int j =1;j<NUM_SATELLITES;j++){
+         //   printf("%i ",test[i][j]);
+            if(test[i][j]==1){
+                printf("Elon musk says that sat %i connects to sat %i\n",i,j);
+
+                list.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*constellation.getSatByID(i-1),
+                        *constellation.getSatByID(j-1))));
             }
         }
+       // printf("\n");
     }
 
     route = new route_t();
@@ -223,14 +241,17 @@ int main(int argc, char **argv) {
     route->push_back(&linkUp);
     route->push_back(pipeup);
 
-    for(int p = 0;p <= 65;p++){
-   //     route->push_back(queues[p]);
-   //     route->push_back(&list[getLinkFromPair(make_pair(p+1,p+2),list)].second);
-    }
-    LaserLink* lis = &list[getLinkFromPair(make_pair(66,1),list)].second;
 
-  //  route->push_back(queues[65]);
-  //  route->push_back(&list[getLinkFromPair(make_pair(66,1),list)].second);
+    int currSat = 1;
+    int nextSat = 1506;
+
+    do{
+        route->push_back(queues[currSat-1]);
+        route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
+        currSat=nextSat;
+        nextSat = list[getLinkFromFirstSat(make_pair(nextSat,nextSat),list)].first.second;
+    } while (currSat/66!=0);
+
 
     route->push_back(&linkDown);
     route->push_back(pipedown);

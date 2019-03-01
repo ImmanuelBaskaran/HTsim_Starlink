@@ -9,11 +9,12 @@
 #include "Satellite.h"
 #include "OrbitalPlane.h"
 
-class Constellation {
+class Constellation : public EventSource{
     private:
         OrbitalPlane* _planes[24];
     public:
-        Constellation();
+        Constellation(EventList& eventlist, const string& name);
+        void doNextEvent();
         Satellite* getSatByID(int satId);
 };
 
