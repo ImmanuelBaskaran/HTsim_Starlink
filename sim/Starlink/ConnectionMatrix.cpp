@@ -3,6 +3,15 @@
 #include <stdint.h>
 #include "ConnectionMatrix.h"
 
+uint8_t **matrix;
+
+ConnectionMatrix::ConnectionMatrix(){
+    matrix = new uint8_t *[1584];
+    for(int i=0; i<1584;i++){
+        matrix[i] = new uint8_t;
+    }
+}
+
 uint8_t **  ConnectionMatrix::get_connection_matrix()
 {
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
@@ -36,22 +45,19 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
 
         }
 
-
-        if(satellite >= NUM_SATELLITES - SATELLITES_PER_PLANE)
+        if(satellite >= NUM_SATELLITES - SATELLITES_PER_PLANE){
             ahead_diff_orb_plane = SATELLITES_PER_PLANE - (NUM_SATELLITES - satellite)+13;
+        }
         else{
+
             if(satellite % SATELLITES_PER_PLANE == 1){
                 ahead_diff_orb_plane = (satellite + (2*SATELLITES_PER_PLANE)) - 1;
             }
             else{
                 ahead_diff_orb_plane = satellite + (SATELLITES_PER_PLANE -1);
             }
-        }
 
-         matrix = new uint8_t *[1584];
-         for(int i=0; i<1584;i++){
-             matrix[i] = new uint8_t;
-         }
+        }
 
         //same orbital plane
         matrix[satellite][ahead_same_orb_plane] = 1;
