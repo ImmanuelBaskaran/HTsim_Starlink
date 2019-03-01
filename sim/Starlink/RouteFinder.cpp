@@ -5,14 +5,10 @@
 
 #define NUM_SATELLITES 1584
 
-double getDistanceBetweenSatellitePair(Satellite satellite1,Satellite satellite2){
-    Eigen::Vector3f  position1 = satellite1.getPosition();
-    Eigen::Vector3f  position2 = satellite2.getPosition();
-
-    double distance = pow(position2.x()-position1.x(),2)+
-                      pow(position2.y()-position1.y(),2)+
-                      pow(position2.z()-position1.z(),2);
-    return sqrt(distance);
+double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2){
+    Eigen::Vector3d position1 = satellite1.getPosition();
+    Eigen::Vector3d  position2 = satellite2.getPosition();
+    return (position2 - position1).norm();
 }
 
 //construct distances matrix
@@ -34,7 +30,8 @@ double** get_dist_sat_conn_matrix(uint8_t** matrix)
     }
     return dist_matrix;
 }
- int minDistance(double dist[], bool sptSet[])
+
+int minDistance(double dist[], bool sptSet[])
 {
     // Initialize min value
     double min = INFINITY;

@@ -15,7 +15,7 @@ public:
     uint8_t ** get_connection_matrix();
 
 private:
-    uint8_t ** matrix;
+    uint8_t ** _matrix;
 };
 
 

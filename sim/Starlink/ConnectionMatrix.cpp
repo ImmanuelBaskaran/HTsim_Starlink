@@ -6,9 +6,9 @@
 
 uint8_t **  ConnectionMatrix::get_connection_matrix()
 {
-    matrix = new uint8_t * [NUM_SATELLITES+1];
+    _matrix = new uint8_t * [NUM_SATELLITES+1];
     for(int i=0; i<=NUM_SATELLITES;i++){
-        matrix[i] = new uint8_t [NUM_SATELLITES+1];
+        _matrix[i] = new uint8_t [NUM_SATELLITES+1];
     }
 
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
@@ -38,30 +38,28 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         else
             behind_diff_orb_plane = satellite + SATELLITES_PER_PLANE ;
 
-
-
         //same orbital plane
-        matrix[satellite][ahead_same_orb_plane] = 1;
-        matrix[satellite][behind_same_orb_plane] = 1;
-        matrix[ahead_same_orb_plane][satellite] = 1;
-        matrix[behind_same_orb_plane][satellite] = 1;
+        _matrix[satellite][ahead_same_orb_plane] = 1;
+        _matrix[satellite][behind_same_orb_plane] = 1;
+        _matrix[ahead_same_orb_plane][satellite] = 1;
+        _matrix[behind_same_orb_plane][satellite] = 1;
 
         //different orbital planes
-        matrix[satellite][ahead_diff_orb_plane] = 1;
-        matrix[satellite][behind_diff_orb_plane] = 1;
-        matrix[ahead_diff_orb_plane][satellite] = 1;
-        matrix[behind_diff_orb_plane][satellite] = 1;
+        _matrix[satellite][ahead_diff_orb_plane] = 1;
+        _matrix[satellite][behind_diff_orb_plane] = 1;
+        _matrix[ahead_diff_orb_plane][satellite] = 1;
+        _matrix[behind_diff_orb_plane][satellite] = 1;
 
     }
     std::ofstream myfile;
     myfile.open ("example.csv");
     for(int i=0; i<=NUM_SATELLITES;i++){
         for(int j=0; j<=NUM_SATELLITES;j++){
-            myfile <<  std::to_string(matrix[i][j]) + ",";
+            myfile <<  std::to_string(_matrix[i][j]) + ",";
         }
         myfile <<  "\n";
     }
     myfile.close();
-    return matrix;
+    return _matrix;
 }
 

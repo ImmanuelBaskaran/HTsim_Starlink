@@ -42,7 +42,7 @@ void exit_error(char* progr){
     cout << "Usage " << progr << " [UNCOUPLED(DEFAULT)|COUPLED_INC|FULLY_COUPLED|COUPLED_EPSILON] rate rtt" << endl;
     exit(1);
 }
-int getLinkFromPair(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
+int getLinkFromPair(const pair<int,int>& p, const vector<pair<pair<int,int>,LaserLink>>& l){
     for(int i = 0;i<l.size();i++){
         if(l[i].first.first==p.first && l[i].first.second==p.second){
             printf("This is going to return satellite %i\n",l[i].first.first);
@@ -104,8 +104,8 @@ int main(int argc, char **argv) {
 //    CbrSrc* cbrSource;
 //    CbrSink* cbrSink1;
 //    route_t* route;
-//    Eigen::Vector3f pos1(1,1,1);
-//    Eigen::Vector3f pos2(20,20,20);
+//    Eigen::Vector3d pos1(1,1,1);
+//    Eigen::Vector3d pos2(20,20,20);
 //
 //
 //
@@ -181,8 +181,8 @@ int main(int argc, char **argv) {
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
 
-    ConnectionMatrix mat = ConnectionMatrix();
-    uint8_t ** test = mat.get_connection_matrix();
+    ConnectionMatrix mat;
+    uint8_t ** testMatrix = mat.get_connection_matrix();
 
     Constellation constellation = Constellation();
 
@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
     vector<pair<pair<int,int>,LaserLink>> list;
     for(int i =1;i<=NUM_SATELLITES;i++){
         for(int j =1;j<=NUM_SATELLITES;j++){
-            if(test[i][j]!=0){
+            if(testMatrix[i][j]!=0){
                 list.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*constellation.getSatByID(i),
                         *constellation.getSatByID(j))));
             }
@@ -239,6 +239,14 @@ int main(int argc, char **argv) {
     double extrastarttime = drand()*50;
     station2.connect(*route,station1,0);
 
+    
+
+    //  double dist = sqrt(pow(6889661.176128-6267388.183644,2.)+
+    //                    pow(525408.625993-2880554.437000,2.)+
+    //                    pow(395923.798076-567884.223235,2.));
+
+    // printf("This is distance %f \n", dist/1000);
+   
     // GO!
      while (eventlist.doNextEvent()) {
      }
