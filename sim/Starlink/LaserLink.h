@@ -14,8 +14,8 @@ public:
     LaserLink(simtime_picosec delay, EventList &eventlist, const Satellite& sat1, const Satellite& sat2);
     void doNextEvent(); // inherited from Pipe
     string nodename() const { return _nodename; }
-    Eigen::Vector3d getSatellitePosition(const Satellite& satellite) const;
-    double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2) const;
+    Eigen::Vector3d getSatellitePosition(const Satellite& satellite, simtime_picosec currentTime) const;
+    double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2, simtime_picosec currentTime) const;
     virtual ~LaserLink(){};
 private:
     simtime_picosec _delay;
