@@ -14,6 +14,7 @@ public:
     ConnectionMatrix();  // This is the constructor
     uint8_t ** get_connection_matrix();
 
+
 private:
     uint8_t ** _matrix;
 };

@@ -16,8 +16,12 @@ Constellation::Constellation(EventList& eventlist, const string& name): EventSou
         _planes[i] = new OrbitalPlane(i + 1, i * toRadians(15), toRadians(53.0), 550000, i * toRadians(5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Eigen::Vector3d pos = _planes[i]->getPosForSat(id++, 0);
-            printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
+            _planes[i]->getSatByID(j)->setPosition(pos);
+            // printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
+            // printf("Sat %d: %f %f %f\n", id-1, pos.x(), pos.y(), pos.z());
+            // printf("%f %f %f\n", pos.x(), pos.y(), pos.z()); //for printing out constellation
         }
+        // printf("\n\n"); //for printing out constelation
     }
 }
 
@@ -31,7 +35,7 @@ Constellation::doNextEvent() {
     eventlist().sourceIsPendingRel(*this, timeFromMs(10));
     for (int i = 0; i < 24; i++) {
         for (int j = 0; j < SATS_PER_PLANE; j++) {
-           Eigen::Vector3f newPos = _planes[i]->getPosForSat(j,eventlist().now());
+            Eigen::Vector3d newPos = _planes[i]->getPosForSat(j,eventlist().now());
             _planes[i]->getSatByID(j)->setPosition(newPos);
         }
     }

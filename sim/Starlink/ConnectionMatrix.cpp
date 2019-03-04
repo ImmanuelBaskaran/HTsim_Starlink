@@ -60,16 +60,17 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         }
 
         //same orbital plane
-    //    matrix[satellite][ahead_same_orb_plane] = 1;
-    //    matrix[satellite][behind_same_orb_plane] = 1;
-   //     matrix[ahead_same_orb_plane][satellite] = 1;
-    //    matrix[behind_same_orb_plane][satellite] = 1;
+        //    matrix[satellite][ahead_same_orb_plane] = 1;
+        //    matrix[satellite][behind_same_orb_plane] = 1;
+        //     matrix[ahead_same_orb_plane][satellite] = 1;
+        //    matrix[behind_same_orb_plane][satellite] = 1;
 
         //different orbital planes
         matrix[satellite][behind_diff_orb_plane] = 1;
-   //     matrix[satellite][ahead_diff_orb_plane] = 1;
-        matrix[behind_diff_orb_plane][satellite] = 1;
-    //    matrix[ahead_diff_orb_plane][satellite] = 1;
+        // printf("%i %i\n", satellite, behind_diff_orb_plane);
+        //     matrix[satellite][ahead_diff_orb_plane] = 1;
+        // matrix[behind_diff_orb_plane][satellite] = 1;
+        //    matrix[ahead_diff_orb_plane][satellite] = 1;
 
     }
     return matrix;

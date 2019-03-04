@@ -13,8 +13,9 @@
 class GroundStation: public CbrSink, public CbrSrc {
 public:
     GroundStation(EventList &eventlist1,double lat, double lon);
-    vector<Satellite> getSatellitesInRange(const vector<Satellite>& positionMatrix);
-    bool isSatelliteInRange(const Satellite& satellite);
+    std::vector<Eigen::Vector3d> getSatellitesInRange();
+    bool isSatelliteInRange(Eigen::Vector3d satPos, double alt);
+    double toRadians(double degrees);
 private:
     double _lat, _lon;
 };

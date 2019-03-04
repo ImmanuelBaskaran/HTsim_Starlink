@@ -16,6 +16,7 @@ class Constellation : public EventSource{
         Constellation(EventList& eventlist, const string& name);
         void doNextEvent();
         Satellite* getSatByID(int satId);
+        Eigen::Vector3d getSatPosByIDAtTime(int satId,simtime_picosec time);
 };
 
 

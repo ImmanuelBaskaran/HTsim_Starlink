@@ -30,7 +30,6 @@ double** get_dist_sat_conn_matrix(uint8_t** matrix)
     }
     return dist_matrix;
 }
-
 int minDistance(double dist[], bool sptSet[])
 {
     // Initialize min value
@@ -44,21 +43,19 @@ int minDistance(double dist[], bool sptSet[])
     return min_index;
 }
 
-bool* dijkstra (uint8_t ** connectionMatrix, Satellite src)
+void dijkstra (uint8_t ** connectionMatrix, Satellite src)
 {
-
+/*    ConnectionMatrix* matrix = new ConnectionMatrix();
+    connectionMatrix = matrix->get_connection_matrix();
     double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
-
     double dist[NUM_SATELLITES];   //output, will hold the shortest distance from src to i, should to to sink
     bool sptSet[NUM_SATELLITES];    //shortest path tree set, keeps track of satellite links included
-
     for(int i=0;i< NUM_SATELLITES;i++)
     {
         dist[i] = INT_MAX;
         sptSet[i] = false;
     }
     dist[src.getID()] = 0;
-
     for(int count =0; count<NUM_SATELLITES-1; count++) {
         int u = minDistance(dist, sptSet); //pick minimum distance link not yet included to sptSet
         sptSet[u] = true;
@@ -66,12 +63,5 @@ bool* dijkstra (uint8_t ** connectionMatrix, Satellite src)
             if (!sptSet[v] && dist_matrix[u][v] != 0 && dist[u] != INT_MAX && dist[u] + dist_matrix[u][v] < dist[v])
                 dist[v] = dist[u] + dist_matrix[u][v];
         }
-    }
-    return sptSet;
-}
-
-
-RouteFinder::RouteFinder(EventList &eventlist, const string &name, ConnectionMatrix *matrix): EventSource(eventlist,name), _matrix(matrix)
-{
-
+    }*/
 }
