@@ -181,6 +181,12 @@ int main(int argc, char **argv) {
         printf("\n\n");
     }
 
+    // ConnectionMatrix* matrix=new ConnectionMatrix();
+    // uint8_t** result= matrix->get_connection_matrix();
+
+
+
+
     
 
     //  double dist = sqrt(pow(6889661.176128-6267388.183644,2.)+
@@ -189,6 +195,7 @@ int main(int argc, char **argv) {
 
     // printf("This is distance %f \n", dist/1000);
    
+
     // GO!
      while (eventlist.doNextEvent()) {
      }
