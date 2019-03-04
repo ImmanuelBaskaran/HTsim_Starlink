@@ -11,7 +11,7 @@
 
 class LaserLink : public Pipe {
 public:
-    LaserLink(simtime_picosec delay, EventList &eventlist, const Satellite& sat1, const Satellite& sat2);
+    LaserLink(simtime_picosec delay, EventList &eventlist, Satellite sat1, Satellite sat2);
     void doNextEvent(); // inherited from Pipe
     string nodename() const { return _nodename; }
     double getDistanceBetweenSatellitePair(const Satellite& satellite, const Satellite& satellite2, simtime_picosec currentTime) const;

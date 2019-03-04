@@ -244,7 +244,7 @@ int main(int argc, char **argv) {
 
     int currSat = 1;
     int nextSat = 1506;
-    Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition();
+    Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
     // printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
     printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
     do{
@@ -252,7 +252,7 @@ int main(int argc, char **argv) {
         route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
         currSat=nextSat;
         nextSat = list[getLinkFromFirstSat(make_pair(nextSat,nextSat),list)].first.second;
-        Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition();
+        Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
         // printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
         printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
     } while (currSat/66!=0);

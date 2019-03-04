@@ -15,7 +15,7 @@ Constellation::Constellation(EventList& eventlist, const string& name): EventSou
     for (int i = 0; i < 24; i++) {
         _planes[i] = new OrbitalPlane(i + 1, i * toRad(15), toRad(53.0), 550000, i * toRad(5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
-            Eigen::Vector3d pos = _planes[i]->getSatByID(id++)->getPosition(eventlist.now());
+            Eigen::Vector3d pos = _planes[i]->getSatByID(j)->getPosition(0);
             printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
         }
     }
