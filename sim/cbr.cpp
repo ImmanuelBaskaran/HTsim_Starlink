@@ -59,6 +59,9 @@ CbrSrc::send_packet() {
   Packet* p = CbrPacket::newpkt(_flow, *_route, _crt_id++, _mss);
   p->sendOn();
 
+  // Debug output for logging CBR traffic:
+  printf("CBR source sent packet with id %u.\n", p->id());
+
   //  simtime_picosec how_long = _period;
   //simtime_picosec _active_already = eventlist().now()-_start_active;
 

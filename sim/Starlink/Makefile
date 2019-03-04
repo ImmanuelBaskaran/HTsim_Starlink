@@ -4,7 +4,7 @@ HDRS=OrbitalPlane.h Satellite.h LaserLink.h GroundStation.h ConnectionMatrix.h R
 CC = g++
 CFLAGS = -Wall -g -O -std=c++11 -O0
 CRT=`pwd`
-INCLUDE= -I/$(CRT)/.. -I$(CRT)
+INCLUDE= -I/$(CRT)/.. -I$(CRT) -g
 #EIGEN= -I /home/user/eigen/Eigen
 #-I$(CRT)/ksp -I$(CRT)/ksp/boost
 LIB=-L.. 
@@ -12,8 +12,6 @@ LIB=-L..
 
 all:	simple lib
 #htsim_ndp_incast_shortflows_demo 
-
-# CFLAGS = -I ..
 
 clean:	
 	rm -f *.o simple libhtsim.a

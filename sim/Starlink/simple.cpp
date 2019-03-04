@@ -1,4 +1,3 @@
-// -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-
 #include "OrbitalPlane.h"
 
 #include "config.h"
@@ -263,6 +262,7 @@ int main(int argc, char **argv) {
     // GO!
      while (eventlist.doNextEvent()) {
      }
+
 }
 
 string ntoa(double n) {
@@ -275,4 +275,3 @@ string itoa(uint64_t n) {
     s << n;
     return s.str();
 }
-

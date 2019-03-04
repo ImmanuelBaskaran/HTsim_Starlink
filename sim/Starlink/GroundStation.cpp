@@ -4,10 +4,20 @@
 #include "GroundStation.h"
 #include "Satellite.h"
 #include <eigen3/Eigen/Dense>
-#define EARTH_RADIUS 6371000
-#define ANGLE_IN_RANGE 0.76
+#define EARTH_RADIUS 6371000.0
+#define ANGLE_IN_RANGE 0.92
+#define ALTITUDE 550000
 #include <math.h>
 #include <cmath>
+#include <sstream>
+#include <string.h>
+#include <strstream>
+#include <iostream>
+#include "OrbitalPlane.h"
+
+double toRadian(double degrees){
+    return (degrees * (M_PI/180));
+}
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
@@ -20,7 +30,7 @@ bool GroundStation::isSatelliteInRange(const Satellite& satellite)
 
     //the angle we are looking for is the angle between the vector difference (satellite, GS) and GS
     Eigen::Vector3d diffVect;
-    diffVect = gsCartCoords - satellite.getPosition();
+    diffVect = gsCartCoords - satellite.getPosition(_eventlist.now());
 
     //acos = arc cosine of x, expressed in radians
     //.norm() = magnitude of vector
@@ -28,17 +38,23 @@ bool GroundStation::isSatelliteInRange(const Satellite& satellite)
     if(angle<ANGLE_IN_RANGE && angle>ANGLE_IN_RANGE)
           return true;
     return false;
+
 }
 
-
-std::vector<Satellite> GroundStation::getSatellitesInRange(const vector<Satellite>& positionMatrix)
+std::vector<Eigen::Vector3d> GroundStation::getSatellitesInRange(Eigen::Vector3d positionMatrix[24][66], double alt)
 {
-    std::vector<Satellite> satellites;
-    for(Satellite satellite : positionMatrix)
-        if(isSatelliteInRange(satellite)) {
-            satellites.push_back(satellite);
+    std::vector<Eigen::Vector3d> satellitesPos;
+
+    int id = 1;
+    for (int i = 0; i < 24; i++) {
+        OrbitalPlane plane(i + 1, toRadian(i * 15.0), toRadian(53.0), ALTITUDE, toRadian(i * 5.5));
+        for (int j = 0; j < 66; j++) {
+            Satellite* sat = plane.getSatByID(id++);
+            if (isSatelliteInRange(*sat))
+                satellitesPos.push_back(sat->getPosition(_eventlist.now()));
         }
-    return satellites;
+    }
+    return satellitesPos;
 }
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : CbrSrc(eventlist1,speedFromPktps(166)),

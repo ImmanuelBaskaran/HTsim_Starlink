@@ -2,31 +2,45 @@
 #include "RouteFinder.h"
 #include "ConnectionMatrix.h"
 #include "network.h"
+#include "OrbitalPlane.h"
 
 #define NUM_SATELLITES 1584
 
-double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2){
-    Eigen::Vector3d position1 = satellite1.getPosition();
-    Eigen::Vector3d  position2 = satellite2.getPosition();
+double RouteFinder::getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2){
+    Eigen::Vector3d position1 = satellite1.getPosition(_eventlist.now());
+    Eigen::Vector3d  position2 = satellite2.getPosition(_eventlist.now());
     return (position2 - position1).norm();
+}
+
+double toRadians(double degrees){
+    return (degrees * (M_PI/180));
 }
 
 //construct distances matrix
 
-double** get_dist_sat_conn_matrix(uint8_t** matrix)
+double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix)
 {
     double** dist_matrix = nullptr;
     dist_matrix = new double*[NUM_SATELLITES];
 
+    OrbitalPlane planes[24];
+    for (int i = 0; i < 24; i++) {
+        int satId = 1;
+        planes[i] = OrbitalPlane(i + 1, i * toRadians(15), toRadians(53.0), 550000, i * toRadians(5.5));
+    }
+
     for(int i=0;i<NUM_SATELLITES;i++) {
-        dist_matrix[i] = new double[NUM_SATELLITES];
-        for (int j = 0; j < NUM_SATELLITES; j++)
+        int iPlaneIndex = i % 24;
+        for (int j = 0; j < NUM_SATELLITES; j++) {
+            int jPlaneIndex = j % 24;
+            dist_matrix[i] = new double[NUM_SATELLITES];
             if (matrix[i][j] == 1) {
-                Satellite sat_i = Satellite(i, 1);
-                Satellite sat_j = Satellite(j, 1);
-                dist_matrix[i][j] = getDistanceBetweenSatellitePair(sat_i, sat_j);
+                Satellite* sat_i = planes[iPlaneIndex].getSatByID(i);
+                Satellite* sat_j = planes[jPlaneIndex].getSatByID(j);
+                dist_matrix[i][j] = getDistanceBetweenSatellitePair(*sat_i, *sat_j);
             } else
                 dist_matrix[i][j]=INFINITY;
+        }
     }
     return dist_matrix;
 }
@@ -44,9 +58,8 @@ int minDistance(double dist[], bool sptSet[])
     return min_index;
 }
 
-bool* dijkstra (uint8_t ** connectionMatrix, Satellite src)
+bool* RouteFinder::dijkstra (uint8_t ** connectionMatrix, Satellite src)
 {
-
     double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
 
     double dist[NUM_SATELLITES];   //output, will hold the shortest distance from src to i, should to to sink
