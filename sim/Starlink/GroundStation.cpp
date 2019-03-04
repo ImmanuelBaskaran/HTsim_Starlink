@@ -15,58 +15,50 @@
 #include <iostream>
 #include "OrbitalPlane.h"
 
-
-
-// I supposed satellite coordinates as a Vector3 and ground station coordinates
-// as lat,long, earth radius
-
-float dot(Eigen::Vector3d a, Eigen::Vector3d b)  //calculates dot product of a and b
-{
-    return a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
-}
-
-double GroundStation::toRadians(double degrees){
+double toRadian(double degrees){
     return (degrees * (M_PI/180));
 }
 
-bool GroundStation::isSatelliteInRange(Eigen::Vector3d satPos, double alt)
+// I supposed satellite coordinates as a Vector3 and ground station coordinates
+// as lat,long, earth radius
+bool GroundStation::isSatelliteInRange(const Satellite& satellite)
 {
     Eigen::Vector3d gsCartCoords;
-    double flat = 0;
-    double ls = atan(pow((1 - flat),2) * tan(_lat));
-    //gsCartCoords.x()=EARTH_RADIUS*cos(ls)*cos(_lon) +alt*cos(_lat)*cos(_lon);
-    //gsCartCoords.y()=EARTH_RADIUS*cos(ls)*sin(_lon) +alt*cos(_lat)*sin(_lon);
-    //gsCartCoords.z()=EARTH_RADIUS*sin(ls)+alt*sin(_lat);
     gsCartCoords.x()=EARTH_RADIUS*sin(_lat)*cos(_lon);
     gsCartCoords.y()=EARTH_RADIUS*sin(_lat)*sin(_lon);
     gsCartCoords.z()=EARTH_RADIUS*cos(_lat);
 
-    double distance = sqrt(pow((gsCartCoords.x()-satPos.x()),2)+pow((gsCartCoords.y()-satPos.y()),2)+pow((gsCartCoords.z()-satPos.z()),2));
+    //the angle we are looking for is the angle between the vector difference (satellite, GS) and GS
+    Eigen::Vector3d diffVect;
+    diffVect = gsCartCoords - satellite.getPosition(_eventlist.now());
 
-    double distance_max = alt/cos(ANGLE_IN_RANGE);
-    if(distance<distance_max)
-        return true;
+    //acos = arc cosine of x, expressed in radians
+    //.norm() = magnitude of vector
+    float angle=std::acos(diffVect.dot(gsCartCoords) / diffVect.norm() * gsCartCoords.norm());
+    if(angle<ANGLE_IN_RANGE && angle>ANGLE_IN_RANGE)
+          return true;
     return false;
 
 }
 
-std::vector<Eigen::Vector3d> GroundStation::getSatellitesInRange()
+std::vector<Eigen::Vector3d> GroundStation::getSatellitesInRange(Eigen::Vector3d positionMatrix[24][66], double alt)
 {
     std::vector<Eigen::Vector3d> satellitesPos;
 
     int id = 1;
     for (int i = 0; i < 24; i++) {
-        OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), ALTITUDE, toRadians(i * 5.5));
+        OrbitalPlane plane(i + 1, toRadian(i * 15.0), toRadian(53.0), ALTITUDE, toRadian(i * 5.5));
         for (int j = 0; j < 66; j++) {
-            Eigen::Vector3d pos = plane.getPosForSat(id++, timeFromSec(0));
-            if (isSatelliteInRange(pos, ALTITUDE))
-                satellitesPos.push_back(pos);
+            Satellite* sat = plane.getSatByID(id++);
+            if (isSatelliteInRange(*sat))
+                satellitesPos.push_back(sat->getPosition(_eventlist.now()));
         }
     }
     return satellitesPos;
 }
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : CbrSrc(eventlist1,speedFromPktps(166)),
-                                                                             _lat(lat), _lon(lon){
+_lat(lat), _lon(lon){
 
 }
+
