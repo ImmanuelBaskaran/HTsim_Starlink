@@ -34,7 +34,7 @@ int NUMFLOWS = 2;
 #define TCP_2 0
 
 #define RANDOM_BUFFER 3
-#define ALTITUDE_PHASE1 550000
+#define ALTITUDE 550000
 
 #define FEEDER_BUFFER 2000
 
@@ -175,7 +175,7 @@ int main(int argc, char **argv) {
 
     int id = 1;
     int count_gs1=0;
-    int count_gs2=1;
+    int count_gs2=0;
 
     Eigen::Vector3d positionMatrix[24][66];
     for(int i=0; i<24;i++){
@@ -189,36 +189,41 @@ int main(int argc, char **argv) {
     }
 
     for (int i = 0; i < 24; i++) {
-        OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), ALTITUDE_PHASE1, toRadians(i * 5.5));
+        OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), ALTITUDE, toRadians(i * 5.5));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Vector3d pos = plane.getPosForSat(id++, timeFromSec(0));
                 //printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
 
 
-            if(station1.isSatelliteInRange(pos, ALTITUDE_PHASE1))
+            if(station1.isSatelliteInRange(pos, ALTITUDE)) {
+                printf("iteration %d\n", j);
                 count_gs1++;
-            if(station2.isSatelliteInRange(pos, ALTITUDE_PHASE1))
+                printf("%f %f %f \n\n", pos.x(), pos.y(), pos.z());
+            }
+            if(station2.isSatelliteInRange(pos, ALTITUDE))
+            {
+
+                printf("iteration %d\n", j);
                 count_gs2++;
+                printf("%f %f %f \n\n", pos.x(), pos.y(), pos.z());
+            }
 
             positionMatrix[i][j]=pos;
 
         }
-        printf("%d", count_gs1);
-        printf("\n\n");
-        printf("%d", count_gs2);
-        printf("\n\n");
-
     }
 
-    std::vector<Eigen::Vector3d> vect= station1.getSatellitesInRange(positionMatrix, ALTITUDE_PHASE1);
+    std::vector<Eigen::Vector3d> vect= station1.getSatellitesInRange();
     for(Eigen::Vector3d v: vect)
         printf("%f %f %f \n" , v.x(), v.y(), v.z());
 
     printf("\n\n\n");
 
-    vect= station2.getSatellitesInRange(positionMatrix, ALTITUDE_PHASE1);
-    for(Eigen::Vector3d v: vect)
+    std::vector<Eigen::Vector3d> vect2= station2.getSatellitesInRange();
+    for(Eigen::Vector3d v: vect2)
         printf("%f %f %f \n" , v.x(), v.y(), v.z());
+
+
 
     //  double dist = sqrt(pow(6889661.176128-6267388.183644,2.)+
     //                    pow(525408.625993-2880554.437000,2.)+
