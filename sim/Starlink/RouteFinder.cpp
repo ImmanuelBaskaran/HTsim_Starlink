@@ -45,7 +45,7 @@ double** get_dist_sat_conn_matrix(uint8_t** matrix)
 
 void dijkstra (uint8_t ** connectionMatrix, Satellite src)
 {
-    ConnectionMatrix* matrix = new ConnectionMatrix();
+/*    ConnectionMatrix* matrix = new ConnectionMatrix();
     connectionMatrix = matrix->get_connection_matrix();
     double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
 
@@ -66,11 +66,6 @@ void dijkstra (uint8_t ** connectionMatrix, Satellite src)
             if (!sptSet[v] && dist_matrix[u][v] != 0 && dist[u] != INT_MAX && dist[u] + dist_matrix[u][v] < dist[v])
                 dist[v] = dist[u] + dist_matrix[u][v];
         }
-    }
+    }*/
 }
 
-
-RouteFinder::RouteFinder(EventList &eventlist, const string &name, ConnectionMatrix *matrix)
-{
-
-}

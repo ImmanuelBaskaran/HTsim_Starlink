@@ -15,6 +15,7 @@ public:
     GroundStation(EventList &eventlist1,double lat, double lon);
     std::vector<Eigen::Vector3d> getSatellitesInRange(Eigen::Vector3d positionMatrix[24][66], double alt);
     bool isSatelliteInRange(Eigen::Vector3d satPos, double alt);
+    double GroundStation::toRadians(double degrees);
 private:
     double _lat, _lon;
 };

@@ -41,29 +41,6 @@ void exit_error(char* progr){
     cout << "Usage " << progr << " [UNCOUPLED(DEFAULT)|COUPLED_INC|FULLY_COUPLED|COUPLED_EPSILON] rate rtt" << endl;
     exit(1);
 }
-int getLinkFromFirstSat(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
-    for(int i = 0;i<l.size();i++){
-       // printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
-        if(l[i].first.first==p.first){
-            printf("This is going to return satellite %i\n",l[i].first.first);
-            return i;
-        }
-    }
-    abort();
-}
-
-int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
-    printf("I am looking for Test %i,%i\n",p.first,p.second);
-    for(int i = 0;i<l.size();i++){
-        //printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
-        if(l[i].first.first==p.first && l[i].first.second == p.second){
-            printf("This is going to return satellite %i\n",l[i].first.second);
-            return i;
-        }
-    }
-    abort();
-}
-
 
 
 int main(int argc, char **argv) {
@@ -258,6 +235,23 @@ int main(int argc, char **argv) {
 
 //     double extrastarttime = drand()*50;
 //     station2.connect(*route,station1,0);
+=======
+    std::vector<Eigen::Vector3d> vect= station1.getSatellitesInRange();
+    for(Eigen::Vector3d v: vect)
+        printf("%f %f %f \n" , v.x(), v.y(), v.z());
+
+    printf("\n\n\n");
+
+    std::vector<Eigen::Vector3d> vect2= station2.getSatellitesInRange();
+    for(Eigen::Vector3d v: vect2)
+        printf("%f %f %f \n" , v.x(), v.y(), v.z());
+
+
+
+    //  double dist = sqrt(pow(6889661.176128-6267388.183644,2.)+
+    //                    pow(525408.625993-2880554.437000,2.)+
+    //                    pow(395923.798076-567884.223235,2.));
+>>>>>>> 708cc73169cd8f091b7bb304f7b0fb9ce7d876d2
 
     // GO!
     //  while (eventlist.doNextEvent()) {
