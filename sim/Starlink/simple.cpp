@@ -34,6 +34,7 @@ int NUMFLOWS = 2;
 #define TCP_2 0
 
 #define RANDOM_BUFFER 3
+#define ALTITUDE_PHASE1 550000
 
 #define FEEDER_BUFFER 2000
 
@@ -102,6 +103,7 @@ int main(int argc, char **argv) {
 
     GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278);
     GroundStation station2 = GroundStation(eventlist,37.0902,95.7129);
+
 
     Satellite dummy = Satellite(1,1);
     Satellite dummy2 = Satellite(1,1);
@@ -172,22 +174,51 @@ int main(int argc, char **argv) {
 
 
     int id = 1;
-    for (int i = 0; i < 24; i++) {
-        OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), 550000, toRadians(i * 5.5));
-        for (int j = 0; j < SATS_PER_PLANE; j++) {
-            Vector3d pos = plane.getPosForSat(id++, timeFromSec(0));
-                printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+    int count_gs1=0;
+    int count_gs2=1;
+
+    Eigen::Vector3d positionMatrix[24][66];
+    for(int i=0; i<24;i++){
+        for(int j=0;j<66;j++) {
+            Eigen::Vector3d pos;
+            pos.x()=0;
+            pos.y()=0;
+            pos.z()=0;
+            positionMatrix[i][j] = pos;
         }
-        printf("\n\n");
     }
 
-    // ConnectionMatrix* matrix=new ConnectionMatrix();
-    // uint8_t** result= matrix->get_connection_matrix();
+    for (int i = 0; i < 24; i++) {
+        OrbitalPlane plane(i + 1, toRadians(i * 15.0), toRadians(53.0), ALTITUDE_PHASE1, toRadians(i * 5.5));
+        for (int j = 0; j < SATS_PER_PLANE; j++) {
+            Vector3d pos = plane.getPosForSat(id++, timeFromSec(0));
+                //printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
 
 
+            if(station1.isSatelliteInRange(pos, ALTITUDE_PHASE1))
+                count_gs1++;
+            if(station2.isSatelliteInRange(pos, ALTITUDE_PHASE1))
+                count_gs2++;
 
+            positionMatrix[i][j]=pos;
 
-    
+        }
+        printf("%d", count_gs1);
+        printf("\n\n");
+        printf("%d", count_gs2);
+        printf("\n\n");
+
+    }
+
+    std::vector<Eigen::Vector3d> vect= station1.getSatellitesInRange(positionMatrix, ALTITUDE_PHASE1);
+    for(Eigen::Vector3d v: vect)
+        printf("%f %f %f \n" , v.x(), v.y(), v.z());
+
+    printf("\n\n\n");
+
+    vect= station2.getSatellitesInRange(positionMatrix, ALTITUDE_PHASE1);
+    for(Eigen::Vector3d v: vect)
+        printf("%f %f %f \n" , v.x(), v.y(), v.z());
 
     //  double dist = sqrt(pow(6889661.176128-6267388.183644,2.)+
     //                    pow(525408.625993-2880554.437000,2.)+
@@ -195,7 +226,6 @@ int main(int argc, char **argv) {
 
     // printf("This is distance %f \n", dist/1000);
    
-
     // GO!
      while (eventlist.doNextEvent()) {
      }

@@ -38,14 +38,17 @@ bool GroundStation::isSatelliteInRange(Eigen::Vector3d satPos, double alt)
 
 }
 
-std::vector<Satellite> GroundStation::getSatellitesInRange(const vector<Satellite>& positionMatrix)
+std::vector<Eigen::Vector3d> GroundStation::getSatellitesInRange(Eigen::Vector3d positionMatrix[24][66], double alt)
 {
-    std::vector<Satellite> satellites;
-    /*for(Satellite satellite : positionMatrix)
-        if(isSatelliteInRange(satellite)) {
-            satellites.push_back(satellite);
-        }*/
-    return satellites;
+    std::vector<Eigen::Vector3d> satellitesPos;
+    for(int i=0;i<24;i++)
+        for(int j=0;j<66;j++){
+            Eigen::Vector3d pos= positionMatrix[i][j];
+                if(isSatelliteInRange(pos, alt)) {
+                    satellitesPos.push_back(pos);
+        }
+    }
+    return satellitesPos;
 }
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : CbrSrc(eventlist1,speedFromPktps(166)),
