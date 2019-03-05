@@ -21,22 +21,19 @@ double toRadian(double degrees){
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
-bool GroundStation::isSatelliteInRange(const Satellite& satellite)
+bool GroundStation::isSatelliteInRange(Satellite* sat)
 {
     Eigen::Vector3d gsCartCoords;
+    Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
     gsCartCoords.x()=EARTH_RADIUS*sin(_lat)*cos(_lon);
     gsCartCoords.y()=EARTH_RADIUS*sin(_lat)*sin(_lon);
     gsCartCoords.z()=EARTH_RADIUS*cos(_lat);
 
-    //the angle we are looking for is the angle between the vector difference (satellite, GS) and GS
-    Eigen::Vector3d diffVect;
-    diffVect = gsCartCoords - satellite.getPosition(_eventlist.now());
+    double distance = sqrt(pow((gsCartCoords.x()-satPos.x()),2)+pow((gsCartCoords.y()-satPos.y()),2)+pow((gsCartCoords.z()-satPos.z()),2));
 
-    //acos = arc cosine of x, expressed in radians
-    //.norm() = magnitude of vector
-    float angle=std::acos(diffVect.dot(gsCartCoords) / diffVect.norm() * gsCartCoords.norm());
-    if(angle<ANGLE_IN_RANGE && angle>ANGLE_IN_RANGE)
-          return true;
+    double distance_max = ALTITUDE/cos(ANGLE_IN_RANGE);
+    if(distance<distance_max)
+        return true;
     return false;
 
 }
@@ -61,4 +58,3 @@ GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : Cbr
 _lat(lat), _lon(lon){
 
 }
-
