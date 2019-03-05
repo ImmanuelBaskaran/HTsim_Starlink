@@ -1,3 +1,4 @@
+// -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-
 #include "OrbitalPlane.h"
 
 #include "config.h"
@@ -43,9 +44,9 @@ void exit_error(char* progr){
 }
 int getLinkFromFirstSat(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
     for(int i = 0;i<l.size();i++){
-       // printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
+        // printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
         if(l[i].first.first==p.first){
-            printf("This is going to return satellite %i\n",l[i].first.first);
+            // printf("This is going to return satellite %i\n",l[i].first.first);
             return i;
         }
     }
@@ -53,11 +54,11 @@ int getLinkFromFirstSat(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l)
 }
 
 int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
-    printf("I am looking for Test %i,%i\n",p.first,p.second);
+    // printf("I am looking for Test %i,%i\n",p.first,p.second);
     for(int i = 0;i<l.size();i++){
         //printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
         if(l[i].first.first==p.first && l[i].first.second == p.second){
-            printf("This is going to return satellite %i\n",l[i].first.second);
+            // printf("This is going to return satellite %i\n",l[i].first.second);
             return i;
         }
     }
@@ -176,7 +177,7 @@ int main(int argc, char **argv) {
     GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278);
     GroundStation station2 = GroundStation(eventlist,51.5074,0.1278);
 
-   // double extrastarttime = drand()*50;
+    // double extrastarttime = drand()*50;
     //station2.connect(*route,*cbrSink1,timeFromMs(extrastarttime));
 
     // Record the setup
@@ -184,7 +185,7 @@ int main(int argc, char **argv) {
     logfile.write("# pktsize="+ntoa(pktsize)+" bytes");
     logfile.write("# bottleneckrate1="+ntoa(speedAsPktps(SERVICE1))+" pkt/sec");
     logfile.write("# bottleneckrate2="+ntoa(speedAsPktps(SERVICE2))+" pkt/sec");
-  //  logfile.write("# buffer1="+ntoa((double)(testQueue._maxsize)/((double)pktsize))+" pkt");
+    //  logfile.write("# buffer1="+ntoa((double)(testQueue._maxsize)/((double)pktsize))+" pkt");
     //	logfile.write("# buffer2="+ntoa((double)(queue2._maxsize)/((double)pktsize))+" pkt");
     double rtt = timeAsSec(RTT1);
     logfile.write("# rtt="+ntoa(rtt));
@@ -208,15 +209,15 @@ int main(int argc, char **argv) {
     vector<pair<pair<int,int>,LaserLink>> list;
     for(int i =1;i<NUM_SATELLITES;i++){
         for(int j =1;j<NUM_SATELLITES;j++){
-         //   printf("%i ",test[i][j]);
+            //   printf("%i ",test[i][j]);
             if(test[i][j]==1){
-                printf("Elon musk says that sat %i connects to sat %i\n",i,j);
+                //printf("Elon musk says that sat %i connects to sat %i\n",i,j);
 
                 list.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*constellation.getSatByID(i-1),
-                        *constellation.getSatByID(j-1))));
+                                                                  *constellation.getSatByID(j-1))));
             }
         }
-       // printf("\n");
+        // printf("\n");
     }
 
     route = new route_t();
@@ -243,12 +244,17 @@ int main(int argc, char **argv) {
 
     int currSat = 1;
     int nextSat = 1506;
-
+    Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
+    // printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
+    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
     do{
         route->push_back(queues[currSat-1]);
         route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
         currSat=nextSat;
         nextSat = list[getLinkFromFirstSat(make_pair(nextSat,nextSat),list)].first.second;
+        Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
+        // printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+        printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
     } while (currSat/66!=0);
 
 
@@ -260,9 +266,8 @@ int main(int argc, char **argv) {
     station2.connect(*route,station1,0);
 
     // GO!
-     while (eventlist.doNextEvent()) {
-     }
-
+    while (eventlist.doNextEvent()) {
+    }
 }
 
 string ntoa(double n) {

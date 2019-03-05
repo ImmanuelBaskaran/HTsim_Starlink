@@ -18,7 +18,7 @@ int OrbitalPlane::satIdToIndex(int satId) const {
 }
 
 Satellite* OrbitalPlane::getSatByID(int satId) const {
-    return _satellites[satIdToIndex(satId)];
+    return _satellites[(satId)];
 }
 
 // Vector3d const OrbitalPlane::getPosForSat(int satId, simtime_picosec currentTime) {

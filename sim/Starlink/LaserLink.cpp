@@ -3,7 +3,7 @@
 #include <eigen3/Eigen/Dense>
 
 
-LaserLink::LaserLink(simtime_picosec delay1, EventList &eventlist1, const Satellite& sat1, const Satellite& sat2)
+LaserLink::LaserLink(simtime_picosec delay1, EventList &eventlist1, const Satellite sat1, const Satellite sat2)
         : Pipe(delay1, eventlist1), _sat1(sat1), _sat2(sat2) {
     double distance = getDistanceBetweenSatellitePair(_sat1,_sat2, eventlist1.now());
 
@@ -19,7 +19,8 @@ void LaserLink::doNextEvent() {
     Pipe::_delay = timeFromSec(distance / 299792458);
     //Pipe::_delay -= 1;
 
-    printf("%i\n",_sat1.getID());
+    // printf("%i\n",_sat1.getID());
+
 
     //Run regular behavior of Pipe
     Pipe::doNextEvent();
