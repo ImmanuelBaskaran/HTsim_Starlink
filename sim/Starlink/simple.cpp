@@ -21,6 +21,7 @@
 #include "LaserLink.h"
 #include "GroundStation.h"
 #include "Constellation.h"
+#include "RouteFinder.h"
 
 string ntoa(double n);
 string itoa(uint64_t n);
@@ -35,6 +36,8 @@ int NUMFLOWS = 2;
 #define TCP_2 0
 
 #define RANDOM_BUFFER 3
+
+#define ALTITUDE 550000
 
 #define FEEDER_BUFFER 2000
 
@@ -63,6 +66,10 @@ int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
         }
     }
     abort();
+}
+
+double toRadians(double degrees){
+    return (degrees * (M_PI/180));
 }
 
 
@@ -200,6 +207,14 @@ int main(int argc, char **argv) {
 
     Constellation constellation = Constellation(eventlist,"ElonMusk");
 
+    RouteFinder routeFinder= RouteFinder(eventlist, "ElonMusk", test);
+
+    Satellite* first= constellation.getSatByID(1);
+
+    routeFinder.dijkstra(*first);
+
+    double** matrix = routeFinder.getDistMatrix();
+
     Queue* queues[NUM_SATELLITES];
 
     for(int i =0;i<NUM_SATELLITES;i++){
@@ -221,6 +236,8 @@ int main(int argc, char **argv) {
     }
 
     route = new route_t();
+
+
 
     Queue linkUp(SERVICE1, BUFFER1, eventlist, nullptr);
     linkUp.setName("linkUp");

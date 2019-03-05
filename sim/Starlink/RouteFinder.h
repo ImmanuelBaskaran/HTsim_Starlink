@@ -7,17 +7,21 @@
 #include <eventlist.h>
 #include "ConnectionMatrix.h"
 
-class RouteFinder : public EventSource {
-
+class RouteFinder{
     public:
-        RouteFinder(EventList& eventlist, const string& name, ConnectionMatrix* matrix) ;
-        virtual void doNextEvent() = 0;
-        bool* dijkstra (uint8_t ** connectionMatrix, Satellite src);
-        double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2);
-        inline EventList& eventlist() const {return _eventlist;}
-        double** get_dist_sat_conn_matrix(uint8_t** matrix);
+        RouteFinder(EventList& eventlist, const string& name, uint8_t **matrix);
+        //virtual void doNextEvent() = 0;
+        void RouteFinder::dijkstra(Satellite src);
+        double RouteFinder::getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2);
+        //inline EventList& eventlist() const {return _eventlist;}
+        double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix);
+        double RouteFinder::toRadians(double degrees);
+        double** RouteFinder::getDistMatrix();
+        int RouteFinder::minDistance(double dist[], bool sptSet[]);
     private:
-        ConnectionMatrix* _matrix;
+        uint8_t** _matrix;
+        EventList _eventlist;
+        double** dist_matrix;
 };
 
 
