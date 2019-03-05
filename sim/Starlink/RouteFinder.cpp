@@ -9,6 +9,7 @@
 RouteFinder::RouteFinder(EventList &eventlist, const string &name, uint8_t **matrix)
 {
     _eventlist = eventlist;
+    _matrix= matrix;
     printf("");
 }
 
@@ -39,7 +40,7 @@ double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix)
         for (int j = 0; j < NUM_SATELLITES; j++) {
             int jPlaneIndex = j % 24;
             dist_matrix[i] = new double[NUM_SATELLITES];
-            if (_matrix[i][j] == 1) {
+            if (*(*(_matrix+i*66)+j) == (uint8_t)1) {               //seg fault
                 Satellite* sat_i = planes[iPlaneIndex].getSatByID(i);
                 Satellite* sat_j = planes[jPlaneIndex].getSatByID(j);
                 dist_matrix[i][j] = getDistanceBetweenSatellitePair(*sat_i, *sat_j);
