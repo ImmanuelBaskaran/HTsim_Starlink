@@ -8,13 +8,14 @@
 #include "network.h"
 #include "cbr.h"
 #include "Satellite.h"
+#include <Eigen/Geometry>
 
 
 class GroundStation: public CbrSink, public CbrSrc {
 public:
     GroundStation(EventList &eventlist1,double lat, double lon);
-    vector<Satellite> getSatellitesInRange(const vector<Satellite>& positionMatrix);
-    bool isSatelliteInRange(const Satellite& satellite);
+    vector<Satellite> getSatellitesInRange(const vector<Satellite>& positionMatrix, simtime_picosec currentTime);
+    bool isSatelliteInRange(const Satellite& satellite, simtime_picosec currentTime);
 private:
     double _lat, _lon;
 };

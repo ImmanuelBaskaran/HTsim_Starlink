@@ -31,7 +31,7 @@ Constellation::doNextEvent() {
     eventlist().sourceIsPendingRel(*this, timeFromMs(10));
     for (int i = 0; i < 24; i++) {
         for (int j = 0; j < SATS_PER_PLANE; j++) {
-           Eigen::Vector3f newPos = _planes[i]->getPosForSat(j,eventlist().now());
+           Eigen::Vector3d newPos = _planes[i]->getPosForSat(j,eventlist().now());
             _planes[i]->getSatByID(j)->setPosition(newPos);
         }
     }
