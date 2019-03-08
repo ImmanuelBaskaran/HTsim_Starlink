@@ -4,6 +4,11 @@
 #include "network.h"
 #include "OrbitalPlane.h"
 #include "GroundStation.h"
+<<<<<<< HEAD
+=======
+
+#define NUM_SATELLITES 1584
+>>>>>>> 941d77a14eea677ad2ab2afd21311e55605578be
 
 double RouteFinder::getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2){
     Eigen::Vector3d position1 = satellite1.getPosition(_eventlist.now());
@@ -50,6 +55,16 @@ double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix) {
             dist_matrix[i][j] = INFINITY;
         }
     }
+
+    for(int i=NUM_SATELLITES;i<NUM_SATELLITES+1;i++) {
+        for(int j=0;j<NUM_SATELLITES;j++) {
+            int jPlaneIndex = j % 24;
+            if(source.isSatelliteInRange(planes[jPlaneIndex].getSatByID(j))){
+                dist_matrix[i][j]=-300;
+            }
+        }
+    }
+
     return dist_matrix;
 }
 
@@ -65,8 +80,14 @@ int minDistance(double dist[], bool sptSet[]) {
     return min_index;
 }
 
+<<<<<<< HEAD
 double* RouteFinder::dijkstra (uint8_t ** connectionMatrix, const GroundStation& src) {
     double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
+=======
+bool* RouteFinder::dijkstra (uint8_t ** connectionMatrix, GroundStation src)
+{
+    double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix,src);
+>>>>>>> 941d77a14eea677ad2ab2afd21311e55605578be
 
     delete[] _dist;
 
@@ -77,7 +98,11 @@ double* RouteFinder::dijkstra (uint8_t ** connectionMatrix, const GroundStation&
         _dist[i] = INT_MAX;
         sptSet[i] = false;
     }
+<<<<<<< HEAD
     _dist[src.getId()] = 0;
+=======
+    dist[NUM_SATELLITES] = 0;
+>>>>>>> 941d77a14eea677ad2ab2afd21311e55605578be
 
     for(int count =0; count<DIST_MATRIX_SIZE-1; count++) {
         int u = minDistance(_dist, sptSet); //pick minimum distance link not yet included to sptSet

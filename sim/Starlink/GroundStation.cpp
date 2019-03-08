@@ -25,7 +25,7 @@ double toRadian(double degrees){
 bool GroundStation::isSatelliteInRange(const Satellite& sat)
 {
     Eigen::Vector3d gsCartCoords;
-    Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
+    Eigen::Vector3d satPos = sat->getPosition(_eventlist.now());
     gsCartCoords.x()=EARTH_RADIUS*sin(_lat)*cos(_lon);
     gsCartCoords.y()=EARTH_RADIUS*sin(_lat)*sin(_lon);
     gsCartCoords.z()=EARTH_RADIUS*cos(_lat);

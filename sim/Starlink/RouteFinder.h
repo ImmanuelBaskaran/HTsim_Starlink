@@ -21,7 +21,7 @@ class RouteFinder : public EventSource {
         double* dijkstra (uint8_t ** connectionMatrix, const GroundStation& src);
         double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2);
         inline EventList& eventlist() const {return _eventlist;}
-        double** get_dist_sat_conn_matrix(uint8_t** matrix);
+        double** get_dist_sat_conn_matrix(uint8_t** matrix,GroundStation station);
     private:
         ConnectionMatrix* _matrix;
         const Constellation& _constellation;
