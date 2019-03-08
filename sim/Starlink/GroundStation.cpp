@@ -7,21 +7,22 @@
 #define EARTH_RADIUS 6371000.0
 #define ANGLE_IN_RANGE 0.92
 #define ALTITUDE 550000
+#define NUM_SATELLITES 1584
 #include <math.h>
 #include <cmath>
 #include <sstream>
 #include <string.h>
 #include <strstream>
 #include <iostream>
-#include "OrbitalPlane.h"
+#include "Constellation.h"
 
 double toRadian(double degrees){
     return (degrees * (M_PI/180));
 }
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
-// as lat,long, earth radius
-bool GroundStation::isSatelliteInRange(Satellite* sat)
+
+bool GroundStation::isSatelliteInRange(const Satellite& sat)
 {
     Eigen::Vector3d gsCartCoords;
     Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
@@ -38,23 +39,19 @@ bool GroundStation::isSatelliteInRange(Satellite* sat)
 
 }
 
-std::vector<Eigen::Vector3d> GroundStation::getSatellitesInRange(Eigen::Vector3d positionMatrix[24][66], double alt)
+std::vector<Satellite*> GroundStation::getSatellitesInRange(const Constellation& constellation)
 {
-    std::vector<Eigen::Vector3d> satellitesPos;
-
-    int id = 1;
-    for (int i = 0; i < 24; i++) {
-        OrbitalPlane plane(i + 1, toRadian(i * 15.0), toRadian(53.0), ALTITUDE, toRadian(i * 5.5));
-        for (int j = 0; j < 66; j++) {
-            Satellite* sat = plane.getSatByID(id++);
-            if (isSatelliteInRange(*sat))
-                satellitesPos.push_back(sat->getPosition(_eventlist.now()));
+    _satsInRange.clear();
+    for (int i = 1; i <= NUM_SATELLITES; i++) {
+        Satellite* sat = constellation.getSatByID(i);
+        if (isSatelliteInRange(*sat)) {
+            _satsInRange.push_back(sat);
         }
     }
-    return satellitesPos;
+    return _satsInRange;
 }
 
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : CbrSrc(eventlist1,speedFromPktps(166)),
-_lat(lat), _lon(lon){
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id) : CbrSrc(eventlist1,speedFromPktps(166)),
+_lat(lat), _lon(lon), _id(id){
 
 }

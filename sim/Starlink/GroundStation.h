@@ -12,11 +12,15 @@
 
 class GroundStation: public CbrSink, public CbrSrc {
 public:
-    GroundStation(EventList &eventlist1,double lat, double lon);
-    std::vector<Eigen::Vector3d> getSatellitesInRange(Eigen::Vector3d positionMatrix[24][66], double alt);
-    bool GroundStation::isSatelliteInRange(Satellite* sat);
+    GroundStation(EventList &eventlist1,double lat, double lon, int id);
+    std::vector<Satellite*> getSatellitesInRange(const Constellation& constellation);
+    bool isSatelliteInRange(const Satellite& sat);
+    Eigen::Vector3d getPosition();
+    int getId() const;
 private:
+    int _id;
     double _lat, _lon;
+    std::vector<Satellite*> _satsInRange;
 };
 
 
