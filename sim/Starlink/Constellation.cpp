@@ -13,10 +13,10 @@ double toRad(double degrees){
 Constellation::Constellation(EventList& eventlist, const string& name): EventSource(eventlist,name) {
     int id = 1;
     for (int i = 0; i < 24; i++) {
-        _planes[i] = new OrbitalPlane(i + 1, i * toRad(15), toRad(53.0), 550000, i * toRad(5.5));
+        _planes[i] = new OrbitalPlane(i + 1, i * toRad(15), toRad(53.0), 550000, i * toRad(195.0/66.0));
         for (int j = 0; j < SATS_PER_PLANE; j++) {
             Eigen::Vector3d pos = _planes[i]->getSatByID(j)->getPosition(0);
-            printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
+            // printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
         }
     }
 }

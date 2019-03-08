@@ -31,15 +31,15 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         else
             behind_same_orb_plane = satellite - 1;
 
-        if(satellite <= SATELLITES_PER_PLANE){
-            if(satellite <= ORBITAL_PLANES){
-                behind_diff_orb_plane = (NUM_SATELLITES - ORBITAL_PLANES) + satellite;
-            }
-            else{
-                behind_diff_orb_plane = (NUM_SATELLITES - SATELLITES_PER_PLANE) + (satellite - ORBITAL_PLANES);
-            }
+            if(satellite <= SATELLITES_PER_PLANE){
+                if(satellite < 13){
+                    behind_diff_orb_plane = (NUM_SATELLITES - 13) + satellite+1;
+                }
+                else{
+                    behind_diff_orb_plane = (NUM_SATELLITES - SATELLITES_PER_PLANE) + (satellite - 13)+1;
+                }
 
-        }
+            }
         else{
 
             if(satellite % SATELLITES_PER_PLANE == 0){
