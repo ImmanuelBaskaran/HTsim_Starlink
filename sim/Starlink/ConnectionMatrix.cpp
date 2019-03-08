@@ -32,7 +32,13 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
             behind_same_orb_plane = satellite - 1;
 
         if(satellite <= SATELLITES_PER_PLANE){
-            behind_diff_orb_plane = NUM_SATELLITES - SATELLITES_PER_PLANE + satellite-13;
+            if(satellite <= ORBITAL_PLANES){
+                behind_diff_orb_plane = (NUM_SATELLITES - ORBITAL_PLANES) + satellite;
+            }
+            else{
+                behind_diff_orb_plane = (NUM_SATELLITES - SATELLITES_PER_PLANE) + (satellite - ORBITAL_PLANES);
+            }
+
         }
         else{
 
@@ -73,5 +79,16 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         //    matrix[ahead_diff_orb_plane][satellite] = 1;
 
     }
+    // int i =1;
+    // do{
+    //     for(int j = 1; j<1585; j++){
+    //         if(matrix[i][j] == 1){
+    //             printf("%d connects to %d\n", i, j);
+    //             i = j;
+
+    //             break;
+    //         }
+    //     }
+    // }while(i != 1);
     return matrix;
 }

@@ -3,6 +3,7 @@
 #include "ConnectionMatrix.h"
 #include "network.h"
 #include "OrbitalPlane.h"
+#include "GroundStation.h"
 
 #define NUM_SATELLITES 1584
 
@@ -18,10 +19,10 @@ double toRadians(double degrees){
 
 //construct distances matrix
 
-double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix)
+double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix,GroundStation source)
 {
     double** dist_matrix = nullptr;
-    dist_matrix = new double*[NUM_SATELLITES];
+    dist_matrix = new double*[NUM_SATELLITES+2];
 
     OrbitalPlane planes[24];
     for (int i = 0; i < 24; i++) {
@@ -42,6 +43,16 @@ double** RouteFinder::get_dist_sat_conn_matrix(uint8_t** matrix)
                 dist_matrix[i][j]=INFINITY;
         }
     }
+
+    for(int i=NUM_SATELLITES;i<NUM_SATELLITES+1;i++) {
+        for(int j=0;j<NUM_SATELLITES;j++) {
+            int jPlaneIndex = j % 24;
+            if(source.isSatelliteInRange(planes[jPlaneIndex].getSatByID(j))){
+                dist_matrix[i][j]=-300;
+            }
+        }
+    }
+
     return dist_matrix;
 }
 
@@ -58,9 +69,9 @@ int minDistance(double dist[], bool sptSet[])
     return min_index;
 }
 
-bool* RouteFinder::dijkstra (uint8_t ** connectionMatrix, Satellite src)
+bool* RouteFinder::dijkstra (uint8_t ** connectionMatrix, GroundStation src)
 {
-    double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix);
+    double** dist_matrix = get_dist_sat_conn_matrix(connectionMatrix,src);
 
     double dist[NUM_SATELLITES];   //output, will hold the shortest distance from src to i, should to to sink
     bool sptSet[NUM_SATELLITES];    //shortest path tree set, keeps track of satellite links included
@@ -70,7 +81,7 @@ bool* RouteFinder::dijkstra (uint8_t ** connectionMatrix, Satellite src)
         dist[i] = INT_MAX;
         sptSet[i] = false;
     }
-    dist[src.getID()] = 0;
+    dist[NUM_SATELLITES] = 0;
 
     for(int count =0; count<NUM_SATELLITES-1; count++) {
         int u = minDistance(dist, sptSet); //pick minimum distance link not yet included to sptSet

@@ -50,7 +50,7 @@ int getLinkFromFirstSat(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l)
             return i;
         }
     }
-    abort();
+
 }
 
 int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
@@ -62,7 +62,7 @@ int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
             return i;
         }
     }
-    abort();
+
 }
 
 
@@ -243,19 +243,34 @@ int main(int argc, char **argv) {
 
 
     int currSat = 1;
-    int nextSat = 1506;
+    int nextSat;
     Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
-    // printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
-    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+    printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
+    // printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+    for(int j = 1; j<1585; j++){
+        if(test[currSat][j] == 1){
+            // printf("%d connects to %d\n", currSat, j);
+            nextSat = j;
+            break;
+        }
+    }
     do{
         route->push_back(queues[currSat-1]);
         route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
+        int currsatTemp = currSat;
         currSat=nextSat;
-        nextSat = list[getLinkFromFirstSat(make_pair(nextSat,nextSat),list)].first.second;
+        for(int j = 1; j<1585; j++){
+            if(test[currSat][j] == 1){
+                // printf("%d connects to %d\n", currSat, j);
+                nextSat = j;
+                break;
+            }
+        }
+
         Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
-        // printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
-        printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
-    } while (currSat/66!=0);
+        printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+        //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+    } while (currSat != 1);
 
 
     route->push_back(&linkDown);

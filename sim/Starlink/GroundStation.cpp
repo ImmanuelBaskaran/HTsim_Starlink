@@ -24,7 +24,7 @@ double toRadian(double degrees){
 bool GroundStation::isSatelliteInRange(Satellite* sat)
 {
     Eigen::Vector3d gsCartCoords;
-    Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
+    Eigen::Vector3d satPos = sat->getPosition(_eventlist.now());
     gsCartCoords.x()=EARTH_RADIUS*sin(_lat)*cos(_lon);
     gsCartCoords.y()=EARTH_RADIUS*sin(_lat)*sin(_lon);
     gsCartCoords.z()=EARTH_RADIUS*cos(_lat);
@@ -47,7 +47,7 @@ std::vector<Eigen::Vector3d> GroundStation::getSatellitesInRange(Eigen::Vector3d
         OrbitalPlane plane(i + 1, toRadian(i * 15.0), toRadian(53.0), ALTITUDE, toRadian(i * 5.5));
         for (int j = 0; j < 66; j++) {
             Satellite* sat = plane.getSatByID(id++);
-            if (isSatelliteInRange(*sat))
+            if (isSatelliteInRange(sat))
                 satellitesPos.push_back(sat->getPosition(_eventlist.now()));
         }
     }
