@@ -12,10 +12,13 @@
 class Constellation : public EventSource{
     private:
         OrbitalPlane* _planes[24];
+        GroundStation* _groundStations[2];
     public:
         Constellation(EventList& eventlist, const string& name);
         void doNextEvent();
-        Satellite* getSatByID(int satId);
+        Satellite* getSatByID(int satId) const;
+        GroundStation* getGroundStation(int id) const;
+        Eigen::Vector3d getSatPosByIDAtTime(int satId,simtime_picosec time);
 };
 
 

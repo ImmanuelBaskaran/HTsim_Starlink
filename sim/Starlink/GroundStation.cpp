@@ -1,22 +1,33 @@
 #include "GroundStation.h"
 #include "Satellite.h"
 #include <eigen3/Eigen/Dense>
-#include <Eigen/Geometry>
-#define EARTH_RADIUS 6371000
-#define ANGLE_IN_RANGE 0.76
+
+#define EARTH_RADIUS 6371000.0
+#define ANGLE_IN_RANGE 0.92
+#define ALTITUDE 550000
+#define NUM_SATELLITES 1584
+
 #include <math.h>
 #include <cmath>
+#include <sstream>
+#include <string.h>
+#include <strstream>
+#include <iostream>
+#include "Constellation.h"
+
+double toRadian(double degrees){
+    return (degrees * (M_PI/180));
+}
 
 using namespace Eigen;
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
-bool GroundStation::isSatelliteInRange(const Satellite& satellite, simtime_picosec currentTime) 
+bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) 
 {
+   Vector3d satPos = sat->getPosition(_eventlist.now());
    Vector3d startPosition(EARTH_RADIUS, 0.0, 0.0);
-    // gsCartCoords.x()=EARTH_RADIUS*sin(_lat)*cos(_lon);
-    // gsCartCoords.y()=EARTH_RADIUS*sin(_lat)*sin(_lon);
-    // gsCartCoords.z()=EARTH_RADIUS*cos(_lat);
+ 
 
     Vector3d gsCartCoords;
 
@@ -29,32 +40,30 @@ bool GroundStation::isSatelliteInRange(const Satellite& satellite, simtime_picos
     gsCartCoords = m3 * m2 * m1 * startPosition;
 
 
+    double distance = sqrt(pow((gsCartCoords.x()-satPos.x()),2)+pow((gsCartCoords.y()-satPos.y()),2)+pow((gsCartCoords.z()-satPos.z()),2));
 
-    //the angle we are looking for is the angle between the vector difference (satellite, GS) and GS
-    Vector3d diffVect;
-    diffVect = gsCartCoords - satellite.getPosition();
 
-    //acos = arc cosine of x, expressed in radians
-    //.norm() = magnitude of vector
-    float angle=std::acos(diffVect.dot(gsCartCoords) / diffVect.norm() * gsCartCoords.norm());
-    if(angle<ANGLE_IN_RANGE && angle>ANGLE_IN_RANGE)
-          return true;
+    double distance_max = ALTITUDE/cos(ANGLE_IN_RANGE);
+    if(distance<distance_max)
+        return true;
     return false;
+
+
 }
 
-
-std::vector<Satellite> GroundStation::getSatellitesInRange(const vector<Satellite>& positionMatrix, simtime_picosec currentTime)
+std::vector<Satellite*> GroundStation::getSatellitesInRange(const Constellation& constellation, simtime_picosec currentTime)
 {
-    std::vector<Satellite> satellites;
-    for(Satellite satellite : positionMatrix)
-        if(isSatelliteInRange(satellite,currentTime)) {
-            satellites.push_back(satellite);
+    _satsInRange.clear();
+    for (int i = 1; i <= NUM_SATELLITES; i++) {
+        Satellite* sat = constellation.getSatByID(i);
+        if (isSatelliteInRange(*sat, currentTime)) {
+            _satsInRange.push_back(sat);
         }
-    return satellites;
+    }
+    return _satsInRange;
 }
 
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon) : CbrSrc(eventlist1,speedFromPktps(166)),
-_lat(lat), _lon(lon){
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id) : CbrSrc(eventlist1,speedFromPktps(166)),
+_lat(lat), _lon(lon), _id(id){
 
 }
-

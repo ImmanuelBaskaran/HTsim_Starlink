@@ -3,9 +3,8 @@
 #include <Eigen/Geometry>
 
 #define SATS_PER_PLANE 66
-#define EARTH_RADIUS 6371000
 
-using namespace Eigen;
+// using namespace Eigen;
 
 class OrbitalPlane {
     private:
@@ -18,7 +17,8 @@ class OrbitalPlane {
         int satIdToIndex(int satId) const;
     public:
         OrbitalPlane(int id, double raan, double inclination, double satAltitude, double firstSatOffset);
-        Eigen::Vector3d getPosForSat(int satId, simtime_picosec currentTime) const;
+        OrbitalPlane() {}
         Satellite* getSatByID(int satId) const;
+        // Eigen::Vector3d const getPosForSat(int satId, simtime_picosec currentTime);
 };
 

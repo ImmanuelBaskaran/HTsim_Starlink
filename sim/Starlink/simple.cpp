@@ -44,25 +44,25 @@ void exit_error(char* progr){
 }
 int getLinkFromFirstSat(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
     for(int i = 0;i<l.size();i++){
-       // printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
+        // printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
         if(l[i].first.first==p.first){
-            printf("This is going to return satellite %i\n",l[i].first.first);
+            // printf("This is going to return satellite %i\n",l[i].first.first);
             return i;
         }
     }
-    abort();
+
 }
 
 int getLinkFromFirst(pair<int,int> p,vector<pair<pair<int,int>,LaserLink>> l){
-    printf("I am looking for Test %i,%i\n",p.first,p.second);
+    // printf("I am looking for Test %i,%i\n",p.first,p.second);
     for(int i = 0;i<l.size();i++){
         //printf("Test %i,%i\n",l[i].first.first,l[i].first.second);
         if(l[i].first.first==p.first && l[i].first.second == p.second){
-            printf("This is going to return satellite %i\n",l[i].first.second);
+            // printf("This is going to return satellite %i\n",l[i].first.second);
             return i;
         }
     }
-    abort();
+
 }
 
 
@@ -174,10 +174,10 @@ int main(int argc, char **argv) {
     logfile.addLogger(loggerSimple);
     route_t* route;
 
-    GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278);
-    GroundStation station2 = GroundStation(eventlist,51.5074,0.1278);
+    GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278, 0);
+    GroundStation station2 = GroundStation(eventlist,51.5074,0.1278, 1);
 
-   // double extrastarttime = drand()*50;
+    // double extrastarttime = drand()*50;
     //station2.connect(*route,*cbrSink1,timeFromMs(extrastarttime));
 
     // Record the setup
@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
     logfile.write("# pktsize="+ntoa(pktsize)+" bytes");
     logfile.write("# bottleneckrate1="+ntoa(speedAsPktps(SERVICE1))+" pkt/sec");
     logfile.write("# bottleneckrate2="+ntoa(speedAsPktps(SERVICE2))+" pkt/sec");
-  //  logfile.write("# buffer1="+ntoa((double)(testQueue._maxsize)/((double)pktsize))+" pkt");
+    //  logfile.write("# buffer1="+ntoa((double)(testQueue._maxsize)/((double)pktsize))+" pkt");
     //	logfile.write("# buffer2="+ntoa((double)(queue2._maxsize)/((double)pktsize))+" pkt");
     double rtt = timeAsSec(RTT1);
     logfile.write("# rtt="+ntoa(rtt));
@@ -209,15 +209,15 @@ int main(int argc, char **argv) {
     vector<pair<pair<int,int>,LaserLink>> list;
     for(int i =1;i<NUM_SATELLITES;i++){
         for(int j =1;j<NUM_SATELLITES;j++){
-         //   printf("%i ",test[i][j]);
+            //   printf("%i ",test[i][j]);
             if(test[i][j]==1){
-                printf("Elon musk says that sat %i connects to sat %i\n",i,j);
+                //printf("Elon musk says that sat %i connects to sat %i\n",i,j);
 
                 list.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*constellation.getSatByID(i-1),
-                        *constellation.getSatByID(j-1))));
+                                                                  *constellation.getSatByID(j-1))));
             }
         }
-       // printf("\n");
+        // printf("\n");
     }
 
     route = new route_t();
@@ -242,15 +242,69 @@ int main(int argc, char **argv) {
     route->push_back(pipeup);
 
 
-    int currSat = 1;
-    int nextSat = 1506;
+    for(int i = 1; i <= 66; i++){
+        int currSat = i;
+        int nextSat;
+            Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
+            printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
+        //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+        for(int j = 1; j<1585; j++){
+                if(test[currSat][j] == 1){
+                    // printf("%d connects to %d\n", currSat, j);
+                    nextSat = j;
+                    break;
+                }
+            }
+        do{
+            route->push_back(queues[currSat-1]);
+            route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
+            int currsatTemp = currSat;
+            currSat=nextSat;
+            for(int j = 1; j<1585; j++){
+                if(test[currSat][j] == 1){
+                    // printf("%d connects to %d\n", currSat, j);
+                    nextSat = j;
+                    break;
+                }
+            }
 
-    do{
-        route->push_back(queues[currSat-1]);
-        route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
-        currSat=nextSat;
-        nextSat = list[getLinkFromFirstSat(make_pair(nextSat,nextSat),list)].first.second;
-    } while (currSat/66!=0);
+            Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition(0);
+            printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+        //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+        } while (currSat != i);
+        printf("\n\n");
+    }
+
+
+    // int currSat = 1;
+    // int nextSat;
+    //     Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition();
+    //     printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
+    // //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+    //    for(int j = 1; j<1585; j++){
+    //         if(test[currSat][j] == 1){
+    //             // printf("%d connects to %d\n", currSat, j);
+    //             nextSat = j;
+    //             break;
+    //         }
+    //     }
+    // do{
+    //     route->push_back(queues[currSat-1]);
+    //     route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
+    //     int currsatTemp = currSat;
+    //     currSat=nextSat;
+    //     for(int j = 1; j<1585; j++){
+    //         if(test[currSat][j] == 1){
+    //             // printf("%d connects to %d\n", currSat, j);
+    //             nextSat = j;
+    //             break;
+    //         }
+    //     }
+
+    //     Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition();
+    //     printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
+    // //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
+    // } while (currSat != 1);
 
 
     route->push_back(&linkDown);
@@ -261,8 +315,8 @@ int main(int argc, char **argv) {
     station2.connect(*route,station1,0);
 
     // GO!
-     while (eventlist.doNextEvent()) {
-     }
+    while (eventlist.doNextEvent()) {
+    }
 }
 
 string ntoa(double n) {
@@ -275,4 +329,3 @@ string itoa(uint64_t n) {
     s << n;
     return s.str();
 }
-
