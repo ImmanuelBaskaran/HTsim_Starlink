@@ -1,10 +1,11 @@
 #pragma once
+#include "Satellite.h"
 
 class ConnectionMatrix {
 public:
     ConnectionMatrix();
     ~ConnectionMatrix();
-    uint8_t ** get_connection_matrix();
+    bool areSatellitesConnected(const Satellite& satA, const Satellite& satB) const;
 private:
     uint8_t ** _matrix;
 };

@@ -5,21 +5,10 @@
 #include "StarlinkLib.h"
 
 ConnectionMatrix::ConnectionMatrix(){
-    _matrix = new uint8_t *[1585];
-    for(int i=1; i<1585;i++){
-        _matrix[i] = new uint8_t[1585];
+    _matrix = new uint8_t *[NUM_SATELLITES + 1];
+    for(int i=1; i<=NUM_SATELLITES;i++){
+        _matrix[i] = new uint8_t[NUM_SATELLITES + 1];
     }
-}
-
-ConnectionMatrix::~ConnectionMatrix() {
-    for(int i=1; i<1585;i++) {
-        delete[] _matrix[i];
-    }
-    delete[] _matrix;
-}
-
-uint8_t **  ConnectionMatrix::get_connection_matrix()
-{
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
 
         int ahead_same_orb_plane;
@@ -85,5 +74,15 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         //    matrix[ahead_diff_orb_plane][satellite] = 1;
 
     }
-    return _matrix;
+}
+
+ConnectionMatrix::~ConnectionMatrix() {
+    for(int i=1; i<=NUM_SATELLITES;i++) {
+        delete[] _matrix[i];
+    }
+    delete[] _matrix;
+}
+
+bool ConnectionMatrix::areSatellitesConnected(const Satellite& satA, const Satellite& satB) const {
+    return (_matrix[satA.getID() - 1][satB.getID() - 1] == 1);
 }
