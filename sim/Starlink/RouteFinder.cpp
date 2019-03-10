@@ -16,6 +16,7 @@ double RouteFinder::getDistanceBetweenSatellitePair(const Satellite& satellite1,
 
 void RouteFinder::updateDistMatrix(uint8_t** matrix) {
     for(int i=0;i<NUM_SATELLITES;i++) {
+        // Distance between linked satellites
         for (int j = 0; j < NUM_SATELLITES; j++) {
             if (matrix[i][j] == 1) {
                 Satellite* sat_i = _constellation.getSatByID(i + 1);
@@ -24,18 +25,29 @@ void RouteFinder::updateDistMatrix(uint8_t** matrix) {
             } else
                 _distMatrix[i][j] = INT_MAX;
         }
+        // Distance between satellites and ground stations
         for (int j = NUM_SATELLITES; j < DIST_MATRIX_SIZE; j++) {
             Satellite* sat = _constellation.getSatByID(i + 1);
             GroundStation* gst = _constellation.getGroundStation(j + 1);
-            _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+            if (gst->isSatelliteInRange(*sat, _eventlist.now())) {
+                _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+            } else {
+                _distMatrix[i][j] = INT_MAX;    
+            }
         }
     }
     for (int i = NUM_SATELLITES; i < DIST_MATRIX_SIZE; i++) {
+        // Distance between satellites and ground stations
         for (int j = 0; j < NUM_SATELLITES; j++) {
             Satellite* sat = _constellation.getSatByID(j + 1);
             GroundStation* gst = _constellation.getGroundStation(i + 1);
-            _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+            if (gst->isSatelliteInRange(*sat, _eventlist.now())) {
+                _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+            } else {
+                _distMatrix[i][j] = INT_MAX;    
+            }
         }
+        // Distance between ground stations (infinite)
         for (int j = NUM_SATELLITES; j < DIST_MATRIX_SIZE; j++) {
             _distMatrix[i][j] = INT_MAX;
         }
@@ -92,7 +104,7 @@ std::vector<int> RouteFinder::dijkstra (uint8_t ** connectionMatrix, const Groun
         sptSet[i] = false;
     }
 
-    // `src` has no parent node and zero cost
+    // `src` has no parent node (-1) and zero cost
     dist[src.getId() - 1] = 0;
     parent[src.getId() - 1] = -1;
 
@@ -106,7 +118,7 @@ std::vector<int> RouteFinder::dijkstra (uint8_t ** connectionMatrix, const Groun
             }
         }
     }
-    return extractPath(parent, dest.getId());
+    return extractPath(parent, dest.getId() - 1);
 }
 
 
