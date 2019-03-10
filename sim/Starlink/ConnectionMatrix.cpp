@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "ConnectionMatrix.h"
+#include "StarlinkLib.h"
 
 ConnectionMatrix::ConnectionMatrix(){
     _matrix = new uint8_t *[1585];
@@ -26,46 +27,46 @@ uint8_t **  ConnectionMatrix::get_connection_matrix()
         int ahead_diff_orb_plane;
         int behind_diff_orb_plane;
 
-        if (satellite % SATELLITES_PER_PLANE == 0)
-            ahead_same_orb_plane = satellite - (SATELLITES_PER_PLANE - 1);
+        if (satellite % NUM_SATS_PER_PLANE == 0)
+            ahead_same_orb_plane = satellite - (NUM_SATS_PER_PLANE - 1);
         else
             ahead_same_orb_plane = satellite + 1;
 
-        if (satellite % SATELLITES_PER_PLANE == 1)
-            behind_same_orb_plane = satellite + (SATELLITES_PER_PLANE-1);
+        if (satellite % NUM_SATS_PER_PLANE == 1)
+            behind_same_orb_plane = satellite + (NUM_SATS_PER_PLANE-1);
         else
             behind_same_orb_plane = satellite - 1;
 
-            if(satellite <= SATELLITES_PER_PLANE){
+            if(satellite <= NUM_SATS_PER_PLANE){
                 if(satellite < 13){
                     behind_diff_orb_plane = (NUM_SATELLITES - 13) + satellite+1;
                 }
                 else{
-                    behind_diff_orb_plane = (NUM_SATELLITES - SATELLITES_PER_PLANE) + (satellite - 13)+1;
+                    behind_diff_orb_plane = (NUM_SATELLITES - NUM_SATS_PER_PLANE) + (satellite - 13)+1;
                 }
 
             }
         else{
 
-            if(satellite % SATELLITES_PER_PLANE == 0){
-                behind_diff_orb_plane = (satellite - (2*SATELLITES_PER_PLANE)) + 1;
+            if(satellite % NUM_SATS_PER_PLANE == 0){
+                behind_diff_orb_plane = (satellite - (2*NUM_SATS_PER_PLANE)) + 1;
             }
             else{
-                behind_diff_orb_plane = satellite - (SATELLITES_PER_PLANE - 1);
+                behind_diff_orb_plane = satellite - (NUM_SATS_PER_PLANE - 1);
             }
 
         }
 
-        if(satellite >= NUM_SATELLITES - SATELLITES_PER_PLANE){
-            ahead_diff_orb_plane = SATELLITES_PER_PLANE - (NUM_SATELLITES - satellite)+13;
+        if(satellite >= NUM_SATELLITES - NUM_SATS_PER_PLANE){
+            ahead_diff_orb_plane = NUM_SATS_PER_PLANE - (NUM_SATELLITES - satellite)+13;
         }
         else{
 
-            if(satellite % SATELLITES_PER_PLANE == 1){
-                ahead_diff_orb_plane = (satellite + (2*SATELLITES_PER_PLANE)) - 1;
+            if(satellite % NUM_SATS_PER_PLANE == 1){
+                ahead_diff_orb_plane = (satellite + (2*NUM_SATS_PER_PLANE)) - 1;
             }
             else{
-                ahead_diff_orb_plane = satellite + (SATELLITES_PER_PLANE -1);
+                ahead_diff_orb_plane = satellite + (NUM_SATS_PER_PLANE -1);
             }
 
         }

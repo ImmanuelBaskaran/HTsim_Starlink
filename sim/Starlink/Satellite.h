@@ -3,8 +3,6 @@
 #include <Eigen/Dense>
 #include <queue.h>
 
-#define ORBIT_PERIOD_SEC 5739
-#define EARTH_RADIUS 6371000
 
 class Satellite {
     private:

@@ -1,5 +1,9 @@
 // -*- c-basic-offset: 4; tab-width: 8; indent-tabs-mode: t -*-
-#include "OrbitalPlane.h"
+
+// --- Starlink includes
+#include "Constellation.h"
+#include "LaserLink.h"
+// ---
 
 #include "config.h"
 #include <sstream>
@@ -17,10 +21,6 @@
 #include "clock.h"
 #include "mtcp.h"
 #include "exoqueue.h"
-#include "ConnectionMatrix.h"
-#include "LaserLink.h"
-#include "GroundStation.h"
-#include "Constellation.h"
 
 string ntoa(double n);
 string itoa(uint64_t n);

@@ -27,7 +27,8 @@ void LaserLink::doNextEvent() {
 }
 
 double LaserLink::getDistanceBetweenSatellitePair(const Satellite& satellite1, 
-const Satellite& satellite2, simtime_picosec currentTime) const {
+                                                  const Satellite& satellite2,
+                                                  simtime_picosec currentTime) const {
     Eigen::Vector3d position1 = satellite1.getPosition(currentTime);
     Eigen::Vector3d position2 = satellite2.getPosition(currentTime);
     return (position2 - position1).norm();

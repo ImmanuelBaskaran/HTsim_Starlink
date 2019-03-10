@@ -1,25 +1,19 @@
-//
-// Created by metal on 25/02/19.
-//
+#pragma once
 
-#ifndef SIM_CONSTELLATION_H
-#define SIM_CONSTELLATION_H
-
-
+#include "GroundStation.h"
 #include "Satellite.h"
 #include "OrbitalPlane.h"
+#include "StarlinkLib.h"
+#include "ConnectionMatrix.h"
 
-class Constellation : public EventSource{
-    private:
-        OrbitalPlane* _planes[24];
-        GroundStation* _groundStations[2];
+class Constellation : public EventSource {
     public:
         Constellation(EventList& eventlist, const string& name);
         void doNextEvent();
         Satellite* getSatByID(int satId) const;
         GroundStation* getGroundStation(int id) const;
-        Eigen::Vector3d getSatPosByIDAtTime(int satId,simtime_picosec time);
+    private:
+        OrbitalPlane* _planes[NUM_ORBITAL_PLANES];
+        GroundStation* _groundStations[NUM_GROUNDSTATIONS];
+        ConnectionMatrix _connectionMatrix;
 };
-
-
-#endif //SIM_CONSTELLATION_H

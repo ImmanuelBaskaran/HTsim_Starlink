@@ -1,6 +1,5 @@
 #include "Satellite.h"
-#include <math.h>
-#include <eigen3/Eigen/Dense>
+#include "StarlinkLib.h"
 
 Satellite::Satellite(int id, double offset, double planeInclination, double raan, double altitude)
 : _id(id), _planeInclination(planeInclination), _raan(raan), _altitude(altitude) {

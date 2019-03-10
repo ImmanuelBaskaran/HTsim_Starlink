@@ -1,13 +1,9 @@
 #pragma once
-#define SIM_LASERLINK_H
-
 
 #include <eventlist.h>
 #include <eigen3/Eigen/Dense>
 #include <pipe.h>
 #include "Satellite.h"
-
-
 
 class LaserLink : public Pipe {
 public:

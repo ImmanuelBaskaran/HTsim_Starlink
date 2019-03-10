@@ -1,69 +1,51 @@
 #include "GroundStation.h"
 #include "Satellite.h"
 #include <eigen3/Eigen/Dense>
-
-#define EARTH_RADIUS 6371000.0
-#define ANGLE_IN_RANGE 0.92
-#define ALTITUDE 550000
-#define NUM_SATELLITES 1584
-
-#include <math.h>
-#include <cmath>
-#include <sstream>
-#include <string.h>
-#include <strstream>
-#include <iostream>
 #include "Constellation.h"
-
-double toRadian(double degrees){
-    return (degrees * (M_PI/180));
-}
-
-using namespace Eigen;
+#include "StarlinkLib.h"
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
 bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) 
 {
-   Vector3d satPos = sat->getPosition(_eventlist.now());
-   Vector3d startPosition(EARTH_RADIUS, 0.0, 0.0);
- 
+    Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
+    Eigen::Vector3d gsCartCoords;
+    gsCartCoords = getPosition(currentTime);
 
-    Vector3d gsCartCoords;
-
-    double rotationDegrees = (currentTime/(8.64e+16)) * 360;
-
-    AngleAxis<double> m1(_lon, Vector3d(0.0,0.0,1.0));
-    AngleAxis<double> m2(_lat, Vector3d(0.0,1.0,0.0));
-    AngleAxis<double> m3(rotationDegrees, Vector3d(0.0,0.0,1.0));
-
-    gsCartCoords = m3 * m2 * m1 * startPosition;
-
-
-    double distance = sqrt(pow((gsCartCoords.x()-satPos.x()),2)+pow((gsCartCoords.y()-satPos.y()),2)+pow((gsCartCoords.z()-satPos.z()),2));
-
-
+    double distance = (gsCartCoords - satPos).norm();
     double distance_max = ALTITUDE/cos(ANGLE_IN_RANGE);
     if(distance<distance_max)
         return true;
     return false;
-
-
 }
 
-std::vector<Satellite*> GroundStation::getSatellitesInRange(const Constellation& constellation, simtime_picosec currentTime)
-{
-    _satsInRange.clear();
-    for (int i = 1; i <= NUM_SATELLITES; i++) {
-        Satellite* sat = constellation.getSatByID(i);
-        if (isSatelliteInRange(*sat, currentTime)) {
-            _satsInRange.push_back(sat);
-        }
-    }
-    return _satsInRange;
+Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
+    Eigen::Vector3d startPosition(EARTH_RADIUS, 0.0, 0.0);
+    double rotationDegrees = (currentTime/(8.64e+16)) * 360.0;
+
+    Eigen::AngleAxis<double> m1(_lon, Eigen::Vector3d(0.0,0.0,1.0));
+    Eigen::AngleAxis<double> m2(_lat, Eigen::Vector3d(0.0,1.0,0.0));
+    Eigen::AngleAxis<double> m3(rotationDegrees, Eigen::Vector3d(0.0,0.0,1.0));
+
+    return m3 * m2 * m1 * startPosition;
 }
+
+// Function below creates circular dependency Constellation<-->GroundStation;
+// is this needed anymore after new Dijkstra implementation?
+
+// std::vector<Satellite*> GroundStation::getSatellitesInRange(const Constellation& constellation, simtime_picosec currentTime) {
+//     _satsInRange.clear();
+//     for (int i = 1; i <= NUM_SATELLITES; i++) {
+//         Satellite* sat = constellation.getSatByID(i);
+//         if (isSatelliteInRange(*sat, currentTime)) {
+//             _satsInRange.push_back(sat);
+//         }
+//     }
+//     return _satsInRange;
+// }
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id) : CbrSrc(eventlist1,speedFromPktps(166)),
 _lat(lat), _lon(lon), _id(id){
-
+    // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
+    assert(id > NUM_SATELLITES);
 }
