@@ -45,7 +45,7 @@ Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
 // }
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
-                             : CbrSrc(eventlist1,speedFromPktps(166)), _lat(lat), _lon(lon), _id(id), 
+                             : CbrSrc(eventlist1,speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
                              _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);

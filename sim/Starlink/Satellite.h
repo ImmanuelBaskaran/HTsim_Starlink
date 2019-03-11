@@ -6,6 +6,7 @@
 
 class Satellite :public Node {
     private:
+        int _id;
         double _meanAnomaly;
         double _planeInclination;
         double _raan;
@@ -16,5 +17,6 @@ class Satellite :public Node {
                   QueueLogger* logger);
         Eigen::Vector3d getPosition(simtime_picosec currentTime) const;
         double getAnomaly(simtime_picosec) const;
+        inline int getId() const { return _id; }
         Queue queue;
 };

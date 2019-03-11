@@ -197,44 +197,6 @@ int main(int argc, char **argv) {
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
 
 
-
-
-
-
-
-    route = new route_t();
-
-    Queue linkUp(SERVICE1, BUFFER1, eventlist, nullptr);
-    linkUp.setName("linkUp");
-    logfile.writeName(linkUp);
-
-    Pipe* pipeup = new Pipe(100, eventlist);
-    pipeup->setName("pipeup");
-    logfile.writeName(*pipeup);
-
-
-    Queue linkDown(SERVICE1, BUFFER1, eventlist, nullptr);
-    linkDown.setName("linkDown");
-    logfile.writeName(linkDown);
-
-    Pipe* pipedown = new Pipe(100, eventlist);
-    pipedown->setName("pipedown");
-    logfile.writeName(*pipedown);
-    route->push_back(&linkUp);
-    route->push_back(pipeup);
-
-
-
-    route->push_back(&linkDown);
-    route->push_back(pipedown);
-    // route->push_back(((PacketSink*) &station1));
-
-    double extrastarttime = drand()*50;
-    // station2.connect(*route,station1,0);
-
-    // GO!
-    while (eventlist.doNextEvent()) {
-    }
 }
 
 string ntoa(double n) {
