@@ -3,7 +3,6 @@
 #include "OrbitalPlane.h"
 #include "StarlinkLib.h"
 
-
 Constellation::Constellation(EventList& eventlist, const string& name): EventSource(eventlist,name) {
     for (int i = 0; i < NUM_ORBITAL_PLANES; i++) {
         _planes[i] = new OrbitalPlane(i + 1, i * toRadian(15), toRadian(53.0), 550000, i * toRadian(195.0/66.0));
@@ -12,12 +11,15 @@ Constellation::Constellation(EventList& eventlist, const string& name): EventSou
             // printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
         }
     }
-    // London
-    _groundStations[0] = new GroundStation(_eventlist, 51.5074, 0.1278, NUM_SATELLITES + 2);
-    // New York City
-    _groundStations[1] = new GroundStation(_eventlist, 40.7128, 74.0060, NUM_SATELLITES + 1);
-}
 
+    _connectionMatrix = new ConnectionMatrix();
+    _routeFinder = new RouteFinder(*this, *_connectionMatrix);
+
+    // London
+    _groundStations[0] = new GroundStation(_eventlist, 51.5074, 0.1278, NUM_SATELLITES + 2, _routeFinder);
+    // New York City
+    _groundStations[1] = new GroundStation(_eventlist, 40.7128, 74.0060, NUM_SATELLITES + 1, _routeFinder);
+}
 
 
 Satellite* Constellation::getSatByID(int satId) const {

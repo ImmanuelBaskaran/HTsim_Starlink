@@ -174,9 +174,6 @@ int main(int argc, char **argv) {
     logfile.addLogger(loggerSimple);
     route_t* route;
 
-    GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278, NUM_SATELLITES + 1);
-    GroundStation station2 = GroundStation(eventlist,51.5074,0.1278, NUM_SATELLITES + 2);
-
     // double extrastarttime = drand()*50;
     //station2.connect(*route,*cbrSink1,timeFromMs(extrastarttime));
 
@@ -208,17 +205,13 @@ int main(int argc, char **argv) {
     vector<pair<pair<int,int>,LaserLink>> list;
     for(int i =1;i<NUM_SATELLITES;i++){
         for(int j =1;j<NUM_SATELLITES;j++){
-            //   printf("%i ",test[i][j]);
             Satellite* satI = constellation.getSatByID(i);
             Satellite* satJ = constellation.getSatByID(j);
             if(mat.areSatellitesConnected(*satI, *satJ)){
-                //printf("Elon musk says that sat %i connects to sat %i\n",i,j);
-
                 list.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*constellation.getSatByID(i-1),
                                                                   *constellation.getSatByID(j-1))));
             }
         }
-        // printf("\n");
     }
 
     route = new route_t();
@@ -279,44 +272,12 @@ int main(int argc, char **argv) {
         printf("\n\n");
     }
 
-
-    // int currSat = 1;
-    // int nextSat;
-    //     Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition();
-    //     printf("%f %f %f\n" , pos.x(), pos.y(), pos.z());
-    // //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
-    //    for(int j = 1; j<1585; j++){
-    //         if(test[currSat][j] == 1){
-    //             // printf("%d connects to %d\n", currSat, j);
-    //             nextSat = j;
-    //             break;
-    //         }
-    //     }
-    // do{
-    //     route->push_back(queues[currSat-1]);
-    //     route->push_back(&list[getLinkFromFirst(make_pair(currSat,nextSat),list)].second);
-    //     int currsatTemp = currSat;
-    //     currSat=nextSat;
-    //     for(int j = 1; j<1585; j++){
-    //         if(test[currSat][j] == 1){
-    //             // printf("%d connects to %d\n", currSat, j);
-    //             nextSat = j;
-    //             break;
-    //         }
-    //     }
-
-    //     Eigen::Vector3d pos = constellation.getSatByID(currSat-1)->getPosition();
-    //     printf("%f %f %f\n", pos.x(), pos.y(), pos.z());
-    // //    printf("%d %f %f %f\n",currSat , pos.x(), pos.y(), pos.z());
-    // } while (currSat != 1);
-
-
     route->push_back(&linkDown);
     route->push_back(pipedown);
-    route->push_back(((PacketSink*) &station1));
+    // route->push_back(((PacketSink*) &station1));
 
     double extrastarttime = drand()*50;
-    station2.connect(*route,station1,0);
+    // station2.connect(*route,station1,0);
 
     // GO!
     while (eventlist.doNextEvent()) {

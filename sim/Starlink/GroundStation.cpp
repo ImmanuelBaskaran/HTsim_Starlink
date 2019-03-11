@@ -6,7 +6,7 @@
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
-bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) 
+bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) const
 {
     Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
     Eigen::Vector3d gsCartCoords;
@@ -44,8 +44,9 @@ Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
 //     return _satsInRange;
 // }
 
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id) : CbrSrc(eventlist1,speedFromPktps(166)),
-_lat(lat), _lon(lon), _id(id){
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
+                             : CbrSrc(eventlist1,speedFromPktps(166)), _lat(lat), _lon(lon), _id(id), 
+                             _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
 }

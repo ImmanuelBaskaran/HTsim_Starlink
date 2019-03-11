@@ -1,27 +1,18 @@
-#include "Satellite.h"
 #include "RouteFinder.h"
-#include "ConnectionMatrix.h"
-#include "network.h"
-#include "OrbitalPlane.h"
-#include "GroundStation.h"
-#include "StarlinkLib.h"
-
-double RouteFinder::getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2){
-    Eigen::Vector3d position1 = satellite1.getPosition(_eventlist.now());
-    Eigen::Vector3d position2 = satellite2.getPosition(_eventlist.now());
-    return (position2 - position1).norm();
-}
+#include "Constellation.h"
 
 //construct distances matrix
 
-void RouteFinder::updateDistMatrix() {
+void RouteFinder::updateDistMatrix(simtime_picosec now) {
     for(int i=1;i<=NUM_SATELLITES;i++) {
         // Distance between linked satellites
         for (int j = 1; j <= NUM_SATELLITES; j++) {
             Satellite* sat_i = _constellation.getSatByID(i);
             Satellite* sat_j = _constellation.getSatByID(j);
             if (_connMatrix.areSatellitesConnected(*sat_i, *sat_j)) {
-                _distMatrix[i][j] = getDistanceBetweenSatellitePair(*sat_i, *sat_j);
+                Eigen::Vector3d position1 = sat_i->getPosition(now);
+                Eigen::Vector3d position2 = sat_j->getPosition(now);
+                _distMatrix[i][j] = (position2 - position1).norm();
             } else
                 _distMatrix[i][j] = INT_MAX;
         }
@@ -29,8 +20,8 @@ void RouteFinder::updateDistMatrix() {
         for (int j = NUM_SATELLITES + 1; j < DIST_MATRIX_SIZE; j++) {
             Satellite* sat = _constellation.getSatByID(i);
             GroundStation* gst = _constellation.getGroundStation(j);
-            if (gst->isSatelliteInRange(*sat, _eventlist.now())) {
-                _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+            if (gst->isSatelliteInRange(*sat, now)) {
+                _distMatrix[i][j] = (sat->getPosition(now) - gst->getPosition(now)).norm();
             } else {
                 _distMatrix[i][j] = INT_MAX;    
             }
@@ -41,8 +32,8 @@ void RouteFinder::updateDistMatrix() {
         for (int j = 1; j <= NUM_SATELLITES; j++) {
             Satellite* sat = _constellation.getSatByID(j);
             GroundStation* gst = _constellation.getGroundStation(i);
-            if (gst->isSatelliteInRange(*sat, _eventlist.now())) {
-                _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+            if (gst->isSatelliteInRange(*sat, now)) {
+                _distMatrix[i][j] = (sat->getPosition(now) - gst->getPosition(now)).norm();
             } else {
                 _distMatrix[i][j] = INT_MAX;    
             }
@@ -52,15 +43,6 @@ void RouteFinder::updateDistMatrix() {
             _distMatrix[i][j] = INT_MAX;
         }
     }
-
-    // for(int i=NUM_SATELLITES;i<NUM_SATELLITES+1;i++) {
-    //     for(int j=0;j<NUM_SATELLITES;j++) {
-    //         int jPlaneIndex = j % 24;
-    //         if(source.isSatelliteInRange(planes[jPlaneIndex].getSatByID(j))){
-    //             _distMatrix[i][j]=-300;
-    //         }
-    //     }
-    // }
 }
 
 int RouteFinder::minDistance(double dist[], bool sptSet[]) {
@@ -89,8 +71,8 @@ std::vector<int> RouteFinder::extractPath(int* parent, int destId) {
 }
 
 
-std::vector<int> RouteFinder::dijkstra (const GroundStation& src, const GroundStation& dest) {
-    updateDistMatrix();
+std::vector<int> RouteFinder::dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now) {
+    updateDistMatrix(now);
     // output, will hold the shortest distance from src to i, should to to sink
     double dist[DIST_MATRIX_SIZE];
     // parent[x] = which node (sat / ground station) we passed through to get to x
@@ -121,9 +103,6 @@ std::vector<int> RouteFinder::dijkstra (const GroundStation& src, const GroundSt
 }
 
 
-RouteFinder::RouteFinder(EventList &eventlist, const string &name, const Constellation& constellation,
-                         const ConnectionMatrix& connMatrix) : EventSource(eventlist,name),
-                         _constellation(constellation), _connMatrix(connMatrix)
-{
-
-}
+RouteFinder::RouteFinder(const Constellation& constellation, const ConnectionMatrix& connMatrix)
+                        : _constellation(constellation), _connMatrix(connMatrix)
+{}

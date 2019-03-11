@@ -5,6 +5,7 @@
 #include "OrbitalPlane.h"
 #include "StarlinkLib.h"
 #include "ConnectionMatrix.h"
+#include "RouteFinder.h"
 
 class Constellation : public EventSource {
     public:
@@ -15,5 +16,6 @@ class Constellation : public EventSource {
     private:
         OrbitalPlane* _planes[NUM_ORBITAL_PLANES];
         GroundStation* _groundStations[NUM_GROUNDSTATIONS];
-        ConnectionMatrix _connectionMatrix;
+        ConnectionMatrix* _connectionMatrix;
+        RouteFinder* _routeFinder;
 };
