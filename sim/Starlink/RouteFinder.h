@@ -13,6 +13,7 @@ class RouteFinder : public EventSource {
         virtual void doNextEvent() = 0;
         std::vector<int> dijkstra (const GroundStation& src, const GroundStation& dest);
         double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2);
+        double getDistanceBetweenSatelliteGS(const Satellite& satellite1, const GroundStation& groundstation1);
         inline EventList& eventlist() const {return _eventlist;}
     private:
         const Constellation& _constellation;

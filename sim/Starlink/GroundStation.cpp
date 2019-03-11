@@ -6,6 +6,8 @@
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
+
+
 bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) 
 {
     Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());

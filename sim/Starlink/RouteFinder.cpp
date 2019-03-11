@@ -12,6 +12,12 @@ double RouteFinder::getDistanceBetweenSatellitePair(const Satellite& satellite1,
     return (position2 - position1).norm();
 }
 
+double RouteFinder::getDistanceBetweenSatelliteGS(const Satellite& satellite1, const GroundStation& groundstation1){
+    Eigen::Vector3d position1 = satellite1.getPosition(_eventlist.now());
+    Eigen::Vector3d position2 = groundstation1.getPosition(_eventlist.now());
+    return (position2 - position1).norm();
+}
+
 //construct distances matrix
 
 void RouteFinder::updateDistMatrix() {
@@ -30,7 +36,7 @@ void RouteFinder::updateDistMatrix() {
             Satellite* sat = _constellation.getSatByID(i);
             GroundStation* gst = _constellation.getGroundStation(j);
             if (gst->isSatelliteInRange(*sat, _eventlist.now())) {
-                _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+                _distMatrix[i][j] = getDistanceBetweenSatelliteGS(*sat, *gst);
             } else {
                 _distMatrix[i][j] = INT_MAX;    
             }
@@ -42,7 +48,7 @@ void RouteFinder::updateDistMatrix() {
             Satellite* sat = _constellation.getSatByID(j);
             GroundStation* gst = _constellation.getGroundStation(i);
             if (gst->isSatelliteInRange(*sat, _eventlist.now())) {
-                _distMatrix[i][j] = (sat->getPosition(_eventlist.now()) - gst->getPosition(_eventlist.now())).norm();
+                _distMatrix[i][j] =  getDistanceBetweenSatelliteGS(*sat, *gst);
             } else {
                 _distMatrix[i][j] = INT_MAX;    
             }
