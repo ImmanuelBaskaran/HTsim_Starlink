@@ -84,5 +84,5 @@ ConnectionMatrix::~ConnectionMatrix() {
 }
 
 bool ConnectionMatrix::areSatellitesConnected(const Satellite& satA, const Satellite& satB) const {
-    return (_matrix[satA.getID() - 1][satB.getID() - 1] == 1);
+    return (_matrix[satA.getId() - 1][satB.getId() - 1] == 1);
 }
