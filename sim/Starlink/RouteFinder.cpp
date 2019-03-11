@@ -66,12 +66,14 @@ std::vector<int> RouteFinder::extractPath(int* parent, int destId) {
         path.push_back(parentId);
         parentId = parent[parentId];
     }
+    // Remove src from path list (not needed in final route_t object)
+    path.pop_back();
     std::reverse(path.begin(), path.end());
     return path;
 }
 
 
-std::vector<int> RouteFinder::dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now) {
+route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now) {
     updateDistMatrix(now);
     // output, will hold the shortest distance from src to i, should to to sink
     double dist[DIST_MATRIX_SIZE];
@@ -99,7 +101,17 @@ std::vector<int> RouteFinder::dijkstra (const GroundStation& src, const GroundSt
             }
         }
     }
-    return extractPath(parent, dest.getId());
+    std::vector<int> path = extractPath(parent, dest.getId());
+    route_t* routeToDest = new route_t();
+    for (int nodeId : path) {
+        assert(nodeId > 0 && nodeId <= DIST_MATRIX_SIZE);
+        if (nodeId <= NUM_SATELLITES) {
+            routeToDest->push_back(_constellation.getSatByID(nodeId));
+        } else {
+            routeToDest->push_back(_constellation.getGroundStation(nodeId));
+        }
+    }
+    return routeToDest;
 }
 
 

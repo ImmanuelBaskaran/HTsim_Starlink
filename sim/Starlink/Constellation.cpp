@@ -34,7 +34,6 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
             }
         }
     }
-
 }
 
 Satellite* Constellation::getSatByID(int satId) const {

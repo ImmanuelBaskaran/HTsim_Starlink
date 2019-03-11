@@ -3,6 +3,7 @@
 #include <eigen3/Eigen/Dense>
 #include "Constellation.h"
 #include "StarlinkLib.h"
+#include "route.h"
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
@@ -30,23 +31,20 @@ Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
     return m3 * m2 * m1 * startPosition;
 }
 
-// Function below creates circular dependency Constellation<-->GroundStation;
-// is this needed anymore after new Dijkstra implementation?
+void GroundStation::send_packet() {
+    // Packet* p = CbrPacket::newpkt(_flow, *_route, _crt_id++, _mss);
+    // TODO: Only perform below changes every X ms
+    delete _route;
+    _route = _routeFinder->dijkstra(*this, _dest, _eventlist.now());
+    
+    
+    CbrSrc::send_packet();
+}
 
-// std::vector<Satellite*> GroundStation::getSatellitesInRange(const Constellation& constellation, simtime_picosec currentTime) {
-//     _satsInRange.clear();
-//     for (int i = 1; i <= NUM_SATELLITES; i++) {
-//         Satellite* sat = constellation.getSatByID(i);
-//         if (isSatelliteInRange(*sat, currentTime)) {
-//             _satsInRange.push_back(sat);
-//         }
-//     }
-//     return _satsInRange;
-// }
-
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder,
+                             const GroundStation& dest)
                              : CbrSrc(eventlist1,speedFromPktps(166)), _lat(lat), _lon(lon), _id(id), 
-                             _routeFinder(routeFinder) {
+                             _routeFinder(routeFinder), _dest(dest) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
 }

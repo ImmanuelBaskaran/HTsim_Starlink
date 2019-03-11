@@ -12,7 +12,7 @@ class GroundStation;
 class RouteFinder {
     public:
         RouteFinder(const Constellation& constellation, const ConnectionMatrix& connMatrix);
-        std::vector<int> dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now);
+        route_t* dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now);
         double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2);
     private:
         const Constellation& _constellation;
