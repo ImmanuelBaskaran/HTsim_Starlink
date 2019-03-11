@@ -41,10 +41,9 @@ void GroundStation::send_packet() {
     CbrSrc::send_packet();
 }
 
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder,
-                             const GroundStation& dest)
-                             : CbrSrc(eventlist1,speedFromPktps(166)), _lat(lat), _lon(lon), _id(id), 
-                             _routeFinder(routeFinder), _dest(dest) {
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
+                             : CbrSrc(eventlist1,speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
+                             _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
 }

@@ -17,7 +17,7 @@ public:
   CbrSrc(EventList &eventlist,linkspeed_bps rate,simtime_picosec active=0,simtime_picosec idle=0);
 
  void connect(route_t& routeout, CbrSink& sink, simtime_picosec startTime);
- void send_packet();
+ virtual void send_packet();
  void doNextEvent();
  
 // should really be private, but loggers want to see:
@@ -27,7 +27,7 @@ public:
  simtime_picosec _period,_active_time,_idle_time,_start_active,_end_active;
  bool _is_active;
  
- private:
+ protected:
  // Connectivity
  PacketFlow _flow;
  CbrSink* _sink;

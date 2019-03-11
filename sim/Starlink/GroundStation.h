@@ -9,8 +9,7 @@
 
 class GroundStation: public CbrSink, public CbrSrc, public Node {
 public:
-    GroundStation(EventList &eventlist1, double lat, double lon, int id, RouteFinder* routeFinder,
-                  const GroundStation& dest);
+    GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder);
     bool isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) const;
     Eigen::Vector3d getPosition(simtime_picosec currentTime) const;
     void send_packet() override;

@@ -10,9 +10,9 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
         _planes[i] = new OrbitalPlane(i + 1, i * toRadian(15), toRadian(53.0), 550000, i * toRadian(195.0/66.0),
                                       bitrate, maxsize, eventlist,
                 logger);
-        for (int j = 0; j < SATS_PER_PLANE; j++) {
+        for (int j = 1; j <= SATS_PER_PLANE; j++) {
             Eigen::Vector3d pos = _planes[i]->getSatByID(j)->getPosition(0);
-            // printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
+             printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
         }
     }
 
@@ -37,7 +37,7 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
 }
 
 Satellite* Constellation::getSatByID(int satId) const {
-    assert(satId > 0 && satId <= NUM_SATELLITES);
+    assert(satId >= 0 && satId <= NUM_SATELLITES);
     return _planes[satId / SATS_PER_PLANE]->getSatByID(satId % SATS_PER_PLANE);
 }
 
@@ -50,11 +50,11 @@ GroundStation* Constellation::getGroundStation(int id) const {
 LaserLink* Constellation::getConnectingLink(const Satellite& satA, const Satellite& satB) const {
     for (auto& row : _laserLinks) {
         auto& column = row.first;
-        if (column.first == satA.getID() && column.second == satB.getID()) {
+        if (column.first == satA.getId() && column.second == satB.getId()) {
             return row.second;
         }
     }
-    printf("Could not find link between Sat. %d and Sat. %d.\n", satA.getID(), satB.getID());
+    printf("Could not find link between Sat. %d and Sat. %d.\n", satA.getId(), satB.getId());
     assert(false);
 }
 
