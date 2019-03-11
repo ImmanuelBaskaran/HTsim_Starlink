@@ -174,9 +174,6 @@ int main(int argc, char **argv) {
     logfile.addLogger(loggerSimple);
     route_t* route;
 
-    GroundStation station1 = GroundStation(eventlist,51.5074, 0.1278, NUM_SATELLITES + 1);
-    GroundStation station2 = GroundStation(eventlist,51.5074,0.1278, NUM_SATELLITES + 2);
-
     // double extrastarttime = drand()*50;
     //station2.connect(*route,*cbrSink1,timeFromMs(extrastarttime));
 
@@ -230,10 +227,10 @@ int main(int argc, char **argv) {
 
     route->push_back(&linkDown);
     route->push_back(pipedown);
-    route->push_back(((PacketSink*) &station1));
+    // route->push_back(((PacketSink*) &station1));
 
     double extrastarttime = drand()*50;
-    station2.connect(*route,station1,0);
+    // station2.connect(*route,station1,0);
 
     // GO!
     while (eventlist.doNextEvent()) {

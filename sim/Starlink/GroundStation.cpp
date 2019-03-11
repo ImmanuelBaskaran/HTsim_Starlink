@@ -6,9 +6,7 @@
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
-
-
-bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) 
+bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) const
 {
     Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
     Eigen::Vector3d gsCartCoords;
@@ -21,13 +19,13 @@ bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec cur
     return false;
 }
 
-Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) {
+Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
     Eigen::Vector3d startPosition(EARTH_RADIUS, 0.0, 0.0);
     double rotationDegrees = (currentTime/(8.64e+16)) * 360.0;
 
-    Eigen::AngleAxis<double> m1(_lon, Eigen::Vector3d(0.0, 0.0, 1.0));
-    Eigen::AngleAxis<double> m2(_lat, Eigen::Vector3d(0.0, 1.0, 0.0));
-    Eigen::AngleAxis<double> m3(rotationDegrees, Eigen::Vector3d(0.0, 0.0, 1.0));
+    Eigen::AngleAxis<double> m1(_lon, Eigen::Vector3d(0.0,0.0,1.0));
+    Eigen::AngleAxis<double> m2(_lat, Eigen::Vector3d(0.0,1.0,0.0));
+    Eigen::AngleAxis<double> m3(rotationDegrees, Eigen::Vector3d(0.0,0.0,1.0));
 
     return m3 * m2 * m1 * startPosition;
 }
@@ -46,8 +44,9 @@ Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) {
 //     return _satsInRange;
 // }
 
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id) : CbrSrc(eventlist1,speedFromPktps(166)),
-_lat(lat), _lon(lon), Node(id){
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
+                             : CbrSrc(eventlist1,speedFromPktps(166)), _lat(lat), _lon(lon), _id(id), 
+                             _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
 }

@@ -5,6 +5,7 @@
 #include "OrbitalPlane.h"
 #include "StarlinkLib.h"
 #include "ConnectionMatrix.h"
+#include "RouteFinder.h"
 #include "LaserLink.h"
 
 class Constellation : public EventSource {
@@ -14,9 +15,11 @@ class Constellation : public EventSource {
         void doNextEvent();
         Satellite* getSatByID(int satId) const;
         GroundStation* getGroundStation(int id) const;
-    vector<pair<pair<int,int>,LaserLink>> links;
+        LaserLink* getConnectingLink(const Satellite& satA, const Satellite& satB) const;
     private:
         OrbitalPlane* _planes[NUM_ORBITAL_PLANES];
         GroundStation* _groundStations[NUM_GROUNDSTATIONS];
-        ConnectionMatrix _connectionMatrix;
+        ConnectionMatrix* _connectionMatrix;
+        RouteFinder* _routeFinder;
+        vector<pair<pair<int,int>,LaserLink*>> _laserLinks;
 };

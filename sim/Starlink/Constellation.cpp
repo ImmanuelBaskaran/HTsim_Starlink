@@ -15,29 +15,27 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
             // printf("Plane %d, Sat %d: %f %f %f\n", i, j, pos.x(), pos.y(), pos.z());
         }
     }
+
+    _connectionMatrix = new ConnectionMatrix();
+    _routeFinder = new RouteFinder(*this, *_connectionMatrix);
+
     // London
-    _groundStations[0] = new GroundStation(_eventlist, 51.5074, 0.1278, NUM_SATELLITES + 2);
+    _groundStations[0] = new GroundStation(_eventlist, 51.5074, 0.1278, NUM_SATELLITES + 1, _routeFinder);
     // New York City
-    _groundStations[1] = new GroundStation(_eventlist, 40.7128, 74.0060, NUM_SATELLITES + 1);
-    ConnectionMatrix mat;
-    for(int i =1;i<=NUM_SATELLITES;i++){
-        for(int j =1;j<=NUM_SATELLITES;j++){
-            //   printf("%i ",test[i][j]);
+    _groundStations[1] = new GroundStation(_eventlist, 40.7128, 74.0060, NUM_SATELLITES + 2, _routeFinder);
+
+    for(int i = 1; i <= NUM_SATELLITES; i++){
+        for(int j = 1; j <= NUM_SATELLITES; j++){
             Satellite* satI = getSatByID(i);
             Satellite* satJ = getSatByID(j);
-            if(mat.areSatellitesConnected(*satI, *satJ)){
-                //printf("Elon musk says that sat %i connects to sat %i\n",i,j);
-
-                links.push_back(make_pair(make_pair(i,j),LaserLink(0,eventlist,*getSatByID(i-1),
-                                                                  *getSatByID(j-1))));
+            if(_connectionMatrix->areSatellitesConnected(*satI, *satJ)){
+                _laserLinks.push_back(make_pair( make_pair(i, j),
+                                                 new LaserLink(0, eventlist,*getSatByID(i-1), *getSatByID(j-1))));
             }
         }
-        // printf("\n");
     }
 
 }
-
-
 
 Satellite* Constellation::getSatByID(int satId) const {
     assert(satId > 0 && satId <= NUM_SATELLITES);
@@ -49,6 +47,18 @@ GroundStation* Constellation::getGroundStation(int id) const {
     assert(index >= 0 && index < NUM_GROUNDSTATIONS);
     return _groundStations[index];
 }
+
+LaserLink* Constellation::getConnectingLink(const Satellite& satA, const Satellite& satB) const {
+    for (auto& row : _laserLinks) {
+        auto& column = row.first;
+        if (column.first == satA.getID() && column.second == satB.getID()) {
+            return row.second;
+        }
+    }
+    printf("Could not find link between Sat. %d and Sat. %d.\n", satA.getID(), satB.getID());
+    assert(false);
+}
+
 
 
 void Constellation::doNextEvent() {
