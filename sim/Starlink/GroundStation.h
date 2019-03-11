@@ -4,9 +4,10 @@
 #include "cbr.h"
 #include "Satellite.h"
 #include "RouteFinder.h"
+#include "Node.h"
 #include <Eigen/Geometry>
 
-class GroundStation: public CbrSink, public CbrSrc {
+class GroundStation: public CbrSink, public CbrSrc, public Node {
 public:
     GroundStation(EventList &eventlist1, double lat, double lon, int id, RouteFinder* routeFinder,
                   const GroundStation& dest);
