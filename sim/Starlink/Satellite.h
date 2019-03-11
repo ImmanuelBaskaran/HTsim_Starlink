@@ -4,7 +4,7 @@
 #include <queue.h>
 #include "Node.h"
 
-class Satellite :public Node {
+class Satellite : public Node {
     private:
         double _meanAnomaly;
         double _planeInclination;

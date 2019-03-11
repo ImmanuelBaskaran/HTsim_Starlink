@@ -58,8 +58,6 @@ LaserLink* Constellation::getConnectingLink(const Satellite& satA, const Satelli
     assert(false);
 }
 
-
-
 void Constellation::doNextEvent() {
     // eventlist().sourceIsPendingRel(*this, timeFromMs(10));
 }
