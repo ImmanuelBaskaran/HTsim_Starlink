@@ -31,18 +31,22 @@ Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
     return m3 * m2 * m1 * startPosition;
 }
 
+void GroundStation::setDestination(GroundStation* dest) {
+    _dest = dest;
+}
+
 void GroundStation::send_packet() {
     // Packet* p = CbrPacket::newpkt(_flow, *_route, _crt_id++, _mss);
     // TODO: Only perform below changes every X ms
     delete _route;
-    _route = _routeFinder->dijkstra(*this, _dest, _eventlist.now());
-    
+    assert(_dest);
+    _route = _routeFinder->dijkstra(*this, *_dest, _eventlist.now());
     
     CbrSrc::send_packet();
 }
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
-                             : CbrSrc(eventlist1,speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
+                             : CbrSrc(eventlist1, speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
                              _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);

@@ -13,7 +13,6 @@ class RouteFinder {
     public:
         RouteFinder(const Constellation& constellation, const ConnectionMatrix& connMatrix);
         route_t* dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now);
-        double getDistanceBetweenSatellitePair(const Satellite& satellite1, const Satellite& satellite2);
     private:
         const Constellation& _constellation;
         const ConnectionMatrix& _connMatrix;

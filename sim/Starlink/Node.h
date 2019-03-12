@@ -1,29 +1,16 @@
-//
-// Created by metal on 11/03/19.
-//
-
 #ifndef SIM_NODE_H
 #define SIM_NODE_H
 
-
-#include "network.h"
-#include "cbr.h"
+#include <Eigen/Dense>
 
 class Node  {
-
+private:
     int _id;
 public:
-    Node(int id) : _id(id) {
-        _id = id;
-    }
-
-public:
+    Node(int id) : _id(id) { }
     inline int getId() const { return _id; }
-
-    Eigen::Vector3d getPosition(simtime_picosec currentTime) {
-        return Eigen::Vector3d();
-    }
+    virtual Eigen::Vector3d getPosition(simtime_picosec currentTime) const;
+    virtual PacketSink* getPacketSink();
 };
-
 
 #endif SIM_NODE_H

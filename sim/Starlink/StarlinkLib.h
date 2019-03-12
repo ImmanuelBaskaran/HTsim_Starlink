@@ -12,7 +12,12 @@
 #define DIST_MATRIX_SIZE NUM_SATELLITES + NUM_GROUNDSTATIONS + 1
 
 #include <math.h>
+#include "Node.h"
 
 inline double toRadian(double degrees){
     return (degrees * (M_PI/180));
+}
+
+inline double getNodeDistance(const Node& a, const Node& b, simtime_picosec time) {
+    return (b.getPosition(time) - a.getPosition(time)).norm();
 }

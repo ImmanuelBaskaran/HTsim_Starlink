@@ -2,10 +2,16 @@
 #include "StarlinkLib.h"
 
 
-Satellite::Satellite(int id, double offset, double planeInclination, double raan, double altitude,linkspeed_bps bitrate, mem_b maxsize, EventList &eventlist,
-                     QueueLogger* logger)
-: Node(id), _planeInclination(planeInclination), _raan(raan), _altitude(altitude),_id(id), queue( bitrate, maxsize,eventlist,logger){
+Satellite::Satellite(int id, double offset, double planeInclination, double raan, double altitude,
+                     linkspeed_bps bitrate, mem_b maxsize, EventList &eventlist, QueueLogger* logger)
+                     : Node(id), _planeInclination(planeInclination), _raan(raan),
+                     _altitude(altitude) {
     _meanAnomaly = offset + ((id % 66) * (2.0 * M_PI) / 66.0);
+    _queue = new Queue(bitrate, maxsize, eventlist, logger);
+}
+
+Satellite::~Satellite() {
+    delete _queue;
 }
 
 double Satellite::getAnomaly(simtime_picosec currentTime) const {

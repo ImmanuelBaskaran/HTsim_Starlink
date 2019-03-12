@@ -1,5 +1,6 @@
 #include "RouteFinder.h"
 #include "Constellation.h"
+#include "StarlinkLib.h"
 
 //construct distances matrix
 
@@ -10,9 +11,7 @@ void RouteFinder::updateDistMatrix(simtime_picosec now) {
             Satellite* sat_i = _constellation.getSatByID(i);
             Satellite* sat_j = _constellation.getSatByID(j);
             if (_connMatrix.areSatellitesConnected(*sat_i, *sat_j)) {
-                Eigen::Vector3d position1 = sat_i->getPosition(now);
-                Eigen::Vector3d position2 = sat_j->getPosition(now);
-                _distMatrix[i][j] = (position2 - position1).norm();
+                _distMatrix[i][j] = getNodeDistance(*sat_i, *sat_j, now);
             } else
                 _distMatrix[i][j] = INT_MAX;
         }
@@ -21,7 +20,7 @@ void RouteFinder::updateDistMatrix(simtime_picosec now) {
             Satellite* sat = _constellation.getSatByID(i);
             GroundStation* gst = _constellation.getGroundStation(j);
             if (gst->isSatelliteInRange(*sat, now)) {
-                _distMatrix[i][j] = (sat->getPosition(now) - gst->getPosition(now)).norm();
+                _distMatrix[i][j] = getNodeDistance(*gst, *sat, now);
             } else {
                 _distMatrix[i][j] = INT_MAX;    
             }
@@ -33,7 +32,7 @@ void RouteFinder::updateDistMatrix(simtime_picosec now) {
             Satellite* sat = _constellation.getSatByID(j);
             GroundStation* gst = _constellation.getGroundStation(i);
             if (gst->isSatelliteInRange(*sat, now)) {
-                _distMatrix[i][j] = (sat->getPosition(now) - gst->getPosition(now)).norm();
+                _distMatrix[i][j] = getNodeDistance(*gst, *sat, now);
             } else {
                 _distMatrix[i][j] = INT_MAX;    
             }
@@ -103,13 +102,14 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     }
     std::vector<int> path = extractPath(parent, dest.getId());
     route_t* routeToDest = new route_t();
-    for (int nodeId : path) {
-        assert(nodeId > 0 && nodeId <= DIST_MATRIX_SIZE);
-        if (nodeId <= NUM_SATELLITES) {
-            routeToDest->push_back((PacketSink*)_constellation.getSatByID(nodeId));
-        } else {
-            routeToDest->push_back(_constellation.getGroundStation(nodeId));
-        }
+    for (int i = 0; i < path.size() - 1; i++) {
+        Node* a = _constellation.getNodeById(path[i]);
+        Node* b = _constellation.getNodeById(path[i + 1]);
+        LaserLink* link = _constellation.getConnectingLink(*a, *b);
+
+        routeToDest->push_back(a->getPacketSink());
+        routeToDest->push_back(link);
+        routeToDest->push_back(b->getPacketSink());
     }
     return routeToDest;
 }

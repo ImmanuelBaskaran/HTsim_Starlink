@@ -15,7 +15,8 @@ class Constellation : public EventSource {
         void doNextEvent();
         Satellite* getSatByID(int satId) const;
         GroundStation* getGroundStation(int id) const;
-        LaserLink* getConnectingLink(const Satellite& satA, const Satellite& satB) const;
+        Node* getNodeById(int id) const;
+        LaserLink* getConnectingLink(const Node& a, const Node& b) const;
     private:
         OrbitalPlane* _planes[NUM_ORBITAL_PLANES];
         GroundStation* _groundStations[NUM_GROUNDSTATIONS];
