@@ -12,7 +12,7 @@ LaserLink::LaserLink(simtime_picosec delay1, EventList &eventlist1, const Node n
     Eigen::Vector3d node2Pos = _node2.getPosition(eventlist1.now());
 
     double distance = getDistanceBetweenNodes(node1Pos, node2Pos);
-    if(checkIsSatellite){
+    if(checkIsSatellite()){
         Pipe::_delay = timeFromSec(distance / 299792458);
     }else{
         Pipe::_delay = timeFromSec(distance / 3e+8);
@@ -24,7 +24,7 @@ void LaserLink::doNextEvent() {
     Eigen::Vector3d node2Pos = _node2.getPosition(_eventlist.now());
 
     double distance = getDistanceBetweenNodes(node1Pos, node2Pos);
-    if(checkIsSatellite){
+    if(checkIsSatellite()){
         Pipe::_delay = timeFromSec(distance / 299792458);
     }else{
         Pipe::_delay = timeFromSec(distance / 3e+8);

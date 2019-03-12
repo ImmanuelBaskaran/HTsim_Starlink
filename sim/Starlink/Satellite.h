@@ -4,6 +4,8 @@
 #include <queue.h>
 #include "Node.h"
 
+
+
 class Satellite : public Node {
     private:
         int _id;

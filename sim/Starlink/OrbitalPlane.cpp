@@ -12,9 +12,9 @@ OrbitalPlane::OrbitalPlane(int id, double raan, double inclination, double satAl
 }
 
 int OrbitalPlane::satIdToIndex(int satId) const {
-    return satId - 1 - SATS_PER_PLANE * (_id - 1);
+    return satId - 1 - SATS_PER_PLANE * (_id );
 }
 
 Satellite* OrbitalPlane::getSatByID(int satId) const {
-    return _satellites[satIdToIndex(satId)];
+    return _satellites[(satId)%66];
 }

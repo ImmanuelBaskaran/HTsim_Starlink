@@ -173,6 +173,7 @@ int main(int argc, char **argv) {
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
 
 
+
 }
 
 string ntoa(double n) {

@@ -12,8 +12,8 @@ ConnectionMatrix::ConnectionMatrix(){
     for (int satellite = 1; satellite <= NUM_SATELLITES; satellite++) {
 
         int ahead_same_orb_plane;
-        int behind_same_orb_plane;
-        int ahead_diff_orb_plane;
+//        int behind_same_orb_plane;
+//        int ahead_diff_orb_plane;
         int behind_diff_orb_plane;
 
         if (satellite % NUM_SATS_PER_PLANE == 0)
@@ -22,9 +22,9 @@ ConnectionMatrix::ConnectionMatrix(){
             ahead_same_orb_plane = satellite + 1;
 
         if (satellite % NUM_SATS_PER_PLANE == 1)
-            behind_same_orb_plane = satellite + (NUM_SATS_PER_PLANE-1);
-        else
-            behind_same_orb_plane = satellite - 1;
+     //       behind_same_orb_plane = satellite + (NUM_SATS_PER_PLANE-1);
+   //    else
+    //        behind_same_orb_plane = satellite - 1;
 
             if(satellite <= NUM_SATS_PER_PLANE){
                 if(satellite < 13){
@@ -47,30 +47,30 @@ ConnectionMatrix::ConnectionMatrix(){
         }
 
         if(satellite >= NUM_SATELLITES - NUM_SATS_PER_PLANE){
-            ahead_diff_orb_plane = NUM_SATS_PER_PLANE - (NUM_SATELLITES - satellite)+13;
+         //   ahead_diff_orb_plane = NUM_SATS_PER_PLANE - (NUM_SATELLITES - satellite)+13;
         }
         else{
 
             if(satellite % NUM_SATS_PER_PLANE == 1){
-                ahead_diff_orb_plane = (satellite + (2*NUM_SATS_PER_PLANE)) - 1;
+         //       ahead_diff_orb_plane = (satellite + (2*NUM_SATS_PER_PLANE)) - 1;
             }
             else{
-                ahead_diff_orb_plane = satellite + (NUM_SATS_PER_PLANE -1);
+          //      ahead_diff_orb_plane = satellite + (NUM_SATS_PER_PLANE -1);
             }
 
         }
 
         //same orbital plane
-        //    matrix[satellite][ahead_same_orb_plane] = 1;
+            _matrix[satellite][ahead_same_orb_plane] = 1;
         //    matrix[satellite][behind_same_orb_plane] = 1;
-        //     matrix[ahead_same_orb_plane][satellite] = 1;
+             _matrix[ahead_same_orb_plane][satellite] = 1;
         //    matrix[behind_same_orb_plane][satellite] = 1;
 
         //different orbital planes
         _matrix[satellite][behind_diff_orb_plane] = 1;
         // printf("%i %i\n", satellite, behind_diff_orb_plane);
         //     matrix[satellite][ahead_diff_orb_plane] = 1;
-        // matrix[behind_diff_orb_plane][satellite] = 1;
+         _matrix[behind_diff_orb_plane][satellite] = 1;
         //    matrix[ahead_diff_orb_plane][satellite] = 1;
 
     }

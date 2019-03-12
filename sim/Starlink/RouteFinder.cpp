@@ -106,7 +106,7 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     for (int nodeId : path) {
         assert(nodeId > 0 && nodeId <= DIST_MATRIX_SIZE);
         if (nodeId <= NUM_SATELLITES) {
-            routeToDest->push_back(_constellation.getSatByID(nodeId));
+            routeToDest->push_back((PacketSink*)_constellation.getSatByID(nodeId));
         } else {
             routeToDest->push_back(_constellation.getGroundStation(nodeId));
         }

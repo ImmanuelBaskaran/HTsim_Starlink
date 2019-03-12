@@ -8,7 +8,6 @@
 
 #include "network.h"
 #include "cbr.h"
-#include "Satellite.h"
 
 class Node  {
 
@@ -27,4 +26,4 @@ public:
 };
 
 
-#endif //SIM_NODE_H
+#endif SIM_NODE_H
