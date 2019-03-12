@@ -30,7 +30,8 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
             Satellite* satJ = getSatByID(j);
             if(_connectionMatrix->areSatellitesConnected(*satI, *satJ)){
                 _laserLinks.push_back(make_pair( make_pair(i, j),
-                                                 new LaserLink(0, eventlist,*getSatByID(i-1), *getSatByID(j-1))));
+                                                 new LaserLink(0, eventlist,*getSatByID(i-1), *getSatByID(j-1), true))); 
+                                                 //need to change true to variable containing link type
             }
         }
     }
