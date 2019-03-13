@@ -58,7 +58,7 @@ int RouteFinder::minDistance(double dist[], bool sptSet[]) {
     return min_index;
 }
 
-std::vector<int> RouteFinder::extractPath(int* parent, int destId) {
+std::vector<int> RouteFinder::extractPath(int parent[], int destId) {
     std::vector<int> path;
     int parentId = destId;
     while (parentId != -1) {
@@ -101,8 +101,17 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
         }
     }
     std::vector<int> path = extractPath(parent, dest.getId());
+
+    // DEBUG OUTPUT
+    printf("RouteFinder constructing path via nodes: ");
+    for (int x : path) {
+        printf("%d ", x);
+    }
+    printf("\n");
+
+
     route_t* routeToDest = new route_t();
-    for (int i = 0; i < path.size() - 1; i++) {
+    for (size_t i = 0; i < path.size() - 1; i++) {
         Node* a = _constellation.getNodeById(path[i]);
         Node* b = _constellation.getNodeById(path[i + 1]);
         LaserLink* link = _constellation.getConnectingLink(*a, *b);
@@ -111,6 +120,7 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
         routeToDest->push_back(link);
         routeToDest->push_back(b->getPacketSink());
     }
+    print_route(*routeToDest);
     return routeToDest;
 }
 

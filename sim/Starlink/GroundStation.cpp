@@ -5,6 +5,13 @@
 #include "StarlinkLib.h"
 #include "route.h"
 
+GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
+                             : CbrSrc(eventlist1, speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
+                             _routeFinder(routeFinder) {
+    // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
+    assert(id > NUM_SATELLITES);
+}
+
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
 bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) const
@@ -36,6 +43,7 @@ void GroundStation::setDestination(GroundStation* dest) {
 }
 
 void GroundStation::send_packet() {
+    printf("GroundStation %d attempting to send packet...\n", getId());
     // Packet* p = CbrPacket::newpkt(_flow, *_route, _crt_id++, _mss);
     // TODO: Only perform below changes every X ms
     delete _route;
@@ -43,11 +51,4 @@ void GroundStation::send_packet() {
     _route = _routeFinder->dijkstra(*this, *_dest, _eventlist.now());
     
     CbrSrc::send_packet();
-}
-
-GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id, RouteFinder* routeFinder)
-                             : CbrSrc(eventlist1, speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
-                             _routeFinder(routeFinder) {
-    // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
-    assert(id > NUM_SATELLITES);
 }

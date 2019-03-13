@@ -8,9 +8,9 @@ class OrbitalPlane {
         int _id;
         Satellite* _satellites[NUM_SATS_PER_PLANE];
         double _raan;
-        double _firstSatOffset;
         double _inclination;
         double _satAltitude;
+        double _firstSatOffset;
     public:
         OrbitalPlane(int id, double raan, double inclination, double satAltitude, double firstSatOffset,
                      linkspeed_bps bitrate, mem_b maxsize, EventList &eventlist, QueueLogger* logger);

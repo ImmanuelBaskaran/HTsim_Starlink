@@ -75,7 +75,7 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
 }
 
 Satellite* Constellation::getSatByID(int satId) const {
-    assert(satId >= 0 && satId <= NUM_SATELLITES);
+    assert(satId > 0 && satId <= NUM_SATELLITES);
     return _planes[(satId-1) / NUM_SATS_PER_PLANE]->getSatByID((satId-1)  % NUM_SATS_PER_PLANE);
 }
 

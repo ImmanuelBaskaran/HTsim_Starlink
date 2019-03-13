@@ -83,75 +83,18 @@ int main(int argc, char **argv) {
     Logfile logfile(filename.str(),eventlist);
 
     logfile.setStartTime(timeFromSec(0.0));
-//
-//    QueueLoggerSimple loggerSimple = QueueLoggerSimple();
-//    logfile.addLogger(loggerSimple);
-//
-//    Queue testQueue(SERVICE1, BUFFER1, eventlist,&loggerSimple);
-//    testQueue.setName("testQueue");
-//    logfile.writeName(testQueue);
-//
-//    CbrSrc* cbrSource;
-//    CbrSink* cbrSink1;
-//    route_t* route;
-//    Eigen::Vector3f pos1(1,1,1);
-//    Eigen::Vector3f pos2(20,20,20);
-//
-//
-//
-//    Satellite dummy = Satellite(1,1);
-//    Satellite dummy2 = Satellite(1,1);
-//
-//
-//    dummy.setPosition(pos2);
-//    dummy2.setPosition(pos1);
-//
-//    LaserLink* pipe1 = new LaserLink(100000, eventlist,dummy,dummy2);
-//    pipe1->setName("pipe1");
-//    logfile.writeName(*pipe1);
-//
-//    cbrSource = new CbrSrc(eventlist,SERVICE1);
-//    cbrSink1 = new CbrSink();
-//
-//
-//    Queue linkUp(SERVICE1, BUFFER1, eventlist,&loggerSimple);
-//    testQueue.setName("linkUp");
-//    logfile.writeName(linkUp);
-//
-//    Pipe* pipeup = new Pipe(100000, eventlist);
-//    pipe1->setName("pipeup");
-//    logfile.writeName(*pipeup);
-//
-//
-//    Queue linkDown(SERVICE1, BUFFER1, eventlist,&loggerSimple);
-//    testQueue.setName("linkDown");
-//    logfile.writeName(linkDown);
-//
-//    Pipe* pipedown = new Pipe(100000, eventlist);
-//    pipe1->setName("pipedown");
-//    logfile.writeName(*pipedown);
-//
-//    route = new route_t();
-//
-//    route->push_back(&linkUp);
-//    route->push_back(pipeup);
-//
-//    route->push_back(&testQueue);
-//    route->push_back(pipe1);
-//
-//    route->push_back(&linkDown);
-//    route->push_back(pipedown);
-//
-//    route->push_back(((PacketSink*) &station1));
-//
-
 
     QueueLoggerSimple loggerSimple = QueueLoggerSimple();
     logfile.addLogger(loggerSimple);
-    route_t* route;
 
-    // double extrastarttime = drand()*50;
-    //station2.connect(*route,*cbrSink1,timeFromMs(extrastarttime));
+    double extrastarttime = drand()*50;
+    Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
+
+    GroundStation* london = constellation.getGroundStation(NUM_SATELLITES + 1);
+    GroundStation* newYork = constellation.getGroundStation(NUM_SATELLITES + 2);
+    london->setDestination(newYork);
+    route_t* dummy = new route_t();
+    london->connect(*dummy, *newYork, timeFromMs(extrastarttime));
 
     // Record the setup
     int pktsize = Packet::data_packet_size();
@@ -167,11 +110,8 @@ int main(int argc, char **argv) {
     logfile.write("# numflows="+ntoa(NUMFLOWS));
     logfile.write("# targetwnd="+ntoa(targetwnd));
 
-
-
-
-    Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
-
+    // GO!
+    while (eventlist.doNextEvent()) { }
 
 
 }
