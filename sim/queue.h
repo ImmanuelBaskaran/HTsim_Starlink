@@ -44,6 +44,7 @@ class Queue : public EventSource, public PacketSink {
 	_logger = logger;
     }
     virtual const string& nodename() { return _nodename; }
+    string _nodename;
 
  protected:
     // Housekeeping
@@ -63,7 +64,6 @@ class Queue : public EventSource, public PacketSink {
     mem_b _queuesize;
     list<Packet*> _enqueued;
     int _num_drops;
-    string _nodename;
 };
 
 /* implement a 3-level priority queue */

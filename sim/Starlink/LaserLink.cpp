@@ -12,6 +12,7 @@ LaserLink::LaserLink(simtime_picosec delay1, EventList &eventlist1, const Node& 
     } else{
         Pipe::_delay = timeFromSec(distance / 3e+8);
     }
+    _nodename = "LaserLink";
 }
 
 void LaserLink::doNextEvent() {

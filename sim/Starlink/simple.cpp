@@ -91,10 +91,10 @@ int main(int argc, char **argv) {
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
 
     GroundStation* london = constellation.getGroundStation(NUM_SATELLITES + 1);
-    GroundStation* newYork = constellation.getGroundStation(NUM_SATELLITES + 2);
-    london->setDestination(newYork);
+    GroundStation* paris = constellation.getGroundStation(NUM_SATELLITES + 2);
+    london->setDestination(paris);
     route_t* dummy = new route_t();
-    london->connect(*dummy, *newYork, timeFromMs(extrastarttime));
+    london->connect(*dummy, *paris, timeFromMs(extrastarttime));
 
     // Record the setup
     int pktsize = Packet::data_packet_size();

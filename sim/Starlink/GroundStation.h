@@ -18,5 +18,6 @@ class GroundStation: public CbrSink, public CbrSrc, public Node {
         Eigen::Vector3d getPosition(simtime_picosec currentTime) const override;
         void setDestination(GroundStation* dest);
         void send_packet() override;
+        void receivePacket(Packet& pkt) override;
         inline PacketSink* getPacketSink() override { return this; }
 };

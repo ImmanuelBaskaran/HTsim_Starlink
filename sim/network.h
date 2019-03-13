@@ -121,6 +121,7 @@ class Packet
     inline uint32_t flow_id() const { return _flow->flow_id(); }
     const Route *route() const { return _route; }
     const Route *reverse_route() const { return _route->reverse(); }
+    inline void freeRoute() { delete _route; }
 
     virtual void strip_payload()
     {

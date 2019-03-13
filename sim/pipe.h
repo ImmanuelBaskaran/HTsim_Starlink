@@ -24,9 +24,9 @@ class Pipe : public EventSource, public PacketSink {
  protected:
     simtime_picosec _delay;
     typedef pair<simtime_picosec,Packet*> pktrecord_t;
+    string _nodename;
  private:
     list<pktrecord_t> _inflight; // the packets in flight (or being serialized)
-    string _nodename;
 };
 
 

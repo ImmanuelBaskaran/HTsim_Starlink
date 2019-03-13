@@ -10,13 +10,16 @@ GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int i
                              _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
+    std::stringstream ss;
+    ss << "GroundStation " << id;
+    _nodename = ss.str();
 }
 
 // I supposed satellite coordinates as a Vector3 and ground station coordinates
 // as lat,long, earth radius
 bool GroundStation::isSatelliteInRange(const Satellite& sat, simtime_picosec currentTime) const
 {
-    Eigen::Vector3d satPos = sat.getPosition(_eventlist.now());
+    Eigen::Vector3d satPos = sat.getPosition(currentTime);
     Eigen::Vector3d gsCartCoords;
     gsCartCoords = getPosition(currentTime);
 
@@ -43,12 +46,18 @@ void GroundStation::setDestination(GroundStation* dest) {
 }
 
 void GroundStation::send_packet() {
-    printf("GroundStation %d attempting to send packet...\n", getId());
+    printf("GroundStation %d sending packet\n", getId());
     // Packet* p = CbrPacket::newpkt(_flow, *_route, _crt_id++, _mss);
     // TODO: Only perform below changes every X ms
-    delete _route;
+    
     assert(_dest);
     _route = _routeFinder->dijkstra(*this, *_dest, _eventlist.now());
     
     CbrSrc::send_packet();
+}
+
+void GroundStation::receivePacket(Packet& pkt) {
+    printf("GroundStation %d received packet with ID %u\n", getId(), pkt.id());
+    pkt.freeRoute();
+    CbrSink::receivePacket(pkt);
 }

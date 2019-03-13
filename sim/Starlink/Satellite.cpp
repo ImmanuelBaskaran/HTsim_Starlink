@@ -8,6 +8,9 @@ Satellite::Satellite(int id, double offset, double planeInclination, double raan
                      _altitude(altitude) {
     _meanAnomaly = offset + ((id % 66) * (2.0 * M_PI) / 66.0);
     _queue = new Queue(bitrate, maxsize, eventlist, logger);
+    std::stringstream ss;
+    ss << "Satellite " << id;
+    _queue->_nodename = ss.str();
 }
 
 Satellite::~Satellite() {
