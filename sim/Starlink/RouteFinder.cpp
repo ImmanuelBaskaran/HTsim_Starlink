@@ -75,9 +75,7 @@ std::vector<int> RouteFinder::extractPath(int parent[], int destId) {
 
 
 route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& dest, simtime_picosec now) {
-    //updateDistMatrix(now);
-    // Test w/ time 0
-    updateDistMatrix(0);
+    updateDistMatrix(now);
     // output, will hold the shortest distance from src to i, should to to sink
     double dist[DIST_MATRIX_SIZE];
     // parent[x] = which node (sat / ground station) we passed through to get to x
