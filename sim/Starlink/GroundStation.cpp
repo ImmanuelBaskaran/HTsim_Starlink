@@ -35,11 +35,11 @@ Eigen::Vector3d GroundStation::getPosition(simtime_picosec currentTime) const {
     Eigen::Vector3d startPosition(EARTH_RADIUS, 0.0, 0.0);
     double rotationDegrees = (currentTime/(8.64e+16)) * 360.0;
 
-    Eigen::AngleAxis<double> m1(_lon, Eigen::Vector3d(0.0,0.0,1.0));
-    Eigen::AngleAxis<double> m2(_lat, Eigen::Vector3d(0.0,1.0,0.0));
-    Eigen::AngleAxis<double> m3(rotationDegrees, Eigen::Vector3d(0.0,0.0,1.0));
+    Eigen::AngleAxis<double> m1(-1 * toRadian(_lon), Eigen::Vector3d(0.0,0.0,1.0));
+    Eigen::AngleAxis<double> m2(-1 * toRadian(_lat), Eigen::Vector3d(0.0,1.0,0.0));
+    Eigen::AngleAxis<double> m3(toRadian(rotationDegrees), Eigen::Vector3d(0.0,0.0,1.0));
 
-    return m3 * m2 * m1 * startPosition;
+    return m3 * m1 * m2 * startPosition;
 }
 
 void GroundStation::setDestination(GroundStation* dest) {

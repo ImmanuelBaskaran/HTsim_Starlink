@@ -6,7 +6,7 @@ Satellite::Satellite(int id, double offset, double planeInclination, double raan
                      linkspeed_bps bitrate, mem_b maxsize, EventList &eventlist, QueueLogger* logger)
                      : Node(id), _planeInclination(planeInclination), _raan(raan),
                      _altitude(altitude) {
-    _meanAnomaly = offset + ((id % 66) * (2.0 * M_PI) / 66.0);
+    _meanAnomaly = offset + (((id-1) % 66) * (2.0 * M_PI) / 66.0);
     _queue = new Queue(bitrate, maxsize, eventlist, logger);
     std::stringstream ss;
     ss << "Satellite " << id;
@@ -30,8 +30,8 @@ Eigen::Vector3d Satellite::getPosition(simtime_picosec currentTime) const {
     Eigen::Vector3d result;
     double anomaly = getAnomaly(currentTime);
     Eigen::AngleAxis<double> m2(anomaly, Eigen::Vector3d(0.0, 0.0, 1.0));
-    Eigen::AngleAxis<double> m3( M_PI/2 - _planeInclination, Eigen::Vector3d(1.0, 0.0, 0.0));
-    Eigen::AngleAxis<double> m4(_raan, Eigen::Vector3d(0.0, 1.0, 0.0));
+    Eigen::AngleAxis<double> m3(_planeInclination, Eigen::Vector3d(1.0, 0.0, 0.0));
+    Eigen::AngleAxis<double> m4(_raan, Eigen::Vector3d(0.0, 0.0, 1.0));
     result = m4*m3*m2*startPosition;
     return result;
 }

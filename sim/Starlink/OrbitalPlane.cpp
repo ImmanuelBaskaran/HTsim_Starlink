@@ -6,7 +6,7 @@ OrbitalPlane::OrbitalPlane(int id, double raan, double inclination, double satAl
                            _satAltitude(satAltitude), _inclination(inclination),
                            _firstSatOffset(firstSatOffset) {
     for (int i = 0; i < NUM_SATS_PER_PLANE; i++) {
-        int satId = NUM_SATS_PER_PLANE * (_id - 1) + i + 1;
+        int satId = (NUM_SATS_PER_PLANE * (_id - 1)) + i + 1;
         _satellites[i] = new Satellite(satId, _firstSatOffset, inclination, raan, satAltitude,bitrate,maxsize,eventlist,logger);
     }
 }
