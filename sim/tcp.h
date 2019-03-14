@@ -31,7 +31,7 @@ class TcpSrc : public PacketSink, public EventSource {
  public:
     TcpSrc(TcpLogger* logger, TrafficLogger* pktlogger, EventList &eventlist);
     uint32_t get_id(){ return id;}
-    virtual void connect(const Route& routeout, const Route& routeback, 
+    virtual void connect(Route& routeout, Route& routeback, 
 			 TcpSink& sink, simtime_picosec startTime);
     void startflow();
     inline void joinMultipathConnection(MultipathTcpSrc* multipathSrc) {
@@ -41,7 +41,7 @@ class TcpSrc : public PacketSink, public EventSource {
     void doNextEvent();
     virtual void receivePacket(Packet& pkt);
 
-    void replace_route(const Route* newroute);
+    void replace_route(Route* newroute);
 
     void set_flowsize(uint64_t flow_size_in_bytes) {
 	_flow_size = flow_size_in_bytes+_mss;
@@ -94,12 +94,12 @@ class TcpSrc : public PacketSink, public EventSource {
 
     void set_app_limit(int pktps);
 
-    const Route* _route;
+    Route* _route;
     simtime_picosec _last_ping;
 #ifdef PACKET_SCATTER
-    vector<const Route*>* _paths;
+    vector<Route*>* _paths;
 
-    void set_paths(vector<const Route*>* rt);
+    void set_paths(vector<Route*>* rt);
 #endif
     void send_packets();
 
@@ -114,7 +114,7 @@ class TcpSrc : public PacketSink, public EventSource {
     virtual void deflate_window();
 
  private:
-    const Route* _old_route;
+    Route* _old_route;
     uint64_t _last_packet_with_old_route;
 
     // Housekeeping
@@ -158,9 +158,9 @@ class TcpSink : public PacketSink, public DataReceiver, public Logged {
 				      we've received */
 
 #ifdef PACKET_SCATTER
-    vector<const Route*>* _paths;
+    vector<Route*>* _paths;
 
-    void set_paths(vector<const Route*>* rt);
+    void set_paths(vector<Route*>* rt);
 #endif
 
     TcpSrc* _src;
@@ -168,8 +168,8 @@ class TcpSink : public PacketSink, public DataReceiver, public Logged {
     // Connectivity
     uint16_t _crt_path;
 
-    void connect(TcpSrc& src, const Route& route);
-    const Route* _route;
+    void connect(TcpSrc& src, Route& route);
+    Route* _route;
 
     // Mechanism
     void send_ack(simtime_picosec ts,bool marked);

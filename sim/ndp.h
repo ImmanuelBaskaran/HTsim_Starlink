@@ -68,7 +68,7 @@ class NdpSrc : public PacketSink, public EventSource {
     void replace_route(Route* newroute);
 
     virtual void rtx_timer_hook(simtime_picosec now,simtime_picosec period);
-    void set_paths(vector<const Route*>* rt);
+    void set_paths(vector<Route*>* rt);
 
     // should really be private, but loggers want to see:
     uint64_t _highest_sent;  //seqno is in bytes
@@ -89,8 +89,8 @@ class NdpSrc : public PacketSink, public EventSource {
     // PULL_BASED route strategies
     uint16_t _crt_path;
     uint16_t _crt_direction;
-    vector<const Route*> _paths;
-    vector<const Route*> _original_paths; //paths in original permutation order
+    vector<Route*> _paths;
+    vector<Route*> _original_paths; //paths in original permutation order
     vector<int> _path_counts_new; // only used for debugging, can remove later.
     vector<int> _path_counts_rtx; // only used for debugging, can remove later.
     vector<int> _path_counts_rto; // only used for debugging, can remove later.
@@ -127,9 +127,9 @@ class NdpSrc : public PacketSink, public EventSource {
  
     simtime_picosec _rtx_timeout;
     bool _rtx_timeout_pending;
-    const Route* _route;
+    Route* _route;
 
-    const Route *choose_route();
+    Route *choose_route();
 
     void pull_packets(NdpPull::seq_t pull_no, NdpPull::seq_t pacer_no);
     void send_packet(NdpPull::seq_t pacer_no);
@@ -206,7 +206,7 @@ class NdpSink : public PacketSink, public DataReceiver, public Logged {
     void log_me();
     bool _log_me;
 
-    void set_paths(vector<const Route*>* rt);
+    void set_paths(vector<Route*>* rt);
 
 #ifdef RECORD_PATH_LENS
 #define MAX_PATH_LEN 20
@@ -228,9 +228,9 @@ class NdpSink : public PacketSink, public DataReceiver, public Logged {
     // and PULL_BASED route strategies
     uint16_t _crt_path;
     uint16_t _crt_direction;
-    vector<const Route*> _paths; //paths in current permutation order
-    vector<const Route*> _original_paths; //paths in original permutation order
-    const Route* _route;
+    vector<Route*> _paths; //paths in current permutation order
+    vector<Route*> _original_paths; //paths in original permutation order
+    Route* _route;
 
    string _nodename;
  

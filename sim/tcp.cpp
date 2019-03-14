@@ -63,9 +63,9 @@ TcpSrc::TcpSrc(TcpLogger* logger, TrafficLogger* pktlogger,
 }
 
 #ifdef PACKET_SCATTER
-void TcpSrc::set_paths(vector<const Route*>* rt) {
+void TcpSrc::set_paths(vector<Route*>* rt) {
     //this should only be used with route
-    _paths = new vector<const Route*>();
+    _paths = new vector<Route*>();
 
     for (unsigned int i=0;i<rt->size();i++){
 	Route* t = new Route(*(rt->at(i)));
@@ -99,7 +99,7 @@ uint32_t TcpSrc::effective_window() {
     return _in_fast_recovery?_ssthresh:_cwnd;
 }
 
-void TcpSrc::replace_route(const Route* newroute) {
+void TcpSrc::replace_route(Route* newroute) {
     _old_route = _route;
     _route = newroute;
     _last_packet_with_old_route = _highest_sent;
@@ -109,7 +109,7 @@ void TcpSrc::replace_route(const Route* newroute) {
 }
 
 void 
-TcpSrc::connect(const Route& routeout, const Route& routeback, TcpSink& sink, 
+TcpSrc::connect(Route& routeout, Route& routeback, TcpSink& sink, 
 		simtime_picosec starttime) {
     _route = &routeout;
 
@@ -620,7 +620,7 @@ TcpSink::TcpSink()
 }
 
 void 
-TcpSink::connect(TcpSrc& src, const Route& route) {
+TcpSink::connect(TcpSrc& src, Route& route) {
     _src = &src;
     _route = &route;
     _cumulative_ack = 0;
@@ -681,7 +681,7 @@ TcpSink::receivePacket(Packet& pkt) {
 
 void 
 TcpSink::send_ack(simtime_picosec ts,bool marked) {
-    const Route* rt = _route;
+    Route* rt = _route;
     
 #ifdef PACKET_SCATTER
     if (_paths){
@@ -708,9 +708,9 @@ TcpSink::send_ack(simtime_picosec ts,bool marked) {
 }
 
 #ifdef PACKET_SCATTER
-void TcpSink::set_paths(vector<const Route*>* rt) {
+void TcpSink::set_paths(vector<Route*>* rt) {
     //this should only be used with route
-    _paths = new vector<const Route*>();
+    _paths = new vector<Route*>();
 
     for (unsigned int i=0;i<rt->size();i++){
 	Route* t = new Route(*(rt->at(i)));
