@@ -104,7 +104,7 @@ void NdpSrc::log_me() {
 	_sink->log_me();
 }
 
-void NdpSrc::set_paths(vector<const Route*>* rt_list){
+void NdpSrc::set_paths(vector<Route*>* rt_list){
     int no_of_paths = rt_list->size();
     switch(_route_strategy) {
     case NOT_SET:
@@ -494,8 +494,8 @@ void NdpSrc::receivePacket(Packet& pkt)
 }
 
 /* Choose a route for a particular packet */
-const Route* NdpSrc::choose_route() {
-    const Route * rt;
+Route* NdpSrc::choose_route() {
+    Route * rt;
     switch(_route_strategy) {
     case PULL_BASED:
     {
@@ -584,7 +584,7 @@ void NdpSrc::send_packet(NdpPull::seq_t pacer_no) {
 	if (_route_strategy == SINGLE_PATH){
 	    p->set_route(*_route);
 	} else {
-	    const Route *rt = choose_route();
+	    Route *rt = choose_route();
 	    p->set_route(*rt);
 	    _path_counts_rtx[p->path_id()]++;
 	}
@@ -630,7 +630,7 @@ void NdpSrc::send_packet(NdpPull::seq_t pacer_no) {
 	    }
 	    */
 	    assert(_paths.size() > 0);
-	    const Route *rt = choose_route();
+	    Route *rt = choose_route();
 	    p = NdpPacket::newpkt(_flow, *rt, _highest_sent+1, pacer_no, _mss, false,
 				  _paths.size()>0?_paths.size():1, last_packet);
 	    _path_counts_new[p->path_id()]++;
@@ -679,7 +679,7 @@ void NdpSrc::permute_paths() {
     int len = _paths.size();
     for (int i = 0; i < len; i++) {
 	int ix = random() % (len - i);
-	const Route* tmppath = _paths[ix];
+	Route* tmppath = _paths[ix];
 	_paths[ix] = _paths[len-1-i];
 	_paths[len-1-i] = tmppath;
     }
@@ -754,7 +754,7 @@ NdpSrc::retransmit_packet() {
 	case PULL_BASED:
 	{
 	    assert(_paths.size() > 0);
-	    const Route* rt = _paths.at(_crt_path);
+	    Route* rt = _paths.at(_crt_path);
 	    p = NdpPacket::newpkt(_flow, *rt, seqno, 0, _mss, true,
 				  _paths.size(), last_packet);
 	    if (_route_strategy == SCATTER_RANDOM) {
@@ -956,7 +956,7 @@ void NdpSink::connect(NdpSrc& src, Route& route)
 }
 
 /* sets the set of paths to be used when sending from this NdpSink back to the NdpSrc */
-void NdpSink::set_paths(vector<const Route*>* rt_list){
+void NdpSink::set_paths(vector<Route*>* rt_list){
     switch (_route_strategy) {
     case SCATTER_PERMUTE:
     case SCATTER_RANDOM:
@@ -1170,7 +1170,7 @@ void NdpSink::permute_paths() {
     int len = _paths.size();
     for (int i = 0; i < len; i++) {
 	int ix = random() % (len - i);
-	const Route* tmppath = _paths[ix];
+	Route* tmppath = _paths[ix];
 	_paths[ix] = _paths[len-1-i];
 	_paths[len-1-i] = tmppath;
     }

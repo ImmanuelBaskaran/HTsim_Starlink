@@ -22,8 +22,8 @@ uint64_t generateFlowSize();
 class DCTCPSrcTransfer: public DCTCPSrc {
 public:
   DCTCPSrcTransfer(TcpLogger* logger, TrafficLogger* pktLogger, EventList &eventlist,
-		 uint64_t b, vector<const Route*>* p, EventSource* stopped = NULL);
-  void connect(const Route& routeout, const Route& routeback, TcpSink& sink, simtime_picosec starttime);
+		 uint64_t b, vector<Route*>* p, EventSource* stopped = NULL);
+  void connect(Route& routeout, Route& routeback, TcpSink& sink, simtime_picosec starttime);
 
   virtual void rtx_timer_hook(simtime_picosec now,simtime_picosec period);
   virtual void receivePacket(Packet& pkt);
@@ -36,7 +36,7 @@ public:
   uint64_t _bytes_to_send;
   bool _is_active;
   simtime_picosec _started;
-  vector<const Route*>* _paths;
+  vector<Route*>* _paths;
   EventSource* _flow_stopped;
 };
 

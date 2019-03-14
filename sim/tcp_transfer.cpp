@@ -17,7 +17,7 @@ uint64_t generateFlowSize(){
 }
 
 TcpSrcTransfer::TcpSrcTransfer(TcpLogger* logger, TrafficLogger* pktLogger, EventList &eventlist,
-			       uint64_t bytes_to_send, vector<const Route*>* p, 
+			       uint64_t bytes_to_send, vector<Route*>* p, 
 			       EventSource* stopped) : TcpSrc(logger,pktLogger,eventlist)
 {
   _is_active = false;  
@@ -60,7 +60,7 @@ void TcpSrcTransfer::reset(uint64_t bb, int shouldRestart){
 
 
 void 
-TcpSrcTransfer::connect(const Route& routeout, const Route& routeback, TcpSink& sink, simtime_picosec starttime)
+TcpSrcTransfer::connect(Route& routeout, Route& routeback, TcpSink& sink, simtime_picosec starttime)
 {
   _is_active = false;
 

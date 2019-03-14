@@ -24,7 +24,10 @@ class Route {
     inline const_iterator begin() const {return _sinklist.begin();}
     inline const_iterator end() const {return _sinklist.end();}
     void set_reverse(Route* reverse) {_reverse = reverse;}
-    inline const Route* reverse() const {return _reverse;}
+    inline Route* reverse() const {return _reverse;}
+    inline void incrementRefCount() { _refcount++; }
+    inline void decrementRefCount() { _refcount--; }
+    inline bool isFree() const { return _refcount == 0; }
     void set_path_id(int path_id, int no_of_paths) {
 	_path_id = path_id;
 	_no_of_paths = no_of_paths;
@@ -36,6 +39,7 @@ class Route {
     Route* _reverse;
     int _path_id; //path identifier for this path
     int _no_of_paths; //total number of paths sender is using
+    int _refcount = 0;
 };
 //typedef vector<PacketSink*> route_t;
 typedef Route route_t;

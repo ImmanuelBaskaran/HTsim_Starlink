@@ -18,7 +18,7 @@ void Packet::set_attrs(PacketFlow &flow, int pkt_size, packetid_t id)
     _flags = 0;
 }
 
-void Packet::set_route(PacketFlow &flow, const Route &route, int pkt_size,
+void Packet::set_route(PacketFlow &flow, Route &route, int pkt_size,
                        packetid_t id)
 {
     _flow = &flow;
@@ -30,7 +30,7 @@ void Packet::set_route(PacketFlow &flow, const Route &route, int pkt_size,
     _flags = 0;
 }
 
-void Packet::set_route(const Route &route)
+void Packet::set_route(Route &route)
 {
     _route = &route;
 }
@@ -198,7 +198,7 @@ void PacketFlow::logTraffic(Packet &pkt, Logged &location, TrafficLogger::Traffi
         _logger->logTraffic(pkt, location, ev);
 }
 
-void print_route(const Route &route)
+void print_route(Route &route)
 {
     for (int i = 0; i < route.size(); i++)
     {

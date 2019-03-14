@@ -51,17 +51,31 @@ void GroundStation::send_packet() {
     //printf("GroundStation %d sending packet\n", getId());
     if (_lastRouteCalcTime == 0 || _eventlist.now() - _lastRouteCalcTime > _timeBetweenRouteCalcs) {
         _lastRouteCalcTime = _eventlist.now();
-        delete _route;
+
+        // Mark that ground station is no longer using old route
+        if (_route) {
+            _route->decrementRefCount();
+        }
         assert(_dest);
         printf("Running Dijkstra...\n");
         _route = _routeFinder->dijkstra(*this, *_dest, _eventlist.now());
+        // Mark that ground station is using new route
+        _route->incrementRefCount();
     }
-
-    
+    // Mark that packet is using route
+    _route->incrementRefCount();
     CbrSrc::send_packet();
 }
 
 void GroundStation::receivePacket(Packet& pkt) {
     printf("GroundStation %d received packet with ID %u\n", getId(), pkt.id());
+
+    // Mark that packet is no longer using route
+    pkt.route()->decrementRefCount();
+    if (pkt.route()->isFree()) {
+        // If no one is using route anymore, free it
+        printf("Deleting old route...\n");
+        delete pkt.route();
+    }
     CbrSink::receivePacket(pkt);
 }

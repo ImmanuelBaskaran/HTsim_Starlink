@@ -12,7 +12,7 @@
 extern int CDF_WEB [];
 
 DCTCPSrcTransfer::DCTCPSrcTransfer(TcpLogger* logger, TrafficLogger* pktLogger, EventList &eventlist,
-			       uint64_t bytes_to_send, vector<const Route*>* p, 
+			       uint64_t bytes_to_send, vector<Route*>* p, 
 			       EventSource* stopped) : DCTCPSrc(logger,pktLogger,eventlist)
 {
   _is_active = false;  
@@ -60,7 +60,7 @@ void DCTCPSrcTransfer::reset(uint64_t bb, int shouldRestart){
 }
 
 void 
-DCTCPSrcTransfer::connect(const Route& routeout, const Route& routeback, TcpSink& sink, simtime_picosec starttime)
+DCTCPSrcTransfer::connect(Route& routeout, Route& routeback, TcpSink& sink, simtime_picosec starttime)
 {
   _is_active = false;
 

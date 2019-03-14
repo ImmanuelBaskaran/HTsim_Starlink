@@ -37,7 +37,7 @@ class NdpPacket : public Packet {
 	return p;
     }
   
-    inline static NdpPacket* newpkt(PacketFlow &flow, const Route &route, 
+    inline static NdpPacket* newpkt(PacketFlow &flow, Route &route, 
 				    seq_t seqno, seq_t pacerno, int size, 
 				    bool retransmitted, int32_t no_of_paths,
 				    bool last_packet) {
@@ -89,7 +89,7 @@ class NdpAck : public Packet {
  public:
     typedef NdpPacket::seq_t seq_t;
   
-    inline static NdpAck* newpkt(PacketFlow &flow, const Route &route, 
+    inline static NdpAck* newpkt(PacketFlow &flow, Route &route, 
 				 seq_t pacerno, seq_t ackno, seq_t cumulative_ack,
 				 seq_t pullno, int32_t path_id) {
 	NdpAck* p = _packetdb.allocPacket();
@@ -137,7 +137,7 @@ class NdpNack : public Packet {
  public:
     typedef NdpPacket::seq_t seq_t;
   
-    inline static NdpNack* newpkt(PacketFlow &flow, const Route &route, 
+    inline static NdpNack* newpkt(PacketFlow &flow, Route &route, 
 				  seq_t pacerno, seq_t ackno, seq_t cumulative_ack,
 				  seq_t pullno, int32_t path_id) {
 	NdpNack* p = _packetdb.allocPacket();

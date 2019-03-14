@@ -12,7 +12,7 @@ class Packet;
 class PacketFlow;
 class PacketSink;
 typedef uint32_t packetid_t;
-void print_route(const Route &route);
+void print_route(Route &route);
 
 class DataReceiver
 {
@@ -119,8 +119,8 @@ class Packet
     virtual ~Packet(){};
     inline const packetid_t id() const { return _id; }
     inline uint32_t flow_id() const { return _flow->flow_id(); }
-    const Route *route() const { return _route; }
-    const Route *reverse_route() const { return _route->reverse(); }
+    Route *route() { return _route; }
+    Route *reverse_route() const { return _route->reverse(); }
 
     virtual void strip_payload()
     {
@@ -135,11 +135,11 @@ class Packet
     inline void set_flags(uint32_t f) { _flags = f; }
 
     uint32_t nexthop() const { return _nexthop; } // only intended to be used for debugging
-    void set_route(const Route &route);
+    void set_route(Route &route);
     string str() const;
 
   protected:
-    void set_route(PacketFlow &flow, const Route &route,
+    void set_route(PacketFlow &flow, Route &route,
                    int pkt_size, packetid_t id);
     void set_attrs(PacketFlow &flow, int pkt_size, packetid_t id);
 
@@ -156,7 +156,7 @@ class Packet
 
     // A packet can contain a route or a routegraph, but not both.
     // Eventually switch over entirely to RouteGraph?
-    const Route *_route;
+    Route *_route;
     uint32_t _nexthop;
 
     packetid_t _id;

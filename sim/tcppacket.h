@@ -14,7 +14,7 @@ class TcpPacket : public Packet
   public:
 	typedef uint64_t seq_t;
 
-	inline static TcpPacket *newpkt(PacketFlow &flow, const Route &route,
+	inline static TcpPacket *newpkt(PacketFlow &flow, Route &route,
 									seq_t seqno, seq_t dataseqno, int size)
 	{
 		TcpPacket *p = _packetdb.allocPacket();
@@ -26,13 +26,13 @@ class TcpPacket : public Packet
 		return p;
 	}
 
-	inline static TcpPacket *newpkt(PacketFlow &flow, const Route &route,
+	inline static TcpPacket *newpkt(PacketFlow &flow, Route &route,
 									seq_t seqno, int size)
 	{
 		return newpkt(flow, route, seqno, 0, size);
 	}
 
-	inline static TcpPacket *new_syn_pkt(PacketFlow &flow, const Route &route,
+	inline static TcpPacket *new_syn_pkt(PacketFlow &flow, Route &route,
 										 seq_t seqno, int size)
 	{
 		TcpPacket *p = newpkt(flow, route, seqno, 0, size);
@@ -59,7 +59,7 @@ class TcpAck : public Packet
   public:
 	typedef TcpPacket::seq_t seq_t;
 
-	inline static TcpAck *newpkt(PacketFlow &flow, const Route &route,
+	inline static TcpAck *newpkt(PacketFlow &flow, Route &route,
 								 seq_t seqno, seq_t ackno, seq_t dackno)
 	{
 		TcpAck *p = _packetdb.allocPacket();
@@ -72,7 +72,7 @@ class TcpAck : public Packet
 		return p;
 	}
 
-	inline static TcpAck *newpkt(PacketFlow &flow, const Route &route,
+	inline static TcpAck *newpkt(PacketFlow &flow, Route &route,
 								 seq_t seqno, seq_t ackno)
 	{
 		return newpkt(flow, route, seqno, ackno, 0);
