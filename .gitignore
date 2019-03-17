@@ -1,5 +1,5 @@
 *.o
 .vscode
 libhtsim.a
-./sim/.idea
-./sim/cmake-build-debug
+./sim/.idea/
+./sim/cmake-build-debug/
