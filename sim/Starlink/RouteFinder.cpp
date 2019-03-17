@@ -131,7 +131,7 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     routeToDest->push_back(last);
 
     // Debug route print
-    print_route(*routeToDest);
+    // print_route(*routeToDest);
     return routeToDest;
 }
 

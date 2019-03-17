@@ -110,6 +110,8 @@ class Packet
 
     virtual PacketSink *sendOn2(VirtualQueue *crtSink);
 
+    simtime_picosec sendTime = 0;
+
     uint16_t size() const { return _size; }
     void set_size(int i) { _size = i; }
     int type() const { return _type; };

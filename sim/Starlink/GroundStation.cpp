@@ -7,7 +7,7 @@
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id,
                              simtime_picosec timeBetweenRouteCalcs, RouteFinder* routeFinder)
-                             : CbrSrc(eventlist1, speedFromPktps(166)), Node(id), _lat(lat), _lon(lon),
+                             : CbrSrc(eventlist1, speedFromPktps(1)), Node(id), _lat(lat), _lon(lon),
                              _timeBetweenRouteCalcs(timeBetweenRouteCalcs), _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
@@ -57,7 +57,7 @@ void GroundStation::send_packet() {
             _route->decrementRefCount();
         }
         assert(_dest);
-        printf("Running Dijkstra...\n");
+        // printf("Running Dijkstra...\n");
         _route = _routeFinder->dijkstra(*this, *_dest, _eventlist.now());
         // Mark that ground station is using new route
         _route->incrementRefCount();
@@ -68,13 +68,14 @@ void GroundStation::send_packet() {
 }
 
 void GroundStation::receivePacket(Packet& pkt) {
-    printf("GroundStation %d received packet with ID %u\n", getId(), pkt.id());
+    simtime_picosec delay = _eventlist.now() - pkt.sendTime;
+    printf("%lu %lu\n", _eventlist.now(), delay);
 
     // Mark that packet is no longer using route
     pkt.route()->decrementRefCount();
     if (pkt.route()->isFree()) {
         // If no one is using route anymore, free it
-        printf("Deleting old route...\n");
+        // printf("Deleting old route...\n");
         delete pkt.route();
     }
     CbrSink::receivePacket(pkt);

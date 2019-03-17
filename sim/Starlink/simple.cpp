@@ -45,7 +45,7 @@ void exit_error(char* progr){
 
 int main(int argc, char **argv) {
     EventList eventlist;
-    eventlist.setEndtime(timeFromSec(60));
+    eventlist.setEndtime(timeFromSec(120));
     Clock c(timeFromSec(50/100.), eventlist);
     int algo = UNCOUPLED;
     double epsilon = 1;
@@ -91,10 +91,10 @@ int main(int argc, char **argv) {
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
 
     GroundStation* london = constellation.getGroundStation(NUM_SATELLITES + 1);
-    GroundStation* paris = constellation.getGroundStation(NUM_SATELLITES + 2);
-    london->setDestination(paris);
+    GroundStation* newYork = constellation.getGroundStation(NUM_SATELLITES + 2);
+    london->setDestination(newYork);
     route_t* dummy = new route_t();
-    london->connect(*dummy, *paris, timeFromMs(extrastarttime));
+    london->connect(*dummy, *newYork, timeFromMs(extrastarttime));
 
     // Record the setup
     int pktsize = Packet::data_packet_size();
