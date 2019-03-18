@@ -142,11 +142,14 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
 }
 
 void RouteFinder::printPath(std::vector<int> path, simtime_picosec now) {
+    printf("#%lu\n", now);
     for (size_t i = 0; i < path.size() - 1; i++) {
         Node* a = _constellation.getNodeById(path[i]);
-        printf("%f %f %f\n", a->getPosition(now).x(), a->getPosition(now).y(), a->getPosition(now).z());
-        Node* b = _constellation.getNodeById(path[i + 1]);
-        printf("%f %f %f\n", b->getPosition(now).x(), b->getPosition(now).y(), b->getPosition(now).z());
+        printf("#%d\n%f %f %f\n", path[i], a->getPosition(now).x(), a->getPosition(now).y(), a->getPosition(now).z());
+        if(i == path.size() - 2){
+            Node* b = _constellation.getNodeById(path[i + 1]);
+            printf("#%d\n%f %f %f\n", path[i+1], b->getPosition(now).x(), b->getPosition(now).y(), b->getPosition(now).z());
+        }
     }
     printf("\n\n");
 }
