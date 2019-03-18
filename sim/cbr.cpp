@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////
 
 CbrSrc::CbrSrc(EventList &eventlist,linkspeed_bps rate,simtime_picosec active,simtime_picosec idle)
-  : EventSource(eventlist,"cbr"),  _bitrate(rate),_crt_id(1),_mss(1000),_flow(NULL)
+  : EventSource(eventlist,"cbr"),  _bitrate(rate),_crt_id(1),_mss(1500),_flow(NULL)
 {
   _period = (simtime_picosec)((pow(10.0,12.0) * 8 * _mss) / _bitrate);
   _sink = NULL;

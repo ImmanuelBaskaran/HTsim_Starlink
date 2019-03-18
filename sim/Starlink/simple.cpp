@@ -52,8 +52,8 @@ int main(int argc, char **argv) {
     int crt = 2;
 
 
-    linkspeed_bps SERVICE1 = speedFromPktps(400);
-    linkspeed_bps SERVICE2 = speedFromPktps(400);
+    linkspeed_bps SERVICE1 = speedFromMbps(40.0 * 1024.0);
+    linkspeed_bps SERVICE2 = speedFromMbps(40.0 * 1024.0);
 
     simtime_picosec RTT1=timeFromMs(150);
     simtime_picosec RTT2 = timeFromMs(10);
