@@ -140,7 +140,6 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     // print_route(*routeToDest);
     return routeToDest;
 }
-
 void RouteFinder::printPath(std::vector<int> path, simtime_picosec now) {
     printf("#%lu\n", now);
     for (size_t i = 0; i < path.size() - 1; i++) {
