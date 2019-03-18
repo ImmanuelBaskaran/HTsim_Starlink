@@ -121,12 +121,17 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
 
     for (size_t i = 0; i < path.size() - 1; i++) {
         Node* a = _constellation.getNodeById(path[i]);
+        //EXPERIMENT: Visualise routes
+        printf("%f %f %f\n", a->getPosition(now).x(), a->getPosition(now).y(), a->getPosition(now).z());
         Node* b = _constellation.getNodeById(path[i + 1]);
+        printf("%f %f %f\n", b->getPosition(now).x(), b->getPosition(now).y(), b->getPosition(now).z());
         LaserLink* link = _constellation.getConnectingLink(*a, *b);
 
         routeToDest->push_back(a->getPacketSink());
         routeToDest->push_back(link);
     }
+    //EXPERIMENT: Visualise routes
+    printf("\n\n");
     GroundStation* last = _constellation.getGroundStation(path[path.size() - 1]);
     routeToDest->push_back(last);
 

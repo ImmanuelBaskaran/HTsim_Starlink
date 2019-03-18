@@ -16,5 +16,6 @@ class OrbitalPlane {
                      linkspeed_bps bitrate, mem_b maxsize, EventList &eventlist, QueueLogger* logger);
         // OrbitalPlane() {}
         Satellite* getSatByID(int zeroedId) const;
+        void print_plane(simtime_picosec time);
 };
 

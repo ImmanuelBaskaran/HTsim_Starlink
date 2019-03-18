@@ -20,6 +20,7 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
     // New York
     _groundStations[1] = new GroundStation(_eventlist, 40.7128, 74.0060, NUM_SATELLITES + 2, timeFromMs(10), _routeFinder);
 
+
     for(int i = 1; i <= NUM_SATELLITES; i++) {
         // Create links between all connected satellites
         for(int j = 1; j <= NUM_SATELLITES; j++){

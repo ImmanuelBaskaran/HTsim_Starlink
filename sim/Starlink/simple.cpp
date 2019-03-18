@@ -46,7 +46,7 @@ void exit_error(char* progr){
 int main(int argc, char **argv) {
     EventList eventlist;
     eventlist.setEndtime(timeFromSec(120));
-    Clock c(timeFromSec(50/100.), eventlist);
+    // Clock c(timeFromSec(50/100.), eventlist);
     int algo = UNCOUPLED;
     double epsilon = 1;
     int crt = 2;

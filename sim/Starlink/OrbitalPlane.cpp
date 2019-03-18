@@ -11,6 +11,13 @@ OrbitalPlane::OrbitalPlane(int id, double raan, double inclination, double satAl
     }
 }
 
+void OrbitalPlane::print_plane(simtime_picosec time){
+    for(int i=0; i<NUM_SATS_PER_PLANE; i++){
+        printf("%f %f %f\n", _satellites[i]->getPosition(time).x(), _satellites[i]->getPosition(time).y(), _satellites[i]->getPosition(time).z());
+    }
+    printf("\n\n");
+}
+
 Satellite* OrbitalPlane::getSatByID(int zeroedId) const {
     return _satellites[zeroedId % 66];
 }

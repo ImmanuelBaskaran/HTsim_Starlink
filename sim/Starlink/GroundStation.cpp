@@ -69,8 +69,8 @@ void GroundStation::send_packet() {
 
 void GroundStation::receivePacket(Packet& pkt) {
     simtime_picosec delay = _eventlist.now() - pkt.sendTime;
-    // EXPERIMENT DEBUG: Print end-to-end delay of packet
-    printf("%lu %lu\n", _eventlist.now(), delay);
+    // // EXPERIMENT DEBUG: Print end-to-end delay of packet
+    // printf("%lu %lu\n", _eventlist.now(), delay);
     // EXPERIMENT DEBUG: Print arrival time against packet ID
     // printf("%lu %u\n", _eventlist.now(), pkt.id());
 
