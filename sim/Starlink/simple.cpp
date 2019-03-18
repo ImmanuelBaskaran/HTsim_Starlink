@@ -93,6 +93,26 @@ int main(int argc, char **argv) {
 
     GroundStation* london = constellation.getGroundStation(NUM_SATELLITES + 1);
     GroundStation* newYork = constellation.getGroundStation(NUM_SATELLITES + 2);
+
+    //DEBUG
+
+    //PRINT OUT CONSTELLATION
+
+    // for(int i =1; i<=NUM_SATELLITES; i++){
+    //     Eigen::Vector3d satPos = constellation.getSatByID(i)->getPosition(eventlist.now());
+    //     printf("%f, %f, %f \n",satPos.x(), satPos.y(), satPos.z());
+    // }
+
+    //PRINT OUT GROUNDSTATIONS
+
+    // for(int i =NUM_SATELLITES+1; i<=NUM_SATELLITES + NUM_GROUNDSTATIONS; i++){
+    //     Eigen::Vector3d grPos = constellation.getGroundStation(i)->getPosition(eventlist.now());
+    //     printf("%f, %f, %f\n",grPos.x(), grPos.y(), grPos.z());
+    // }
+
+    // return 0;
+
+
     london->setDestination(newYork);
     route_t* dummy = new route_t();
     london->connect(*dummy, *newYork, timeFromMs(extrastarttime));
