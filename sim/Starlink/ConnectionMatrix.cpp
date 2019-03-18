@@ -19,21 +19,21 @@ ConnectionMatrix::ConnectionMatrix() {
             ahead_same_orb_plane = satellite + 1;
         }
 
-        if (satellite % NUM_SATS_PER_PLANE == 1) {
-            if (satellite <= NUM_SATS_PER_PLANE) {
-                if (satellite < 13) {
-                    behind_diff_orb_plane = (NUM_SATELLITES - 13) + satellite + 1;
-                } else {
-                    behind_diff_orb_plane = (NUM_SATELLITES - NUM_SATS_PER_PLANE) + (satellite - 13) + 1;
-                }
+
+        if (satellite <= NUM_SATS_PER_PLANE) {
+            if (satellite < 13) {
+                behind_diff_orb_plane = (NUM_SATELLITES - 13) + satellite + 1;
             } else {
-                if (satellite % NUM_SATS_PER_PLANE == 0) {
-                    behind_diff_orb_plane = (satellite - (2 * NUM_SATS_PER_PLANE)) + 1;
-                } else {
-                    behind_diff_orb_plane = satellite - (NUM_SATS_PER_PLANE - 1);
-                }
+                behind_diff_orb_plane = (NUM_SATELLITES - NUM_SATS_PER_PLANE) + (satellite - 13) + 1;
             }
-        }   
+        } else {
+            if (satellite % NUM_SATS_PER_PLANE == 0) {
+                behind_diff_orb_plane = (satellite - (2 * NUM_SATS_PER_PLANE)) + 1;
+            } else {
+                behind_diff_orb_plane = satellite - (NUM_SATS_PER_PLANE - 1);
+            }
+        }
+  
 
         _matrix[satellite][ahead_same_orb_plane] = 1;
         _matrix[ahead_same_orb_plane][satellite] = 1;
