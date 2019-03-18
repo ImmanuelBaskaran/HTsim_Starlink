@@ -130,7 +130,9 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     GroundStation* last = _constellation.getGroundStation(path[path.size() - 1]);
     routeToDest->push_back(last);
 
-    // Debug route print
+    // EXPERIMENT DEBUG: Print route between Ground Stations
+    // NOTE: Can loop through either `path` (for node IDs) or `routeToDest`
+    // to print satellite positions for graphing
     // print_route(*routeToDest);
     return routeToDest;
 }

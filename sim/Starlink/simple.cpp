@@ -58,7 +58,8 @@ int main(int argc, char **argv) {
     simtime_picosec RTT1=timeFromMs(150);
     simtime_picosec RTT2 = timeFromMs(10);
 
-    mem_b BUFFER1=memFromPkt(RANDOM_BUFFER+timeAsSec(RTT1)*speedAsPktps(SERVICE1)*12);//NUMFLOWS * targetwnd);
+    // Set queue size to infinite
+    mem_b BUFFER1 = INT64_MAX;
 
     int bufsize = timeAsSec(RTT2)*speedAsPktps(SERVICE2)*4;
     if (bufsize<10)
@@ -79,7 +80,7 @@ int main(int argc, char **argv) {
     // prepare the loggers
     stringstream filename(ios_base::out);
     filename << "../data/logout." << speedAsPktps(SERVICE2) << "pktps." <<timeAsMs(RTT2) << "ms." << rwnd << "rwnd2.txt"; // rand();
-    cout << "Outputting to " << filename.str() << endl;
+    // cout << "Outputting to " << filename.str() << endl;
     Logfile logfile(filename.str(),eventlist);
 
     logfile.setStartTime(timeFromSec(0.0));

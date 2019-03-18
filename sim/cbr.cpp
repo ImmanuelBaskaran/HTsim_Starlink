@@ -60,6 +60,9 @@ CbrSrc::send_packet() {
   p->sendTime = _eventlist.now();
   p->sendOn();
 
+  // EXPERIMENT DEBUG: Print send time against packet ID
+  // printf("%lu %u\n", _eventlist.now(), p->id());
+
   // Debug output for logging CBR traffic:
   // printf("CBR source sent packet with id %u.\n", p->id());
 
