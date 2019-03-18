@@ -21,6 +21,7 @@ class RouteFinder {
         void updateDistMatrix(simtime_picosec now);
         std::vector<int> extractPath(int* parent, int destId);
         int minDistance(double dist[], bool sptSet[]);
+        void printPath(std::vector<int> path, simtime_picosec now);
 };
 
 
