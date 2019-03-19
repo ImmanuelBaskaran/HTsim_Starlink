@@ -44,7 +44,7 @@ void exit_error(char* progr){
 }
 
 int main(int argc, char **argv) {
-    simtime_picosec extrastarttime = timeFromSec(87.4);
+  //  simtime_picosec extrastarttime = timeFromSec(87.4);
     EventList eventlist;
     eventlist.setEndtime(timeFromSec(DEBUG_SIMULATION_END_TIME_IN_SECS));
     Clock c(timeFromSec(50/100.), eventlist);
