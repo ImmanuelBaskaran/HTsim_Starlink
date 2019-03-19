@@ -120,7 +120,6 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     routeToDest->push_back(firstLink);
 
     // EXPERIMENT: Visualise routes
-
     #if DEBUG_PRINT_ROUTE
     printPath(path, now);
     #endif

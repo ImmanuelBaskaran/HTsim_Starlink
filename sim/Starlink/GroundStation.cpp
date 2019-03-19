@@ -4,10 +4,6 @@
 #include "Constellation.h"
 #include "StarlinkLib.h"
 #include "route.h"
-#include <ios>
-#include <fstream>
-using namespace std;
-
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id,
                              simtime_picosec timeBetweenRouteCalcs, RouteFinder* routeFinder)
@@ -72,12 +68,6 @@ void GroundStation::send_packet() {
 }
 
 void GroundStation::receivePacket(Packet& pkt) {
-
-    // myfile << "Writing this to a file.\n";
-   
-
-
-
     simtime_picosec delay = _eventlist.now() - pkt.sendTime;
     // EXPERIMENT DEBUG: Print end-to-end delay of packet
     #if DEBUG_PRINT_E2E_DELAY

@@ -3,6 +3,7 @@
 // --- Starlink includes
 #include "Constellation.h"
 #include "LaserLink.h"
+#include "cities.h"
 // ---
 
 #include "config.h"
@@ -44,7 +45,6 @@ void exit_error(char* progr){
 }
 
 int main(int argc, char **argv) {
-  //  simtime_picosec extrastarttime = timeFromSec(87.4);
     EventList eventlist;
     eventlist.setEndtime(timeFromSec(DEBUG_SIMULATION_END_TIME_IN_SECS));
     Clock c(timeFromSec(50/100.), eventlist);
@@ -92,11 +92,11 @@ int main(int argc, char **argv) {
     simtime_picosec extrastarttime = DEBUG_SIMULATION_START_TIME_IN_PICOSECS;
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
 
-    GroundStation* london = constellation.getGroundStation(NUM_SATELLITES + 1);
-    GroundStation* johannesburg = constellation.getGroundStation(NUM_SATELLITES + 2);
-    london->setDestination(johannesburg);
+    GroundStation* station1 = constellation.getGroundStation(NUM_SATELLITES + 1);
+    GroundStation* station2 = constellation.getGroundStation(NUM_SATELLITES + 2);
+    station1->setDestination(station2);
     route_t* dummy = new route_t();
-    london->connect(*dummy, *johannesburg, extrastarttime);
+    station1->connect(*dummy, *station2, extrastarttime);
 
     // Record the setup
     int pktsize = Packet::data_packet_size();
