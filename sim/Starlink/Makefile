@@ -2,7 +2,7 @@ OBJS=OrbitalPlane.o Satellite.o LaserLink.o GroundStation.o ConnectionMatrix.o R
 HDRS=OrbitalPlane.h Satellite.h LaserLink.h GroundStation.h ConnectionMatrix.h RouteFinder.h Constellation.h
 
 CC = g++
-CFLAGS = -Wall -g -O -std=c++11 -O0
+CFLAGS = -Wall -g -O -std=c++11
 CRT=`pwd`
 INCLUDE= -I/$(CRT)/.. -I$(CRT) -g
 #EIGEN= -I /home/user/eigen/Eigen

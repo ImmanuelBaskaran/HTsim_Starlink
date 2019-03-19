@@ -17,7 +17,7 @@
 class Pipe : public EventSource, public PacketSink {
  public:
     Pipe(simtime_picosec delay, EventList& eventlist);
-    void receivePacket(Packet& pkt); // inherited from PacketSink
+    virtual void receivePacket(Packet& pkt); // inherited from PacketSink
     virtual void doNextEvent(); // inherited from EventSource
     simtime_picosec delay() { return _delay; }
     const string& nodename() { return _nodename; }

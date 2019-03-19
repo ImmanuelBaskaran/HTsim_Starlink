@@ -45,8 +45,8 @@ void exit_error(char* progr){
 
 int main(int argc, char **argv) {
     EventList eventlist;
-    eventlist.setEndtime(timeFromSec(120));
-    // Clock c(timeFromSec(50/100.), eventlist);
+    eventlist.setEndtime(timeFromSec(DEBUG_SIMULATION_END_TIME_IN_SECS));
+    Clock c(timeFromSec(50/100.), eventlist);
     int algo = UNCOUPLED;
     double epsilon = 1;
     int crt = 2;
@@ -88,14 +88,14 @@ int main(int argc, char **argv) {
     QueueLoggerSimple loggerSimple = QueueLoggerSimple();
     logfile.addLogger(loggerSimple);
 
-    double extrastarttime = drand()*50;
+    simtime_picosec extrastarttime = DEBUG_SIMULATION_START_TIME_IN_PICOSECS;
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
 
     GroundStation* london = constellation.getGroundStation(NUM_SATELLITES + 1);
-    GroundStation* newYork = constellation.getGroundStation(NUM_SATELLITES + 2);
-    london->setDestination(newYork);
+    GroundStation* johannesburg = constellation.getGroundStation(NUM_SATELLITES + 2);
+    london->setDestination(johannesburg);
     route_t* dummy = new route_t();
-    london->connect(*dummy, *newYork, timeFromMs(extrastarttime));
+    london->connect(*dummy, *johannesburg, extrastarttime);
 
     // Record the setup
     int pktsize = Packet::data_packet_size();
