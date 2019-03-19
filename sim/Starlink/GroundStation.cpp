@@ -11,7 +11,7 @@ using namespace std;
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id,
                              simtime_picosec timeBetweenRouteCalcs, RouteFinder* routeFinder)
-                             : CbrSrc(eventlist1, speedFromPktps(10000)), Node(id), _lat(lat), _lon(lon),
+                             : CbrSrc(eventlist1, speedFromPktps(DEBUG_PACKETS_PER_SEC)), Node(id), _lat(lat), _lon(lon),
                              _timeBetweenRouteCalcs(timeBetweenRouteCalcs), _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
@@ -80,9 +80,13 @@ void GroundStation::receivePacket(Packet& pkt) {
 
     simtime_picosec delay = _eventlist.now() - pkt.sendTime;
     // EXPERIMENT DEBUG: Print end-to-end delay of packet
-    // printf("%lu %lu\n", _eventlist.now(), delay);
+    #if DEBUG_PRINT_E2E_DELAY
+    printf("%lu %lu\n", _eventlist.now(), delay);
+    #endif
     // EXPERIMENT DEBUG: Print arrival time against packet ID
+    #if DEBUG_PRINT_ARRIVAL_IDS
     printf("%lu %u\n", _eventlist.now(), pkt.id());
+    #endif
 
     // Mark that packet is no longer using route
     pkt.route()->decrementRefCount();

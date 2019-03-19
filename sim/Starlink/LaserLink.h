@@ -17,6 +17,7 @@ private:
     const Node& _node1;
     const Node& _node2;
     bool _isSatelliteLink;
+    void updateDelay();
 };
 
 

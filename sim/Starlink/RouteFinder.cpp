@@ -120,7 +120,13 @@ route_t* RouteFinder::dijkstra (const GroundStation& src, const GroundStation& d
     routeToDest->push_back(firstLink);
 
     // EXPERIMENT: Visualise routes
+<<<<<<< HEAD
     // printPath(path, now);
+=======
+    #if DEBUG_PRINT_ROUTE
+    printPath(path, now);
+    #endif
+>>>>>>> d383b6092aa792cd474eb08aacc4f911cc0264ea
     
     for (size_t i = 0; i < path.size() - 1; i++) {
         Node* a = _constellation.getNodeById(path[i]);
