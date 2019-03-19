@@ -2,6 +2,7 @@
 #include "Satellite.h"
 #include "OrbitalPlane.h"
 #include "StarlinkLib.h"
+#include "cities.h"
 
 #define DEBUG_LOOP 0
 
@@ -15,10 +16,8 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
     _connectionMatrix = new ConnectionMatrix();
     _routeFinder = new RouteFinder(*this, *_connectionMatrix);
 
-    // London
-    _groundStations[0] = new GroundStation(_eventlist, 51.5074, 0.1278, NUM_SATELLITES + 1, timeFromMs(10), _routeFinder);
-    // Johannesburg
-    _groundStations[1] = new GroundStation(_eventlist, -26.2041, -28.0473, NUM_SATELLITES + 2, timeFromMs(10), _routeFinder);
+    _groundStations[0] = new GroundStation(_eventlist, GST_LONDON, NUM_SATELLITES + 1, timeFromMs(10), _routeFinder);
+    _groundStations[1] = new GroundStation(_eventlist, GST_JOHANNESBURG, NUM_SATELLITES + 2, timeFromMs(10), _routeFinder);
 
 
     for(int i = 1; i <= NUM_SATELLITES; i++) {
