@@ -25,3 +25,14 @@ void LaserLink::doNextEvent() {
     
     Pipe::doNextEvent();
 }
+
+void LaserLink::receivePacket(Packet &pkt){
+        double distance = getNodeDistance(_node1, _node2, _eventlist.now());
+    if(checkIsSatellite()){
+        Pipe::_delay = timeFromSec(distance / 299792458);
+    } else{
+        Pipe::_delay = timeFromSec(distance / 3e+8);
+    }
+    
+    Pipe::receivePacket(pkt);
+}

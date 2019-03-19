@@ -4,10 +4,14 @@
 #include "Constellation.h"
 #include "StarlinkLib.h"
 #include "route.h"
+#include <ios>
+#include <fstream>
+using namespace std;
+
 
 GroundStation::GroundStation(EventList &eventlist1,double lat, double lon, int id,
                              simtime_picosec timeBetweenRouteCalcs, RouteFinder* routeFinder)
-                             : CbrSrc(eventlist1, speedFromPktps(1)), Node(id), _lat(lat), _lon(lon),
+                             : CbrSrc(eventlist1, speedFromPktps(10000)), Node(id), _lat(lat), _lon(lon),
                              _timeBetweenRouteCalcs(timeBetweenRouteCalcs), _routeFinder(routeFinder) {
     // For routing matrices to add up, ground station IDs must start at NUM_SATELLITES + 1
     assert(id > NUM_SATELLITES);
@@ -68,11 +72,17 @@ void GroundStation::send_packet() {
 }
 
 void GroundStation::receivePacket(Packet& pkt) {
+
+    // myfile << "Writing this to a file.\n";
+   
+
+
+
     simtime_picosec delay = _eventlist.now() - pkt.sendTime;
     // EXPERIMENT DEBUG: Print end-to-end delay of packet
     // printf("%lu %lu\n", _eventlist.now(), delay);
     // EXPERIMENT DEBUG: Print arrival time against packet ID
-    // printf("%lu %u\n", _eventlist.now(), pkt.id());
+    printf("%lu %u\n", _eventlist.now(), pkt.id());
 
     // Mark that packet is no longer using route
     pkt.route()->decrementRefCount();
