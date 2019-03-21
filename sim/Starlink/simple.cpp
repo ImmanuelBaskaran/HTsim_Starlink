@@ -89,8 +89,28 @@ int main(int argc, char **argv) {
     QueueLoggerSimple loggerSimple = QueueLoggerSimple();
     logfile.addLogger(loggerSimple);
 
+   
+
     simtime_picosec extrastarttime = DEBUG_SIMULATION_START_TIME_IN_PICOSECS;
     Constellation constellation = Constellation(eventlist,"ElonMusk",SERVICE1, BUFFER1,&loggerSimple);
+
+    // DEBUG
+
+   // PRINT OUT CONSTELLATION
+
+    // for(int i =1; i<=NUM_SATELLITES; i++){
+    //     Eigen::Vector3d satPos = constellation.getSatByID(i)->getPosition(eventlist.now());
+    //     printf("%f, %f, %f \n",satPos.x(), satPos.y(), satPos.z());
+    // }
+
+   //PRINT OUT GROUNDSTATIONS
+
+    // for(int i =NUM_SATELLITES+1; i<=NUM_SATELLITES + NUM_GROUNDSTATIONS; i++){
+    //     Eigen::Vector3d grPos = constellation.getGroundStation(i)->getPosition(eventlist.now());
+    //     printf("%f, %f, %f\n",grPos.x(), grPos.y(), grPos.z());
+    // }
+
+    // return 0;
 
     GroundStation* station1 = constellation.getGroundStation(NUM_SATELLITES + 1);
     GroundStation* station2 = constellation.getGroundStation(NUM_SATELLITES + 2);
