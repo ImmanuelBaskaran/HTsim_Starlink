@@ -16,8 +16,8 @@ Constellation::Constellation(EventList& eventlist, const string& name,linkspeed_
     _connectionMatrix = new ConnectionMatrix();
     _routeFinder = new RouteFinder(*this, *_connectionMatrix);
 
-    _groundStations[0] = new GroundStation(_eventlist, GST_LONDON, NUM_SATELLITES + 1, timeFromMs(10), _routeFinder);
-    _groundStations[1] = new GroundStation(_eventlist, GST_JOHANNESBURG, NUM_SATELLITES + 2, timeFromMs(10), _routeFinder);
+    _groundStations[0] = new GroundStation(_eventlist, SOURCE_GROUNDSTATION, NUM_SATELLITES + 1, timeFromMs(10), _routeFinder);
+    _groundStations[1] = new GroundStation(_eventlist, DESTINATION_GROUNDSTATION, NUM_SATELLITES + 2, timeFromMs(10), _routeFinder);
 
 
     for(int i = 1; i <= NUM_SATELLITES; i++) {
