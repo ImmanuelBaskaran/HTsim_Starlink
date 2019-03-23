@@ -2,6 +2,8 @@
 #include "math.h"
 #include <iostream>
 #include "cbrpacket.h"
+
+#define DEBUG_PRINT_PACKET_REORDERING 1
 ////////////////////////////////////////////////////////////////
 //  CBR SOURCE
 ////////////////////////////////////////////////////////////////
@@ -86,6 +88,7 @@ CbrSink::CbrSink()
   _last_id = 0;
   _cumulative_ack = 0;
   _nodename = "cbrsink";
+  _pkt_reord=0;
 }
 
 // Note: _cumulative_ack is the last byte we've ACKed.
@@ -94,7 +97,14 @@ void
 CbrSink::receivePacket(Packet& pkt) {
   _received++;
   _cumulative_ack = _received * 1000;
+
+  if(_last_id>pkt.id())
+  {
+      _pkt_reord++;
+      if(DEBUG_PRINT_PACKET_REORDERING)
+        printf("percentage of packet reordering: %f \n", (double)(_pkt_reord/_last_id));
+  }
   _last_id = pkt.id();
   pkt.free();
-}	
+}
 

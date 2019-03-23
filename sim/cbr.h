@@ -43,8 +43,9 @@ public:
         CbrSink();
 	virtual void receivePacket(Packet& pkt);
 	uint32_t _last_id; // the id of the last packet we have received
-	uint32_t _received;//number of packets received;_last_id-_received = dropped packets 
-	uint64_t _cumulative_ack;//_received * 1000 - this is for loggers
+	uint32_t _received;//number of packets received;_last_id-_received = dropped packets
+	uint64_t _cumulative_ack;//_received * 1000 - this is for logger
+    double _pkt_reord;
 
 	uint64_t cumulative_ack(){return _cumulative_ack;}
 	uint32_t get_id(){ return id;}
