@@ -1,15 +1,37 @@
 #pragma once
 
+#include "cities.h"
+
+
+//Defined Starlink constants
 #define EARTH_RADIUS 6371000.0
 #define ANGLE_IN_RANGE 0.92
 #define ALTITUDE 550000
-#define NUM_SATELLITES 1584
 #define NUM_ORBITAL_PLANES 24
 #define NUM_SATS_PER_PLANE 66
 #define ORBIT_PERIOD_SEC 5739
 #define NUM_SATELLITES 1584
 #define NUM_GROUNDSTATIONS 2
 #define DIST_MATRIX_SIZE NUM_SATELLITES + NUM_GROUNDSTATIONS + 1
+
+
+//Set experiment parameters
+#define DEBUG_PACKETS_PER_SEC 100000
+#define DEBUG_SIMULATION_START_TIME_IN_PICOSECS 33964654810246
+#define DEBUG_SIMULATION_END_TIME_IN_SECS 35
+
+//Set source and destination
+#define SOURCE_GROUNDSTATION GST_LONDON
+#define DESTINATION_GROUNDSTATION GST_KHABAROVSK
+
+//Set experiment data output 
+#define DEBUG_PRINT_E2E_DELAY 0
+#define DEBUG_PRINT_SENT_IDS 0
+#define DEBUG_PRINT_ARRIVAL_IDS 0
+#define DEBUG_PRINT_ROUTE 1
+
+
+
 
 #include <math.h>
 #include "Node.h"

@@ -9,6 +9,7 @@ public:
     LaserLink(simtime_picosec delay, EventList &eventlist, const Node& node1,
               const Node& node2, bool isSatelliteLink);
     void doNextEvent() override;
+    void receivePacket(Packet& pkt) override;
     inline bool checkIsSatellite() const { return _isSatelliteLink; } //Check type of link
     virtual ~LaserLink(){};
 private:
@@ -16,6 +17,7 @@ private:
     const Node& _node1;
     const Node& _node2;
     bool _isSatelliteLink;
+    void updateDelay();
 };
 
 
